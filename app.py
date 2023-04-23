@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
+from bson import json_util
 from datetime import datetime
 
 
@@ -104,6 +105,41 @@ def form():
 
     # Başarılı bir şekilde kaydedildi sayfasını göster
     return render_template('kaydedildi.html', tc=tc)
+
+
+# GET isteği ile müşterileri pagination ile getirme
+@app.route('/customers', methods=['GET'])
+def get_customers():
+    db = client.otovitrin
+    customers = db.musteriler
+
+    # Sayfa numarasını al
+    page = int(request.args.get('page', 1))
+    # Her sayfada kaç müşteri gösterileceğini belirle
+    per_page = int(request.args.get('per_page', 10))
+
+    # Toplam müşteri sayısını al
+    total_customers = customers.count_documents({})
+
+    # Pagination hesaplamaları
+    start_index = (page - 1) * per_page
+    end_index = min(start_index + per_page, total_customers)
+
+    # Müşterileri veritabanından getir
+    customer_list = list(customers.find({}, {'_id':1, 'tc':1, 'ad_soyad':1, 'dogum_tarihi':1, 'telefon':1, 'email':1, 'calisma_durumu':1, 'aylik_net_gelir':1, 'calisma_sekli':1, 'kredi_miktar':1, 'kredi_vadesi':1, 'il_secimi':1}).skip(start_index).limit(per_page))
+
+    # Pagination metadatasını oluştur
+    metadata = {
+        'page': page,
+        'per_page': per_page,
+        'total_customers': total_customers,
+        'total_pages': int(total_customers / per_page) + 1
+    }
+
+    # JSON'a dönüştür ve döndür
+    customer_json = json_util.dumps({'metadata': metadata, 'customers': customer_list})
+    
+    return render_template('customer.html', data=customer_list , metadata=metadata)
 
 if __name__ == '__main__':
     app.run(debug=True)

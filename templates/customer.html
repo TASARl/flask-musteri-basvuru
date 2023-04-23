@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Musteri Listesi</title>
+  </head>
+  <body>
+    {{data}}
+    <h1>Musteriler</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>TC</th>
+          <th>Name</th>
+          <th>Date of birth</th>
+          <th>Phone</th>
+
+          <th>Credit amount</th>
+          <th>Credit term</th>
+          <th>City selection</th>
+          <th>Secim Dugmesi</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for customer in data %}
+        <tr>
+          <td>{{ customer._id }}</td>
+          <td>{{ customer.tc }}</td>
+          <td>{{ customer.ad_soyad }}</td>
+          <td>{{ customer.dogum_tarihi }}</td>
+          <td>{{ customer.telefon }}</td>
+
+          <td>{{ customer.kredi_miktar }}</td>
+          <td>{{ customer.kredi_vadesi }}</td>
+          <td>{{ customer.il_secimi }}</td>
+          <td></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div>
+      <!-- Pagination linkleri -->
+      {% if metadata.page > 1 %}
+      <a
+        href="{{ url_for('get_customers', page=metadata.page-1, per_page=metadata.per_page) }}"
+        >Onceki</a
+      >
+      {% endif %} {% if metadata.page < metadata.total_pages %}
+      <a
+        href="{{ url_for('get_customers', page=metadata.page+1, per_page=metadata.per_page) }}"
+        >Sonraki</a
+      >
+      {% endif %}
+    </div>
+  </body>
+</html>
