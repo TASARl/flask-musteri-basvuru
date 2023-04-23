@@ -1,10 +1,13 @@
 from flask import Flask, render_template, request, jsonify
 from bson import json_util
+from bson.objectid import ObjectId
 from datetime import datetime
 
-
+from pymongo import DESCENDING
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
+
+import json
 
 uri = "mongodb+srv://user:6UUq1D9BDh7J38y4@clusterkredi.ryzdktr.mongodb.net/?retryWrites=true&w=majority"
 
@@ -160,6 +163,42 @@ def add_customer_selection():
 
     return jsonify(str(result.inserted_id))
 
+
+@app.route('/secili_musteri', methods=['GET'])
+def last_selected_customer():
+    db = client.otovitrin
+    selected_customers = db.selected_customers
+
+    # Son seçilen müşterinin bilgilerini al
+    latest_customer = selected_customers.find().sort([('selection_date', DESCENDING)]).limit(1)
+    customer_id = latest_customer[0]['customer_id']
+
+    # Müşteri bilgilerini veritabanından al
+    customers = db.musteriler
+    customer = customers.find_one({'_id': ObjectId(customer_id)})
+    
+    if customer is None:
+        return jsonify({'message': 'Müşteri bulunamadı.', 'id': customer_id}, 404)
+
+
+    
+    # JSON formatında HTTP yanıtı oluştur
+    response = {
+        'customer_id': str(customer['_id']),
+        'tc': customer['tc'],
+        'ad_soyad': customer['ad_soyad'],
+        'dogum_tarihi': customer['dogum_tarihi'],
+        'telefon': customer['telefon'],
+        'kredi_miktar': customer['kredi_miktar'],
+        'kredi_vadesi': customer['kredi_vadesi'],
+        'il_secimi': customer['il_secimi'],
+        'aylik_net_gelir': customer['aylik_net_gelir'],
+        'calisma_sekli': customer['calisma_sekli']
+    }
+
+    json_response = json.dumps(response, ensure_ascii=False)
+
+    return json_response, 200
 
 if __name__ == '__main__':
     app.run(debug=True)
