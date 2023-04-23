@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>Musteri Listesi</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   </head>
   <body>
     <h1>Musteriler</h1>
@@ -33,7 +34,11 @@
           <td>{{ customer.kredi_miktar }}</td>
           <td>{{ customer.kredi_vadesi }}</td>
           <td>{{ customer.il_secimi }}</td>
-          <td></td>
+          <td>
+            <button onclick="addSelectedCustomer('{{ customer._id }}')">
+              Seç
+            </button>
+          </td>
         </tr>
         {% endfor %}
       </tbody>
@@ -52,5 +57,23 @@
       >
       {% endif %}
     </div>
+
+    <script type="text/javascript">
+      function addSelectedCustomer(customerId) {
+        $.ajax({
+          url: "/add_customer_selection",
+          type: "POST",
+          contentType: "application/json",
+          data: JSON.stringify({ customer_id: customerId }),
+          success: function (response) {
+            alert("Müşteri seçimi kaydedildi!");
+          },
+          error: function (error) {
+            alert("Hata oluştu!");
+            console.log(error);
+          },
+        });
+      }
+    </script>
   </body>
 </html>

@@ -126,7 +126,8 @@ def get_customers():
     end_index = min(start_index + per_page, total_customers)
 
     # Müşterileri veritabanından getir
-    customer_list = list(customers.find({}, {'_id':1, 'tc':1, 'ad_soyad':1, 'dogum_tarihi':1, 'telefon':1, 'email':1, 'calisma_durumu':1, 'aylik_net_gelir':1, 'calisma_sekli':1, 'kredi_miktar':1, 'kredi_vadesi':1, 'il_secimi':1}).skip(start_index).limit(per_page))
+    customer_list = list(customers.find({}, {'_id':1, 'tc':1, 'ad_soyad':1, 'dogum_tarihi':1, 'telefon':1, 'email':1, 'calisma_durumu':1, 'aylik_net_gelir':1, 'calisma_sekli':1, 'kredi_miktar':1, 'kredi_vadesi':1, 'il_secimi':1}).sort("_id", -1).skip(start_index).limit(per_page))
+
 
     # Pagination metadatasını oluştur
     metadata = {
@@ -140,6 +141,25 @@ def get_customers():
     customer_json = json_util.dumps({'metadata': metadata, 'customers': customer_list})
     
     return render_template('customer.html', data=customer_list , metadata=metadata)
+
+@app.route('/add_customer_selection', methods=['POST'])
+def add_customer_selection():
+    db = client.otovitrin
+    selected_customers = db.selected_customers
+
+    # İstekten gelen JSON verilerini al
+    data = request.get_json()
+    customer_id = data['customer_id']
+    selection_date = datetime.now()
+
+    # Seçilen müşteriyi selected_customers koleksiyonuna ekle
+    result = selected_customers.insert_one({
+        'customer_id': customer_id,
+        'selection_date': selection_date
+    })
+
+    return jsonify(str(result.inserted_id))
+
 
 if __name__ == '__main__':
     app.run(debug=True)
