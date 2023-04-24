@@ -7,8 +7,14 @@ from pymongo import DESCENDING
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 
+from flask import redirect, url_for
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+
 import json
 
+
+# ENV degisken ekle
 uri = "mongodb+srv://user:6UUq1D9BDh7J38y4@clusterkredi.ryzdktr.mongodb.net/?retryWrites=true&w=majority"
 
 # Create a new client and connect to the server
@@ -21,15 +27,26 @@ try:
 except Exception as e:
     print(e)
 
+db = client.otovitrin
+customers = db.musteriler
+users_collection = db['users']
+selected_customers = db.selected_customers
 
+
+# ENV degisken ekle
 app = Flask(__name__)
+app.secret_key = "super_secret_key"
 
+
+# Ana Sayfa (Gizli)
 @app.route('/')
-def anasayfa():
+@login_required
+def index():
     # index.html adlı template'i döndür
-    return render_template('index.html')
+    return render_template('index.html', current_user=current_user.id)
 
 @app.route('/form', methods=['POST'])
+@login_required
 def form():
     # Formdan gönderilen verileri al
     tc = request.form['tc']
@@ -78,10 +95,8 @@ def form():
         'timestamp': datetime.now()
     }
 
-    db = client.otovitrin
-    musteri_collection = db.musteriler
 
-    result = musteri_collection.insert_one(data)
+    result = customers.insert_one(data)
 
     document_id = result.inserted_id
     print(f"_id of inserted document {document_id}")
@@ -107,13 +122,14 @@ def form():
     #     f.write(f"İl: {il_secimi}\n")
 
     # Başarılı bir şekilde kaydedildi sayfasını göster
-    return render_template('kaydedildi.html', tc=tc)
+    return render_template('kaydedildi.html', tc=tc, current_user=current_user.id)
 
 
 # GET isteği ile müşterileri pagination ile getirme
 @app.route('/customers', methods=['GET'])
+@login_required
 def get_customers():
-    db = client.otovitrin
+    
     customers = db.musteriler
 
     # Sayfa numarasını al
@@ -140,14 +156,18 @@ def get_customers():
         'total_pages': int(total_customers / per_page) + 1
     }
 
+    # Son seçilen müşterinin bilgilerini al
+    latest_customer = selected_customers.find().sort([('selection_date', DESCENDING)]).limit(1)
+    lstest_customer_id = latest_customer[0]['customer_id']
+
     # JSON'a dönüştür ve döndür
     customer_json = json_util.dumps({'metadata': metadata, 'customers': customer_list})
     
-    return render_template('customer.html', data=customer_list , metadata=metadata)
+    return render_template('customer.html', data=customer_list , metadata=metadata, lstest_customer_id=lstest_customer_id)
 
 @app.route('/add_customer_selection', methods=['POST'])
 def add_customer_selection():
-    db = client.otovitrin
+    
     selected_customers = db.selected_customers
 
     # İstekten gelen JSON verilerini al
@@ -166,9 +186,7 @@ def add_customer_selection():
 
 @app.route('/secili_musteri', methods=['GET'])
 def last_selected_customer():
-    db = client.otovitrin
-    selected_customers = db.selected_customers
-
+    
     # Son seçilen müşterinin bilgilerini al
     latest_customer = selected_customers.find().sort([('selection_date', DESCENDING)]).limit(1)
     customer_id = latest_customer[0]['customer_id']
@@ -199,6 +217,94 @@ def last_selected_customer():
     json_response = json.dumps(response, ensure_ascii=False)
 
     return json_response, 200
+
+
+###### LOGIN BAS ##############
+
+# Flask-Login'in başlatılması
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
+
+
+# Kullanıcı model sınıfının oluşturulması
+class User(UserMixin):
+    def __init__(self, username, password):
+        self.id = username
+        self.password = password
+
+    def __repr__(self):
+        return f'<User {self.id}>'
+
+
+# Kullanıcıları veritabanından getirme
+@login_manager.user_loader
+def load_user(user_id):
+    user = users_collection.find_one({'username': user_id})
+    if not user:
+        return None
+    return User(user['username'], user['password'])
+
+
+# Kayıt Olma İşlevi
+@app.route('/signup', methods=['GET', 'POST'])
+@login_required
+def signup():
+    if request.method == 'POST':
+        # Form verilerini alın
+        username = request.form['username']
+        password = request.form['password']
+
+        # Kullanıcının mevcut olup olmadığını kontrol edin
+        existing_user = users_collection.find_one({'username': username})
+        if existing_user:
+            return 'Bu kullanıcı adı zaten kullanılıyor. Lütfen farklı bir kullanıcı adı seçin.'
+
+        # Şifreyi hashleyin, kullanıcıyı veritabanına kaydedin ve otomatik olarak giriş yapın
+        hashed_password = generate_password_hash(password)
+        users_collection.insert_one({'username': username, 'password': hashed_password})
+        user = User(username, hashed_password)
+        #login_user(user)
+        return render_template('kaydedildi.html', username=username)
+
+    # GET isteklerinde kayıt sayfasını göster
+    return render_template('signup.html')
+
+
+# Giriş İşlevi
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        # Form verilerini alın
+        username = request.form['username']
+        password = request.form['password']
+
+        # Kullanıcıyı veritabanından alın
+        user = users_collection.find_one({'username': username})
+
+        if user and check_password_hash(user['password'], password):
+            user_obj = User(username, user['password'])
+            login_user(user_obj)
+            return redirect(url_for('index'))
+
+        # Geçersiz kimlik bilgileri durumunda buraya yönlendir
+        return render_template('login.html', error='Kullanıcı adı veya şifre hatalı.')
+
+    # GET isteklerinde login sayfasını göster
+    return render_template('login.html')
+
+
+# Çıkış İşlevi
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
+
+
+
+#######LOGIN SON ###########
+
 
 if __name__ == '__main__':
     app.run(debug=True)
