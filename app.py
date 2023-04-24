@@ -208,16 +208,20 @@ def last_selected_customer():
     
     # JSON formatında HTTP yanıtı oluştur
     response = {
-        'customer_id': str(customer['_id']),
         'tc': customer['tc'],
         'ad_soyad': customer['ad_soyad'],
         'dogum_tarihi': customer['dogum_tarihi'],
         'telefon': customer['telefon'],
+        'email': customer['email'],
+        'aylik_net_gelir': customer['aylik_net_gelir'],
+        'calisma_sekli': customer['calisma_sekli'],
         'kredi_miktar': customer['kredi_miktar'],
         'kredi_vadesi': customer['kredi_vadesi'],
-        'il_secimi': customer['il_secimi'],
-        'aylik_net_gelir': customer['aylik_net_gelir'],
-        'calisma_sekli': customer['calisma_sekli']
+        'arac': {
+        'model_yili': customer['arac']['model_yili'],
+        'marka_adi': customer['arac']['marka_adi'],
+        'tip_adi': customer['arac']['tip_adi'],
+        'kasko_bedeli': customer['arac']['kasko_bedeli']}
     }
 
     json_response = json.dumps(response, ensure_ascii=False)
