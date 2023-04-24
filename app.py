@@ -306,5 +306,69 @@ def logout():
 #######LOGIN SON ###########
 
 
+####### ARAC SECIMI BASLANGIC  ####
+
+mydb = client["arabalar"]
+modellerDb = mydb["modeller"]
+
+# Model Yılı Seçenekleri endpoint'i
+@app.route('/model_yili_secenekleri', methods=['GET'])
+def model_yili_secenekleri():
+    # Veritabanından tüm model yıllarını çek
+    model_yillari = modellerDb.distinct('Model yılı')
+
+    # JSON formatında model yıllarını döndür
+    return jsonify(model_yillari)
+
+@app.route('/markalar', methods=['GET'])
+def markalar():
+    # İstemciden model yılını al
+    model_yili = request.args.get('model_yili')
+
+    # Veritabanından model yılına ait markai çek
+    markalar = modellerDb.distinct('Marka', {'Model yılı': model_yili})
+
+    # JSON formatında modelleri döndür
+    return jsonify(markalar)
+
+@app.route('/modeller', methods=['GET'])
+def modeller():
+    # İstemciden model yılını al
+    marka = request.args.get('marka_adi')
+    model_yili = request.args.get('model_yili')
+    
+    # print (marka, model_yili)
+
+    # Veritabanından model yılına ait araci çek
+    modeller = modellerDb.distinct('Model', {'Model yılı': model_yili, 'Marka': marka})
+    
+    # JSON formatında modelleri döndür
+    return jsonify(modeller)
+
+@app.route('/fiyat', methods=['GET'])
+def fiyat():
+    # İstemciden model yılını al
+    marka = request.args.get('marka_adi')
+    model_yili = request.args.get('model_yili')
+    tip_adi = request.args.get('tip_adi')
+
+    if (tip_adi == '----'):
+        return 
+    
+    # print (marka, model_yili, tip_adi)
+    # Veritabanından model yılına ait araci çek
+    arac_kasko_bedel = modellerDb.find_one({'Model yılı': model_yili, 'Marka': marka, 'Model':tip_adi})
+    if arac_kasko_bedel is not None:
+        # print(arac_kasko_bedel['Kasko Bedeli'])
+        return arac_kasko_bedel['Kasko Bedeli']
+    else:
+        print("arac_kasko_bedel is None")
+    
+    
+
+####### ARAC SECIMI SON  ########
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)

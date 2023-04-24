@@ -159,7 +159,114 @@
       <label for="kredi_vadesi">Kredi Vadesi (Ay):</label>
       <input type="text" id="ay_sayisi" name="kredi_vadesi" /><br /><br />
 
+      
+        <select id="model_yili" name="model_yili" class="arac_sec">
+          <option value="----">----</option>
+          <!-- Model Yılı Seçenekleri -->
+        </select>
+        <select id="marka_adi" name="marka_adi" class="arac_sec">
+          <option value="----">----</option>
+          <!-- Marka Adı Seçenekleri -->
+        </select>
+        <select id="tip_adi" name="tip_adi" class="arac_sec">
+          <option value="----">----</option>
+          <!-- Tip Adı Seçenekleri -->
+        </select>
+      
+      <div id="fiyat"></div>
+      
+
       <input type="submit" value="Başvuruyu Tamamla" />
     </form>
+
+    <script>
+      $(document).ready(function() {
+        // Sayfa yüklendiğinde ilk verileri yükle
+        updateData();
+
+        // Dropdownlardan herhangi biri değiştiğinde verileri güncelle
+        $('.arac_sec').change(function() {
+          updateData();
+        });
+
+        $('#model_yili').change(function() {
+          // Marka Seçeneklerini Yükle
+          $("#marka_adi").empty();
+          $("#tip_adi").empty();
+          
+          var model_yili = $('#model_yili').val();
+            $.ajax({
+            url: '/markalar',
+            method: 'GET',
+            data: {
+              'model_yili': model_yili,
+            },
+            success: function(response) {
+
+              var select = $('#marka_adi');
+              select.append('<option value="----">----</option>');
+            $.each(response, function(index, value) {
+              select.append('<option value="' + value + '">' + value + '</option>');
+            });
+
+            }
+          });
+        });
+
+        $('#marka_adi').change(function() {
+          // Marka Seçeneklerini Yükle
+          $("#tip_adi").empty();
+          
+            var model_yili = $('#model_yili').val();
+            var marka_adi = $('#marka_adi').val();
+            $.ajax({
+            url: '/modeller',
+            method: 'GET',
+            data: {
+              'model_yili': model_yili,
+            'marka_adi': marka_adi,
+            },
+            success: function(response) {
+
+              var select = $('#tip_adi');
+              select.append('<option value="----">----</option>');
+            $.each(response, function(index, value) {
+              select.append('<option value="' + value + '">' + value + '</option>');
+            });
+
+            }
+          });
+        });
+
+      });
+
+      // Model Yılı Seçeneklerini Yükle
+      $.get('/model_yili_secenekleri', function(response) {
+        var select = $('#model_yili');
+        $.each(response, function(index, value) {
+          select.append('<option value="' + value + '">' + value + '</option>');
+        });
+      });
+
+      function updateData() {
+        $("#fiyat").empty();
+        var model_yili = $('#model_yili').val();
+        var marka_adi = $('#marka_adi').val();
+        var tip_adi = $('#tip_adi').val();
+
+        $.ajax({
+          url: '/fiyat',
+          method: 'GET',
+          data: {
+            'model_yili': model_yili,
+            'marka_adi': marka_adi,
+            'tip_adi': tip_adi
+          },
+          success: function(response) {
+            $('#fiyat').text('Fiyat: ' + response);
+          }
+        });
+      }
+    </script>
 
     {% endblock %}
