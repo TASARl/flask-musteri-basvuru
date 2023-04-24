@@ -1,15 +1,5 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Başarılı Bir Şekilde Kaydedildi</title>
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{{ url_for('static', filename='style.css') }}"
-    />
-  </head>
-  <body>
+{% extends "base.html" %} {% block title %}Kaydedildi{% endblock %} {% block
+  content %}
     <h1>Başarılı Bir Şekilde Kaydedildi!</h1>
 
     {% if tc %}
@@ -24,5 +14,6 @@
       <strong>{{ username }}</strong> isimli kullanici yaratildi
     </p>
     {% endif %}
-  </body>
-</html>
+
+
+{% endblock %}

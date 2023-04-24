@@ -29,13 +29,7 @@
       <label for="email">E-posta:</label>
       <input type="text" id="email" name="email" /><br /><br />
 
-      <label for="calisma_durumu">Çalışma Durumu:</label>
-      <select id="calisma_durumu" name="calisma_durumu">
-        <option value="işçi">İşçi</option>
-        <option value="memur">Memur</option>
-        <option value="emekli">Emekli</option>
-        <option value="öğrenci">Öğrenci</option></select
-      ><br /><br />
+      
 
       <label for="aylik_net_gelir">Aylık Net Gelir:</label>
       <select id="aylik_net_gelir" name="aylik_net_gelir">
@@ -127,7 +121,7 @@
   <option value="MALATYA">MALATYA</option>
   <option value="MANİSA">MANİSA</option>
   <option value="KAHRAMANMARAŞ">KAHRAMANMARAŞ</option>
-  <option value="MARDİN> MARDİN</option>
+  <option value="MARDİN"> MARDİN</option>
   <option value="MUĞLA">MUĞLA</option>
   <option value="MUŞ">MUŞ</option>
   <option value="NEVŞEHİR">NEVŞEHİR</option>
@@ -263,7 +257,7 @@
             'tip_adi': tip_adi
           },
           success: function(response) {
-            $('#fiyat').text('Fiyat: ' + response);
+            $('#fiyat').html('<input id="kasko_bedeli" name="kasko_bedeli" type="text" value="' + response + '" readonly>');
           }
         });
       }

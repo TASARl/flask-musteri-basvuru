@@ -54,12 +54,15 @@ def form():
     dogum_tarihi = request.form['dogum_tarihi']
     telefon = request.form['telefon']
     email = request.form['email']
-    calisma_durumu = request.form['calisma_durumu']
     aylik_net_gelir = request.form['aylik_net_gelir']
     kredi_miktar = request.form['kredi_miktar']
     kredi_vadesi = request.form['kredi_vadesi']
     calisma_sekli = request.form['calisma_sekli']
     il_secimi = request.form['il_secimi']
+    model_yili = request.form['model_yili']
+    marka_adi = request.form['marka_adi']
+    tip_adi = request.form['tip_adi']
+    kasko_bedeli = request.form['kasko_bedeli']
 
     # tc = request.form.get('tc', 'boş')
     # ad_soyad = request.form.get('ad_soyad', 'boş')
@@ -86,12 +89,15 @@ def form():
         'dogum_tarihi': dogum_tarihi_formatted,
         'telefon': telefon,
         'email': email,
-        'calisma_durumu': calisma_durumu,
         'aylik_net_gelir': aylik_net_gelir,
         'calisma_sekli': calisma_sekli,
         'kredi_miktar': kredi_miktar,
         'kredi_vadesi': kredi_vadesi,
         'il_secimi': il_secimi,
+        'arac':{'model_yili': model_yili,
+        'marka_adi' : marka_adi,
+        'tip_adi' : tip_adi,
+        'kasko_bedeli': kasko_bedeli},
         'timestamp': datetime.now()
     }
 
