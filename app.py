@@ -3,6 +3,7 @@ from bson import json_util
 from bson.objectid import ObjectId
 from datetime import datetime
 
+import pymongo
 from pymongo import DESCENDING
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
@@ -333,11 +334,11 @@ def model_yili_secenekleri():
 @app.route('/markalar', methods=['GET'])
 def markalar():
     # İstemciden model yılını al
-    model_yili = request.args.get('model_yili')
+    model_yili = int(request.args.get('model_yili'))
 
     # Veritabanından model yılına ait markai çek
     markalar = modellerDb.distinct('Marka', {'Model yılı': model_yili})
-
+    
     # JSON formatında modelleri döndür
     return jsonify(markalar)
 
@@ -345,7 +346,7 @@ def markalar():
 def modeller():
     # İstemciden model yılını al
     marka = request.args.get('marka_adi')
-    model_yili = request.args.get('model_yili')
+    model_yili = int(request.args.get('model_yili'))
     
     # print (marka, model_yili)
 
@@ -359,7 +360,7 @@ def modeller():
 def fiyat():
     # İstemciden model yılını al
     marka = request.args.get('marka_adi')
-    model_yili = request.args.get('model_yili')
+    model_yili = int(request.args.get('model_yili'))
     tip_adi = request.args.get('tip_adi')
 
     if (tip_adi == '----'):
