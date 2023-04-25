@@ -14,11 +14,11 @@
     <div class="header">
       <img src="logo.png" alt="Logo" class="logo" />
       <h1>Müşteri Yönetim Sistemi</h1>
-      <a href="{{ url_for('get_customers') }}" class="active">Muşteriler</a>
-      <a href="{{ url_for('index') }}">Yeni Kayıt Ekle</a>
-      <a href="{{ url_for('last_selected_customer') }}">Seçili Kayıt</a>
-      <a href="{{ url_for('signup') }}">Üye Ekle</a>
-      <a href="{{ url_for('logout') }}">Çıkış Yap</a>
+      <a href="{{ url_for('get_customers') }}" {% if request.path == '/customers' %}class="active"{% endif %} >Muşteriler</a>
+      <a href="{{ url_for('index') }}" {% if request.path == '/' %}class="active"{% endif %} >Müşteri Ekle</a>   
+      <a href="{{ url_for('last_selected_customer') }}" {% if request.path == '/home/' %}class="active"{% endif %} >Seçili Kayıt</a>
+      <a href="{{ url_for('signup') }}" {% if request.path == '/signup' %}class="active"{% endif %} >Kullanıcı Ekle</a>
+      <a href="{{ url_for('logout') }}" {% if request.path == '/home/' %}class="active"{% endif %} >Çıkış Yap</a>
     </div>
     {% block content %} {% endblock %} {% block scripts %} {% endblock %}
   </body>

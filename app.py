@@ -62,7 +62,7 @@ def form():
     model_yili = request.form['model_yili']
     marka_adi = request.form['marka_adi']
     tip_adi = request.form['tip_adi']
-    kasko_bedeli = request.form['kasko_bedeli']
+    kasko_bedeli = request.form.get('kasko_bedeli', 0)
 
     # tc = request.form.get('tc', 'boş')
     # ad_soyad = request.form.get('ad_soyad', 'boş')
