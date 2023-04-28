@@ -382,7 +382,38 @@ def fiyat():
     if arac_kasko_bedel is not None:
         # print(arac_kasko_bedel['Kasko Bedeli'])
         return {'kaskobedeli':arac_kasko_bedel['Kasko Bedeli'], 
-                'kaskokodu':arac_kasko_bedel['Kasko Kodu']}
+                'kaskokodu':arac_kasko_bedel['Kasko Kodu'],
+                'modelyili':arac_kasko_bedel['Model yılı'], 
+                'marka':arac_kasko_bedel['Marka'], 
+                'model':arac_kasko_bedel['Model'],}
+    else:
+        print("arac_kasko_bedel is None")
+
+# kasko kodu ve model yılı ıle arac sorgula
+@app.route('/fiyat2', methods=['GET'])
+def fiyat2():
+    # İstemciden model yılını al
+    kasko_kodu = request.args.get('kasko_kodu')
+    model_yili = int(request.args.get('model_yili'))
+
+    if model_yili is None:
+        return
+
+    
+    # print (marka, model_yili, tip_adi)
+    # Veritabanından model yılına ait araci çek
+    arac_kasko_bedel = modellerDb.find_one({
+                                    "Model yılı": model_yili,
+                                    "Kasko Kodu": kasko_kodu
+                                    })
+    if arac_kasko_bedel is not None:
+        print("calisti")
+        # print(arac_kasko_bedel['Kasko Bedeli'])
+        return {'kaskobedeli':arac_kasko_bedel['Kasko Bedeli'], 
+                'modelyili':arac_kasko_bedel['Model yılı'], 
+                'marka':arac_kasko_bedel['Marka'], 
+                'model':arac_kasko_bedel['Model'], 
+                }
     else:
         print("arac_kasko_bedel is None")
     

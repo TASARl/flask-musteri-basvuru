@@ -1,5 +1,6 @@
 "use strict";
 
+// Kredi Başvuru
 // Class definition
 var KTModalCreateProjectSettings = (function () {
   // Variables
@@ -59,7 +60,8 @@ var KTModalCreateProjectSettings = (function () {
         kasko_bedeli: {
           validators: {
             notEmpty: {
-              message: "Yukardaki tüm bilgileri doldurduğunuzdan emin olun",
+              message:
+                "Yukarıdaki eksik bilgileri tamamladığınızda kasko bedeli görünecektir",
             },
           },
         },
@@ -262,6 +264,8 @@ function updateData() {
     success: function (response) {
       $("#kasko_bedeli").val(response.kaskobedeli);
       $("#kaskokodu").val(response.kaskokodu);
+
+      let arac_aciklama = `${response.modelyili} ${response.marka} ${response.model} araç seçimi yaptınız.`;
       let bilgiler =
         "Kasko bedeli 2.000.000 TL üzerindeki araçlara kredi verilmemektedir.";
       if (response.kaskobedeli <= 400000) {
@@ -271,7 +275,7 @@ function updateData() {
             style: "currency",
             currency: "TRY",
           }) +
-          ") ve maksimum 48 ay vade ile kredi çekilebilir.";
+          ") ve maksimum 48 ay vade ile kredi kullanabilirsiniz.";
       }
       if (response.kaskobedeli > 400000 && response.kaskobedeli <= 800000) {
         bilgiler =
@@ -280,7 +284,7 @@ function updateData() {
             style: "currency",
             currency: "TRY",
           }) +
-          ") ve maksimum 36 ay vade ile kredi çekilebilir.";
+          ") ve maksimum 36 ay vade ile kredi kullanabilirsiniz.";
       }
       if (response.kaskobedeli > 800000 && response.kaskobedeli <= 1200000) {
         bilgiler =
@@ -289,7 +293,7 @@ function updateData() {
             style: "currency",
             currency: "TRY",
           }) +
-          ") ve maksimum 24 ay vade ile kredi çekilebilir.";
+          ") ve maksimum 24 ay vade ile kredi kullanabilirsiniz.";
       }
       if (response.kaskobedeli > 1200000 && response.kaskobedeli <= 2000000) {
         bilgiler =
@@ -298,10 +302,10 @@ function updateData() {
             style: "currency",
             currency: "TRY",
           }) +
-          ") ve maksimum 12 ay vade ile kredi çekilebilir.";
+          ") ve maksimum 12 ay vade ile kredi kullanabilirsiniz.";
       }
 
-      $("#kaskobilgi").text(bilgiler);
+      $("#kaskobilgi").text(arac_aciklama + bilgiler);
     },
   });
 }
@@ -331,16 +335,87 @@ function aracSecimiYapildi(e) {
     const markaModelDiv = document.querySelector(".markaModelDiv");
     markaModelDiv.style.display = "block";
 
-    // Model yılı ve kasko kodu div'i gizlenecek
-    const modelKaskoDiv = document.querySelector(".modelKaskoDiv");
-    modelKaskoDiv.style.display = "none";
+    // Kasko koduna disabled ozelligi ekle
+    const modelKasko = document.querySelector("#kaskokodu");
+    modelKasko.disabled = true;
   } else if (secilenSecenek === "2") {
-    // Model yılı ve kasko kodu div'i görüntülenecek
-    const modelKaskoDiv = document.querySelector(".modelKaskoDiv");
-    modelKaskoDiv.style.display = "block";
-
-    // Marka ve model div'i gizlenecek
+    // Marka ve model div'i görüntülenecek
     const markaModelDiv = document.querySelector(".markaModelDiv");
     markaModelDiv.style.display = "none";
+
+    // Kasko koduna disabled ozelligi kaldir
+    const modelKasko = document.querySelector("#kaskokodu");
+    modelKasko.disabled = false;
   }
 }
+
+/////////////////////////
+// Kasko kodu degistiginde ajax sorgu yap ve ozet bilgi degistir
+$(document).ready(function () {
+  $("#kaskokodu").on("input", function () {
+    // kasko degeri ve ozet bilgiyi temizle
+    $("#kasko_bedeli").val("");
+    $("#kaskobilgi").empty();
+
+    var kasko_kodu = $(this).val();
+    var model_yili = $("#model_yili").val();
+    $.ajax({
+      url: "/fiyat2", // buradaki URL'yi API URL'inizle değiştirin
+      type: "GET",
+      data: {
+        model_yili: model_yili,
+        kasko_kodu: kasko_kodu,
+      },
+      success: function (response) {
+        $("#kasko_bedeli").val(response.kaskobedeli);
+
+        let arac_aciklama = `${response.modelyili} ${response.marka} ${response.model} araç seçimi yaptınız.`;
+
+        let bilgiler =
+          "Kasko bedeli 2.000.000 TL üzerindeki araçlara kredi verilmemektedir.";
+        if (response.kaskobedeli <= 400000) {
+          bilgiler =
+            "Seçili aracın kasko bedeli 0-400.000 TL aralığında olduğu için kasko tutarınin %70’ine kadar (" +
+            parseFloat(response.kaskobedeli * 0.7).toLocaleString("tr-TR", {
+              style: "currency",
+              currency: "TRY",
+            }) +
+            ") ve maksimum 48 ay vade ile kredi kullanabilirsiniz.";
+        }
+        if (response.kaskobedeli > 400000 && response.kaskobedeli <= 800000) {
+          bilgiler =
+            "Seçili aracın kasko bedeli 400.000,01-800.000 TL aralığında olduğu için kasko tutarınin %50’sine kadar (" +
+            parseFloat(response.kaskobedeli * 0.5).toLocaleString("tr-TR", {
+              style: "currency",
+              currency: "TRY",
+            }) +
+            ") ve maksimum 36 ay vade ile kredi kullanabilirsiniz.";
+        }
+        if (response.kaskobedeli > 800000 && response.kaskobedeli <= 1200000) {
+          bilgiler =
+            "Seçili aracın kasko bedeli 800.000,01-1.200.000 TL aralığında olduğu için kasko tutarınin %30’una kadar (" +
+            parseFloat(response.kaskobedeli * 0.3).toLocaleString("tr-TR", {
+              style: "currency",
+              currency: "TRY",
+            }) +
+            ") ve maksimum 24 ay vade ile kredi kullanabilirsiniz.";
+        }
+        if (response.kaskobedeli > 1200000 && response.kaskobedeli <= 2000000) {
+          bilgiler =
+            "Seçili aracın kasko bedeli 1.200.000,01-2.000.000 TL aralığında olduğu için kasko tutarınin %20’sine kadar (" +
+            parseFloat(response.kaskobedeli * 0.2).toLocaleString("tr-TR", {
+              style: "currency",
+              currency: "TRY",
+            }) +
+            ") ve maksimum 12 ay vade ile kredi kullanabilirsiniz.";
+        }
+
+        $("#kaskobilgi").text(arac_aciklama + bilgiler);
+      },
+      error: function (xhr) {
+        // hata durumunda burası çalışır
+        // console.log(xhr.responseText);
+      },
+    });
+  });
+});
