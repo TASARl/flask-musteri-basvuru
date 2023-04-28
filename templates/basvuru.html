@@ -1,0 +1,324 @@
+{% extends "base.html" %}
+
+{% block title %}Ana Sayfa{% endblock %}
+
+{% block content %}
+    <p>Hoş Geldiniz <strong>{{current_user}}</strong></p>
+    
+
+    <form action="{{ url_for('logout') }}" >
+        <button type="submit">Çıkış Yap</button>
+    </form>
+
+
+
+    <h1>Kredi Başvuru Formu</h1>
+    <form action="{{ url_for('form') }}" method="POST">
+
+      <div class="fv-row mb-15" data-kt-buttons="true">
+        <!--begin::Option-->
+        <label class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex text-start p-6 mb-6 active">
+          <!--begin::Input-->
+          <input class="btn-check" type="radio" checked="checked" name="basvuruTuru" value="Bireysel" />
+          <!--end::Input-->
+          <!--begin::Label-->
+          <span class="d-flex">
+            <!--begin::Icon-->
+            <i class="ki-duotone ki-profile-circle fs-3hx">
+              <span class="path1"></span>
+              <span class="path2"></span>
+              <span class="path3"></span>
+            </i>
+            <!--end::Icon-->
+            <!--begin::Info-->
+            <span class="ms-4">
+              <span class="fs-3 fw-bold text-gray-900 mb-2 d-block">Bireysel</span>
+              <span class="fw-semibold fs-4 text-muted">If you need more info, please check it out</span>
+            </span>
+            <!--end::Info-->
+          </span>
+          <!--end::Label-->
+        </label>
+        <!--end::Option-->
+        <!--begin::Option-->
+        <label class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex text-start p-6">
+          <!--begin::Input-->
+          <input class="btn-check" type="radio" name="basvuruTuru" value="Tüzel" />
+          <!--end::Input-->
+          <!--begin::Label-->
+          <span class="d-flex">
+            <!--begin::Icon-->
+            <i class="ki-duotone ki-rocket fs-3hx">
+              <span class="path1"></span>
+              <span class="path2"></span>
+            </i>
+            <!--end::Icon-->
+            <!--begin::Info-->
+            <span class="ms-4">
+              <span class="fs-3 fw-bold text-gray-900 mb-2 d-block">Tüzel</span>
+              <span class="fw-semibold fs-4 text-muted">Create corporate account to manage users</span>
+            </span>
+            <!--end::Info-->
+          </span>
+          <!--end::Label-->
+        </label>
+        <!--end::Option-->
+      </div>
+
+
+
+      <label for="tc">TC Kimlik Numarası:</label>
+      <input type="text" id="tc" name="tc" /><br /><br />
+
+      <label for="ad_soyad">Ad Soyad:</label>
+      <input type="text" id="ad_soyad" name="ad_soyad" /><br /><br />
+
+      <label for="dogum_tarihi">Doğum Tarihi:</label>
+      <input type="date" id="dogum_tarihi" name="dogum_tarihi" /><br /><br />
+
+      <label for="telefon">Telefon:</label>
+      <input type="text" id="telefon" name="telefon" /><br /><br />
+
+      <label for="email">E-posta:</label>
+      <input type="text" id="email" name="email" /><br /><br />
+
+      
+
+      <label for="aylik_net_gelir">Aylık Net Gelir:</label>
+      <select id="aylik_net_gelir" name="aylik_net_gelir">
+        <option value="1.500 TL'den az">1.500 TL'den az</option>
+        <option value="1.500-3.000 Tl">1.500-3.000 Tl</option>
+        <option value="3.001-4.000 TL">3.001-4.000 TL</option>
+        <option value="4.001-4.500 TL">4.001-4.500 TL</option>
+        <option value="4.501-5.000 TL">4.501-5.000 TL</option>
+        <option value="5.001-5.500 TL">5.001-5.500 TL</option>
+        <option value="5.501-6.000 TL">5.501-6.000 TL</option>
+        <option value="6.001-6.500 TL">6.001-6.500 TL</option>
+        <option value="6.501-7.000 TL">6.501-7.000 TL</option>
+        <option value="7.001-7.500 TL">7.001-7.500 TL</option>
+        <option value="7.501-10.000 TL">7.501-10.000 TL</option>
+        <option value="10.001-15.000 TL">10.001-15.000 TL</option>
+        <option value="15.001-20.000 TL">15.001-20.000 TL</option>
+        <option value="20.001-25.000 TL">20.001-25.000 TL</option>
+        <option value="25.001-30.000 TL">25.001-30.000 TL</option>
+        <option value="30.001-40.000 TL">30.001-40.000 TL</option>
+        <option value="40.001-50.000 TL">40.001-50.000 TL</option>
+        <option value="50.001 TL'den fazla">50.001 TL'den fazla</option>
+      </select>
+      <br /><br />
+
+      <label for="calisma_sekli">Çalışma Şekli:</label>
+      <select id="calisma_sekli" name="calisma_sekli">
+        <option value="Özel Sektörde Çalışan">Özel Sektörde Çalışan</option>
+        <option value="Kamuda Çalışan">Kamuda Çalışan</option>
+        <option value="Şirket Ortağı">Şirket Ortağı</option>
+        <option value="Kendi İşinin Sahibi">Kendi İşinin Sahibi</option>
+        <option value="Emekli (çalışmıyor)">Emekli (çalışmıyor)</option>
+        <option value="Emekli (çalışmaya devam ediyor)">
+          Emekli (çalışmaya devam ediyor)
+        </option>
+        <option value="Ev Hanımı">Ev Hanımı</option>
+        <option value="Öğrenci">Öğrenci</option>
+        <option value="Çalışmıyor">Çalışmıyor</option></select
+      ><br /><br />
+
+      <label for="il_secimi">İl Seçimi:</label>
+<select id="il_secimi" name="il_secimi">
+  <option value="ADANA">ADANA</option>
+  <option value="ADIYAMAN">ADİYAMAN</option>
+  <option value="AFYONKARAHİSAR">AFYONKARAHİSAR</option>
+  <option value="AĞRI">AĞRI</option>
+  <option value="AMASYA">AMASYA</option>
+  <option value="ANKARA">ANKARA</option>
+  <option value="ANTALYA">ANTALYA</option>
+  <option value="ARTVİN">ARTVİN</option>
+  <option value="AYDIN">AYDIN</option>
+  <option value="BALIKESİR">BALIKESİR</option>
+  <option value="BİLECİK">BİLECİK</option>
+  <option value="BİNGÖL">BİNGÖL</option>
+  <option value="BİTLİS">BİTLİS</option>
+  <option value="BOLU">BOLU</option>
+  <option value="BURDUR">BURDUR</option>
+  <option value="BURSA">BURSA</option>
+  <option value="ÇANAKKALE">ÇANAKKALE</option>
+  <option value="ÇANKIRI">ÇANKIRI</option>
+  <option value="ÇORUM">ÇORUM</option>
+  <option value="DENİZLİ">DENİZLİ</option>
+  <option value="DİYARBAKIR">DİYARBAKIR</option>
+  <option value="EDİRNE">EDİRNE</option>
+  <option value="ELAZIĞ">ELAZIĞ</option>
+  <option value="ERZİNCAN">ERZİNCAN</option>
+  <option value="ERZURUM">ERZURUM</option>
+  <option value="ESKİŞEHİR">ESKİŞEHİR</option>
+  <option value="GAZİANTEP">GAZİANTEP</option>
+  <option value="GİRESUN">GİRESUN</option>
+  <option value="GÜMÜŞHANE">GÜMÜŞHANE</option>
+  <option value="HAKKARİ">HAKKARİ</option>
+  <option value="HATAY">HATAY</option>
+  <option value="ISPARTA">ISPARTA</option>
+  <option value="MERSİN">MERSİN</option>
+  <option value="İSTANBUL">İSTANBUL</option>
+  <option value="İZMİR">İZMİR</option>
+  <option value="KAHRAMANMARAŞ">KAHRAMANMARAŞ</option>
+  <option value="KARABÜK">KARABÜK</option>
+  <option value="KARAMAN">KARAMAN</option>
+  <option value="KARS">KARS</option>
+  <option value="KASTAMONU">KASTAMONU</option>
+  <option value="KAYSERİ">KAYSERİ</option>
+  <option value="KIRIKKALE">KIRIKKALE</option>
+  <option value="KIRKLARELİ">KIRKLARELİ</option>
+  <option value="KIRŞEHİR">KIRŞEHİR</option>
+  <option value="KOCAELİ">KOCAELİ</option>
+  <option value="KONYA">KONYA</option>
+  <option value="KÜTAHYA">KÜTAHYA</option>
+  <option value="MALATYA">MALATYA</option>
+  <option value="MANİSA">MANİSA</option>
+  <option value="KAHRAMANMARAŞ">KAHRAMANMARAŞ</option>
+  <option value="MARDİN"> MARDİN</option>
+  <option value="MUĞLA">MUĞLA</option>
+  <option value="MUŞ">MUŞ</option>
+  <option value="NEVŞEHİR">NEVŞEHİR</option>
+  <option value="NİĞDE">NİĞDE</option>
+  <option value="ORDU">ORDU</option>
+  <option value="OSMANİYE">OSMANİYE</option>
+  <option value="RİZE">RİZE</option>
+  <option value="SAKARYA">SAKARYA</option>
+  <option value="SAMSUN">SAMSUN</option>
+  <option value="SİİRT">SİİRT</option>
+  <option value="SİNOP">SİNOP</option>
+  <option value="SİVAS">SİVAS</option>
+  <option value="TEKİRDAĞ">TEKİRDAĞ</option>
+  <option value="TOKAT">TOKAT</option>
+  <option value="TRABZON">TRABZON</option>
+  <option value="TUNCELİ">TUNCELİ</option>
+  <option value="ŞANLIURFA">ŞANLIURFA</option>
+  <option value="UŞAK">UŞAK</option>
+  <option value="VAN">VAN</option>
+  <option value="YALOVA">YALOVA</option>
+  <option value="YOZGAT">YOZGAT</option>
+  <option value="ZONGULDAK">ZONGULDAK</option>
+  </select>
+  <br /><br />
+  
+      <label for="kredi_miktar">Kredi Talep Edilen Miktar:</label>
+      <input type="text" id="kredi_miktar" name="kredi_miktar" /><br /><br />
+
+      <label for="kredi_vadesi">Kredi Vadesi (Ay):</label>
+      <input type="text" id="ay_sayisi" name="kredi_vadesi" /><br /><br />
+
+      <label for="model_yili">Araç Model Yılı:</label>
+        <select id="model_yili" name="model_yili" class="arac_sec">
+          <option value="----">----</option>
+          <!-- Model Yılı Seçenekleri -->
+        </select>
+        <br />
+        <label for="marka_adi">Araç Marka Adı:</label>
+        <select id="marka_adi" name="marka_adi" class="arac_sec">
+          <option value="----">----</option>
+          <!-- Marka Adı Seçenekleri -->
+        </select>
+        <br />
+        <label for="tip_adi">Araç Tip Adı:</label>
+        <select id="tip_adi" name="tip_adi" class="arac_sec">
+          <option value="----">----</option>
+          <!-- Tip Adı Seçenekleri -->
+        </select>
+        <br />
+      
+      <div id="fiyat"></div>
+      
+
+      <input type="submit" value="Başvuruyu Tamamla" />
+    </form>
+
+    <script>
+      $(document).ready(function() {
+        // Sayfa yüklendiğinde ilk verileri yükle
+        updateData();
+
+        // Dropdownlardan herhangi biri değiştiğinde verileri güncelle
+        $('.arac_sec').change(function() {
+          updateData();
+        });
+
+        $('#model_yili').change(function() {
+          // Marka Seçeneklerini Yükle
+          $("#marka_adi").empty();
+          $("#tip_adi").empty();
+          
+          var model_yili = $('#model_yili').val();
+            $.ajax({
+            url: '/markalar',
+            method: 'GET',
+            data: {
+              'model_yili': model_yili,
+            },
+            success: function(response) {
+
+              var select = $('#marka_adi');
+              select.append('<option value="----">----</option>');
+            $.each(response, function(index, value) {
+              select.append('<option value="' + value + '">' + value + '</option>');
+            });
+
+            }
+          });
+        });
+
+        $('#marka_adi').change(function() {
+          // Marka Seçeneklerini Yükle
+          $("#tip_adi").empty();
+          
+            var model_yili = $('#model_yili').val();
+            var marka_adi = $('#marka_adi').val();
+            $.ajax({
+            url: '/modeller',
+            method: 'GET',
+            data: {
+              'model_yili': model_yili,
+            'marka_adi': marka_adi,
+            },
+            success: function(response) {
+
+              var select = $('#tip_adi');
+              select.append('<option value="----">----</option>');
+            $.each(response, function(index, value) {
+              select.append('<option value="' + value + '">' + value + '</option>');
+            });
+
+            }
+          });
+        });
+
+      });
+
+      // Model Yılı Seçeneklerini Yükle
+      $.get('/model_yili_secenekleri', function(response) {
+        var select = $('#model_yili');
+        $.each(response, function(index, value) {
+          select.append('<option value="' + value + '">' + value + '</option>');
+        });
+      });
+
+      function updateData() {
+        $("#fiyat").empty();
+        var model_yili = $('#model_yili').val();
+        var marka_adi = $('#marka_adi').val();
+        var tip_adi = $('#tip_adi').val();
+
+        $.ajax({
+          url: '/fiyat',
+          method: 'GET',
+          data: {
+            'model_yili': model_yili,
+            'marka_adi': marka_adi,
+            'tip_adi': tip_adi
+          },
+          success: function(response) {
+            $('#fiyat').html('<label for="kasko_bedeli">Kasko Bedeli:</label><input id="kasko_bedeli" name="kasko_bedeli" type="text" value="' + response.kaskobedeli + '" readonly><br /><label for="kaskokodu">Kasko Kodu:</label><input id="kaskokodu" name="kaskokodu" type="text" value="' + response.kaskokodu + '" readonly>');
+          }
+        });
+      }
+    </script>
+
+    {% endblock %}

@@ -38,18 +38,24 @@ selected_customers = db.selected_customers
 app = Flask(__name__)
 app.secret_key = "super_secret_key"
 
-
-# Ana Sayfa (Gizli)
+# Index sayfasi
 @app.route('/')
-@login_required
 def index():
     # index.html adlı template'i döndür
-    return render_template('index.html', current_user=current_user.id)
+    return render_template('index.html')
+
+# Basvuru Sayfasi
+@app.route('/basvuru')
+@login_required
+def basvuru():
+    # index.html adlı template'i döndür
+    return render_template('basvuru.html', current_user=current_user.id)
 
 @app.route('/form', methods=['POST'])
 @login_required
 def form():
     # Formdan gönderilen verileri al
+    basvuruTuru = request.form.get('basvuruTuru')
     tc = request.form['tc']
     ad_soyad = request.form['ad_soyad']
     dogum_tarihi = request.form['dogum_tarihi']
@@ -64,6 +70,7 @@ def form():
     marka_adi = request.form['marka_adi']
     tip_adi = request.form['tip_adi']
     kasko_bedeli = request.form.get('kasko_bedeli', 0)
+    kaskokodu = request.form.get('kaskokodu', 0)
 
     # tc = request.form.get('tc', 'boş')
     # ad_soyad = request.form.get('ad_soyad', 'boş')
@@ -85,6 +92,7 @@ def form():
         dogum_tarihi_formatted= 0
 
     data = {
+        'basvuruTuru': basvuruTuru,
         'tc': tc,
         'ad_soyad': ad_soyad,
         'dogum_tarihi': dogum_tarihi_formatted,
@@ -98,7 +106,8 @@ def form():
         'arac':{'model_yili': model_yili,
         'marka_adi' : marka_adi,
         'tip_adi' : tip_adi,
-        'kasko_bedeli': kasko_bedeli},
+        'kasko_bedeli': kasko_bedeli,
+        'kaskokodu':kaskokodu},
         'timestamp': datetime.now()
     }
 
@@ -222,7 +231,8 @@ def last_selected_customer():
         'model_yili': customer['arac']['model_yili'],
         'marka_adi': customer['arac']['marka_adi'],
         'tip_adi': customer['arac']['tip_adi'],
-        'kasko_bedeli': customer['arac']['kasko_bedeli']}
+        'kasko_bedeli': customer['arac']['kasko_bedeli'],
+        'kaskokodu': customer['arac']['kaskokodu']}
     }
 
     json_response = json.dumps(response, ensure_ascii=False)
@@ -371,7 +381,8 @@ def fiyat():
     arac_kasko_bedel = modellerDb.find_one({'Model yılı': model_yili, 'Marka': marka, 'Model':tip_adi})
     if arac_kasko_bedel is not None:
         # print(arac_kasko_bedel['Kasko Bedeli'])
-        return arac_kasko_bedel['Kasko Bedeli']
+        return {'kaskobedeli':arac_kasko_bedel['Kasko Bedeli'], 
+                'kaskokodu':arac_kasko_bedel['Kasko Kodu']}
     else:
         print("arac_kasko_bedel is None")
     
