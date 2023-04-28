@@ -11,57 +11,57 @@ var KTModalCreateProjectTargets = (function () {
 
   // Private functions
   var initForm = function () {
-    // Tags. For more info, please visit the official plugin site: https://yaireo.github.io/tagify/
-    var tags = new Tagify(form.querySelector('[name="target_tags"]'), {
-      whitelist: ["Important", "Urgent", "High", "Medium", "Low"],
-      maxTags: 5,
-      dropdown: {
-        maxItems: 10, // <- mixumum allowed rendered suggestions
-        enabled: 0, // <- show suggestions on focus
-        closeOnSelect: false, // <- do not hide the suggestions dropdown once an item has been selected
-      },
-    });
-    tags.on("change", function () {
-      // Revalidate the field when an option is chosen
-      validator.revalidateField("tags");
-    });
+    // // Tags. For more info, please visit the official plugin site: https://yaireo.github.io/tagify/
+    // var tags = new Tagify(form.querySelector('[name="target_tags"]'), {
+    //   whitelist: ["Important", "Urgent", "Highh", "Medium", "Low"],
+    //   maxTags: 5,
+    //   dropdown: {
+    //     maxItems: 10, // <- mixumum allowed rendered suggestions
+    //     enabled: 0, // <- show suggestions on focus
+    //     closeOnSelect: false, // <- do not hide the suggestions dropdown once an item has been selected
+    //   },
+    // });
+    // tags.on("change", function () {
+    //   // Revalidate the field when an option is chosen
+    //   validator.revalidateField("tags");
+    // });
 
     // Due date. For more info, please visit the official plugin site: https://flatpickr.js.org/
-    var dueDate = $(form.querySelector('[name="target_due_date"]'));
+    var dueDate = $(form.querySelector('[name="dogum_tarihi"]'));
     dueDate.flatpickr({
-      enableTime: true,
-      dateFormat: "d, M Y, H:i",
+      enableTime: false,
+      dateFormat: "d.m.Y",
     });
 
     // Expiry year. For more info, plase visit the official plugin site: https://select2.org/
-    $(form.querySelector('[name="target_assign"]')).on("change", function () {
-      // Revalidate the field when an option is chosen
-      validator.revalidateField("target_assign");
-    });
+    // $(form.querySelector('[name="target_assign"]')).on("change", function () {
+    //   // Revalidate the field when an option is chosen
+    //   validator.revalidateField("target_assign");
+    // });
   };
 
   var initValidation = function () {
     // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
     validator = FormValidation.formValidation(form, {
       fields: {
-        target_title: {
+        tc: {
           validators: {
             notEmpty: {
-              message: "Target title is required",
+              message: "TC Kimlik No gereklidir",
             },
           },
         },
-        target_assign: {
+        kimlik_seri: {
           validators: {
             notEmpty: {
-              message: "Kullanıcı gereklidir",
+              message: "Kimlik Seri No Gereklidir",
             },
           },
         },
-        target_due_date: {
+        dogum_tarihi: {
           validators: {
             notEmpty: {
-              message: "Due date is required",
+              message: "Doğum tarihi gereklidir",
             },
           },
         },

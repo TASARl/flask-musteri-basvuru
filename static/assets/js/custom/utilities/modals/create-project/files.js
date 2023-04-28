@@ -1,77 +1,177 @@
 "use strict";
 
 // Class definition
-var KTModalCreateProjectFiles = function () {
-	// Variables
-	var nextButton;
-	var previousButton;
-	var form;
-	var stepper;
+var KTModalCreateProjectFiles = (function () {
+  // Variables
+  var nextButton;
+  var previousButton;
+  var validator;
+  var form;
+  var stepper;
 
-	// Private functions
-	var initForm = function() {
-		// Project logo
-		// For more info about Dropzone plugin visit:  https://www.dropzonejs.com/#usage
-		var myDropzone = new Dropzone("#kt_modal_create_project_files_upload", { 
-			url: "https://keenthemes.com/scripts/void.php", // Set the url for your upload script location
-            paramName: "file", // The name that will be used to transfer the file
-            maxFiles: 10,
-            maxFilesize: 10, // MB
-            addRemoveLinks: true,
-            accept: function(file, done) {
-                if (file.name == "justinbieber.jpg") {
-                    done("Naha, you don't.");
-                } else {
-                    done();
-                }
-            }
-		});  
-	}
+  // Private functions
+  var initForm = function () {
+    // // Tags. For more info, please visit the official plugin site: https://yaireo.github.io/tagify/
+    // var tags = new Tagify(form.querySelector('[name="target_tags"]'), {
+    //   whitelist: ["Important", "Urgent", "Highh", "Medium", "Low"],
+    //   maxTags: 5,
+    //   dropdown: {
+    //     maxItems: 10, // <- mixumum allowed rendered suggestions
+    //     enabled: 0, // <- show suggestions on focus
+    //     closeOnSelect: false, // <- do not hide the suggestions dropdown once an item has been selected
+    //   },
+    // });
+    // tags.on("change", function () {
+    //   // Revalidate the field when an option is chosen
+    //   validator.revalidateField("tags");
+    // });
 
-	var handleForm = function() {
-		nextButton.addEventListener('click', function (e) {
-			// Prevent default button action
-			e.preventDefault();
+    // Due date. For more info, please visit the official plugin site: https://flatpickr.js.org/
+    // var dueDate = $(form.querySelector('[name="dogum_tarihi"]'));
+    // dueDate.flatpickr({
+    //   enableTime: false,
+    //   dateFormat: "d.m.Y",
+    // });
 
-			// Disable button to avoid multiple click 
-			nextButton.disabled = true;
+    // Expiry year. For more info, plase visit the official plugin site: https://select2.org/
+    $(form.querySelector('[name="egitim_durumu"]')).on("change", function () {
+      // Revalidate the field when an option is chosen
+      validator.revalidateField("egitim_durumu");
+    });
+  };
 
-			// Show loading indication
-			nextButton.setAttribute('data-kt-indicator', 'on');
+  var initValidation = function () {
+    // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
+    validator = FormValidation.formValidation(form, {
+      fields: {
+        tc: {
+          egitim_durumu: {
+            notEmpty: {
+              message: "TC Kimlik No gereklidir",
+            },
+          },
+        },
+        // kimlik_seri: {
+        //   validators: {
+        //     notEmpty: {
+        //       message: "Kimlik Seri No Gereklidir",
+        //     },
+        //   },
+        // },
+        // dogum_tarihi: {
+        //   validators: {
+        //     notEmpty: {
+        //       message: "Doğum tarihi gereklidir",
+        //     },
+        //   },
+        // },
+        // target_tags: {
+        //   validators: {
+        //     notEmpty: {
+        //       message: "Target tags are required",
+        //     },
+        //   },
+        // },
+        // target_allow: {
+        //   validators: {
+        //     notEmpty: {
+        //       message: "Allowing target is required",
+        //     },
+        //   },
+        // },
+        // "target_notifications[]": {
+        //   validators: {
+        //     notEmpty: {
+        //       message: "Notifications are required",
+        //     },
+        //   },
+        // },
+      },
 
-			// Simulate form submission
-			setTimeout(function() {
-				// Hide loading indication
-				nextButton.removeAttribute('data-kt-indicator');
+      plugins: {
+        trigger: new FormValidation.plugins.Trigger(),
+        bootstrap: new FormValidation.plugins.Bootstrap5({
+          rowSelector: ".fv-row",
+          eleInvalidClass: "",
+          eleValidClass: "",
+        }),
+      },
+    });
+  };
 
-				// Enable button
-				nextButton.disabled = false;
-				
-				// Go to next step
-				stepper.goNext();
-			}, 1500); 		
-		});
+  var handleForm = function () {
+    nextButton.addEventListener("click", function (e) {
+      // Prevent default button action
+      e.preventDefault();
 
-		previousButton.addEventListener('click', function () {
-			stepper.goPrevious();
-		});
-	}
+      // Disable button to avoid multiple click
+      nextButton.disabled = true;
 
-	return {
-		// Public functions
-		init: function () {
-			form = KTModalCreateProject.getForm();
-			stepper = KTModalCreateProject.getStepperObj();
-			nextButton = KTModalCreateProject.getStepper().querySelector('[data-kt-element="files-next"]');
-			previousButton = KTModalCreateProject.getStepper().querySelector('[data-kt-element="files-previous"]');
+      // Validate form before submit
+      if (validator) {
+        validator.validate().then(function (status) {
+          console.log("validated!");
 
-			initForm();
-			handleForm();
-		}
-	};
-}();
+          if (status == "Valid") {
+            // Show loading indication
+            nextButton.setAttribute("data-kt-indicator", "on");
+
+            // Simulate form submission
+            setTimeout(function () {
+              // Simulate form submission
+              nextButton.removeAttribute("data-kt-indicator");
+
+              // Enable button
+              nextButton.disabled = false;
+
+              // Go to next step
+              stepper.goNext();
+            }, 1500);
+          } else {
+            // Enable button
+            nextButton.disabled = false;
+
+            // Show popup warning. For more info check the plugin's official documentation: https://sweetalert2.github.io/
+            Swal.fire({
+              text: "Üzgünüm. Eksik kalan veriler var. Lütfen tamamlayın.",
+              icon: "error",
+              buttonsStyling: false,
+              confirmButtonText: "Tamam!",
+              customClass: {
+                confirmButton: "btn btn-primary",
+              },
+            });
+          }
+        });
+      }
+    });
+
+    previousButton.addEventListener("click", function () {
+      // Go to previous step
+      stepper.goPrevious();
+    });
+  };
+
+  return {
+    // Public functions
+    init: function () {
+      form = KTModalCreateProject.getForm();
+      stepper = KTModalCreateProject.getStepperObj();
+      nextButton = KTModalCreateProject.getStepper().querySelector(
+        '[data-kt-element="files-next"]'
+      );
+      previousButton = KTModalCreateProject.getStepper().querySelector(
+        '[data-kt-element="files-previous"]'
+      );
+
+      initForm();
+      initValidation();
+      handleForm();
+    },
+  };
+})();
 
 // Webpack support
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-	window.KTModalCreateProjectFiles = module.exports = KTModalCreateProjectFiles;
+if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
+  window.KTModalCreateProjectFiles = module.exports = KTModalCreateProjectFiles;
 }

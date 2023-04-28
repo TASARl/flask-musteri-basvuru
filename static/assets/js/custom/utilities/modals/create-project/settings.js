@@ -28,22 +28,17 @@ var KTModalCreateProjectSettings = (function () {
     //     }
     //   },
     // });
-
     // Due date. For more info, please visit the official plugin site: https://flatpickr.js.org/
-    var releaseDate = $(form.querySelector('[name="settings_release_date"]'));
-    releaseDate.flatpickr({
-      enableTime: true,
-      dateFormat: "d, M Y, H:i",
-    });
-
+    // var releaseDate = $(form.querySelector('[name="settings_release_date"]'));
+    // releaseDate.flatpickr({
+    //   enableTime: true,
+    //   dateFormat: "d, M Y, H:i",
+    // });
     // Expiry year. For more info, plase visit the official plugin site: https://select2.org/
-    $(form.querySelector('[name="settings_customer"]')).on(
-      "change",
-      function () {
-        // Revalidate the field when an option is chosen
-        validator.revalidateField("settings_customer");
-      }
-    );
+    // $(form.querySelector('[name="tip_adi"]')).on("change", function () {
+    //   // Revalidate the field when an option is chosen
+    //   validator.revalidateField("kasko_bedeli");
+    // });
   };
 
   var initValidation = function () {
@@ -253,6 +248,10 @@ function updateData() {
   var marka_adi = $("#marka_adi").val();
   var tip_adi = $("#tip_adi").val();
 
+  if (tip_adi === "" || tip_adi === "----") {
+    return; // Fonksiyondan çık.
+  }
+
   $.ajax({
     url: "/fiyat",
     method: "GET",
@@ -306,6 +305,7 @@ function updateData() {
       }
 
       $("#kaskobilgi").text(arac_aciklama + bilgiler);
+      $("#krediBilgiEkrani").text(arac_aciklama + bilgiler);
     },
   });
 }
@@ -369,10 +369,10 @@ $(document).ready(function () {
       success: function (response) {
         $("#kasko_bedeli").val(response.kaskobedeli);
 
-        let arac_aciklama = `${response.modelyili} ${response.marka} ${response.model} araç seçimi yaptınız.`;
+        let arac_aciklama = `${response.modelyili} ${response.marka} ${response.model} araç seçimi yaptınız. `;
 
         let bilgiler =
-          "Kasko bedeli 2.000.000 TL üzerindeki araçlara kredi verilmemektedir.";
+          "Seçili aracın kasko bedeli 2.000.000 TL üzerinde olduğu için taşıt kredisi kullanılamaz.";
         if (response.kaskobedeli <= 400000) {
           bilgiler =
             "Seçili aracın kasko bedeli 0-400.000 TL aralığında olduğu için kasko tutarınin %70’ine kadar (" +
@@ -411,6 +411,7 @@ $(document).ready(function () {
         }
 
         $("#kaskobilgi").text(arac_aciklama + bilgiler);
+        $("#krediBilgiEkrani").text(arac_aciklama + bilgiler);
       },
       error: function (xhr) {
         // hata durumunda burası çalışır
