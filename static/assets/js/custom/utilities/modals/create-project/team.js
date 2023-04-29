@@ -1,5 +1,6 @@
 "use strict";
 
+// Kredi Bilgileri
 // Class definition
 var KTModalCreateProjectTeam = (function () {
   // Variables
@@ -67,6 +68,15 @@ var KTModalCreateProjectTeam = (function () {
 
               // Go to next step
               stepper.goNext();
+
+              // modal yukari kaydir
+              $("#kt_modal_create_project .modal-body").animate(
+                {
+                  scrollTop: 0,
+                },
+                500
+              );
+              ////
             }, 1500);
           } else {
             // Enable button

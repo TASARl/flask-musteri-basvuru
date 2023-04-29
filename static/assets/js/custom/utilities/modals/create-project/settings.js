@@ -1,6 +1,6 @@
 "use strict";
 
-// Kredi Başvuru
+// Araç Seçimi
 // Class definition
 var KTModalCreateProjectSettings = (function () {
   // Variables
@@ -121,6 +121,15 @@ var KTModalCreateProjectSettings = (function () {
 
               // Go to next step
               stepper.goNext();
+
+              // modal yukari kaydir
+              $("#kt_modal_create_project .modal-body").animate(
+                {
+                  scrollTop: 0,
+                },
+                500
+              );
+              ////
             }, 1500);
           } else {
             // Enable button

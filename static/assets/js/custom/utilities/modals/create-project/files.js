@@ -1,5 +1,6 @@
 "use strict";
 
+// Özet
 // Class definition
 var KTModalCreateProjectFiles = (function () {
   // Variables
@@ -44,13 +45,6 @@ var KTModalCreateProjectFiles = (function () {
     // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
     validator = FormValidation.formValidation(form, {
       fields: {
-        tc: {
-          egitim_durumu: {
-            notEmpty: {
-              message: "TC Kimlik No gereklidir",
-            },
-          },
-        },
         // kimlik_seri: {
         //   validators: {
         //     notEmpty: {
@@ -72,13 +66,13 @@ var KTModalCreateProjectFiles = (function () {
         //     },
         //   },
         // },
-        // target_allow: {
-        //   validators: {
-        //     notEmpty: {
-        //       message: "Allowing target is required",
-        //     },
-        //   },
-        // },
+        kvkk_onay: {
+          validators: {
+            notEmpty: {
+              message: "Kvkk onayı gereklidir",
+            },
+          },
+        },
         // "target_notifications[]": {
         //   validators: {
         //     notEmpty: {
@@ -126,6 +120,15 @@ var KTModalCreateProjectFiles = (function () {
 
               // Go to next step
               stepper.goNext();
+
+              // modal yukari kaydir
+              $("#kt_modal_create_project .modal-body").animate(
+                {
+                  scrollTop: 0,
+                },
+                500
+              );
+              ////
             }, 1500);
           } else {
             // Enable button

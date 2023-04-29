@@ -1,5 +1,6 @@
 "use strict";
 
+// Müşteri Bilgileri
 // Class definition
 var KTModalCreateProjectTargets = (function () {
   // Variables
@@ -28,9 +29,14 @@ var KTModalCreateProjectTargets = (function () {
 
     // Due date. For more info, please visit the official plugin site: https://flatpickr.js.org/
     var dueDate = $(form.querySelector('[name="dogum_tarihi"]'));
-    dueDate.flatpickr({
-      enableTime: false,
-      dateFormat: "d.m.Y",
+    dueDate.daterangepicker({
+      singleDatePicker: true,
+      showDropdowns: true,
+      minYear: 1901,
+      maxYear: 2010,
+      locale: {
+        format: "DD.MM.YYYY",
+      },
     });
 
     // Expiry year. For more info, plase visit the official plugin site: https://select2.org/
@@ -65,6 +71,13 @@ var KTModalCreateProjectTargets = (function () {
             },
           },
         },
+        egitim_durumu: {
+          validators: {
+            notEmpty: {
+              message: "Egitim Durumu gereklidir",
+            },
+          },
+        },
         target_tags: {
           validators: {
             notEmpty: {
@@ -72,13 +85,13 @@ var KTModalCreateProjectTargets = (function () {
             },
           },
         },
-        target_allow: {
-          validators: {
-            notEmpty: {
-              message: "Allowing target is required",
-            },
-          },
-        },
+        // target_allow: {
+        //   validators: {
+        //     notEmpty: {
+        //       message: "Allowing target is required",
+        //     },
+        //   },
+        // },
         "target_notifications[]": {
           validators: {
             notEmpty: {
@@ -126,6 +139,15 @@ var KTModalCreateProjectTargets = (function () {
 
               // Go to next step
               stepper.goNext();
+
+              // modal yukari kaydir
+              $("#kt_modal_create_project .modal-body").animate(
+                {
+                  scrollTop: 0,
+                },
+                500
+              );
+              ////
             }, 1500);
           } else {
             // Enable button
