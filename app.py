@@ -14,9 +14,20 @@ from flask_login import LoginManager, UserMixin, login_user, logout_user, login_
 
 import json
 
+import os
+
+# .env dosyasının varlığını kontrol edin ve yükleyin
+if os.path.isfile(".env"):
+    from dotenv import load_dotenv
+    load_dotenv()
+    
+# 'DATABASE_URL' anahtarına karşılık gelen değeri alın
+uri = os.getenv('DATABASE_URL')
+secret = os.getenv('SECRETKEY')
+
 
 # ENV degisken ekle
-uri = "mongodb+srv://user:6UUq1D9BDh7J38y4@clusterkredi.ryzdktr.mongodb.net/?retryWrites=true&w=majority"
+# uri = "mongodb+srv://===:====@clusterkredi.ryzdktr.mongodb.net/?retryWrites=true&w=majority"
 
 # Create a new client and connect to the server
 client = MongoClient(uri, server_api=ServerApi('1'))
@@ -36,10 +47,11 @@ selected_customers = db.selected_customers
 
 # ENV degisken ekle
 app = Flask(__name__)
-app.secret_key = "super_secret_key"
+app.secret_key = secret
 
 # Index sayfasi
 @app.route('/')
+@login_required
 def index():
     # index.html adlı template'i döndür
     return render_template('index.html')
@@ -296,8 +308,10 @@ def signup():
 def login():
     if request.method == 'POST':
         # Form verilerini alın
-        username = request.form['username']
-        password = request.form['password']
+        # username = request.form['username']
+        # password = request.form['password']
+        username = request.json.get('username')
+        password = request.json.get('password')
 
         # Kullanıcıyı veritabanından alın
         user = users_collection.find_one({'username': username})
@@ -305,13 +319,15 @@ def login():
         if user and check_password_hash(user['password'], password):
             user_obj = User(username, user['password'])
             login_user(user_obj)
-            return redirect(url_for('index'))
+            return jsonify({'message': 'Login successful'}), 200
+            # return redirect(url_for('index'))
 
         # Geçersiz kimlik bilgileri durumunda buraya yönlendir
-        return render_template('login.html', error='Kullanıcı adı veya şifre hatalı.')
+        return jsonify({'message': 'Login failed'}), 401
+        return render_template('sign-in.html', error='Kullanıcı adı veya şifre hatalı.')
 
     # GET isteklerinde login sayfasını göster
-    return render_template('login.html')
+    return render_template('sign-in.html')
 
 
 # Çıkış İşlevi
