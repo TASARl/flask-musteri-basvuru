@@ -261,9 +261,13 @@ login_manager.login_view = 'login'
 
 # Kullanıcı model sınıfının oluşturulması
 class User(UserMixin):
-    def __init__(self, username, password):
+    def __init__(self, username, password, gallery_name, city, district, address):
         self.id = username
         self.password = password
+        self.gallery_name = gallery_name
+        self.city = city
+        self.district = district
+        self.address = address
 
     def __repr__(self):
         return f'<User {self.id}>'
@@ -275,17 +279,20 @@ def load_user(user_id):
     user = users_collection.find_one({'username': user_id})
     if not user:
         return None
-    return User(user['username'], user['password'])
+    return User(user['username'], user['password'], user['gallery_name'], user['city'], user['district'], user['address'])
 
 
 # Kayıt Olma İşlevi
 @app.route('/signup', methods=['GET', 'POST'])
-@login_required
 def signup():
     if request.method == 'POST':
         # Form verilerini alın
         username = request.form['username']
         password = request.form['password']
+        gallery_name = request.form['gallery_name']
+        city = request.form['city']
+        district = request.form['district']
+        address = request.form['address']
 
         # Kullanıcının mevcut olup olmadığını kontrol edin
         existing_user = users_collection.find_one({'username': username})
@@ -294,13 +301,13 @@ def signup():
 
         # Şifreyi hashleyin, kullanıcıyı veritabanına kaydedin ve otomatik olarak giriş yapın
         hashed_password = generate_password_hash(password)
-        users_collection.insert_one({'username': username, 'password': hashed_password})
-        user = User(username, hashed_password)
-        #login_user(user)
+        users_collection.insert_one({'username': username, 'password': hashed_password, 'gallery_name': gallery_name, 'city': city, 'district': district, 'address': address})
+        user = User(username, hashed_password, gallery_name, city, district, address)
         return render_template('kaydedildi.html', username=username)
 
     # GET isteklerinde kayıt sayfasını göster
     return render_template('signup.html')
+
 
 
 # Giriş İşlevi
@@ -317,7 +324,7 @@ def login():
         user = users_collection.find_one({'username': username})
 
         if user and check_password_hash(user['password'], password):
-            user_obj = User(username, user['password'])
+            user_obj = User(username, user['password'], user['gallery_name'], user['city'], user['district'], user['address'])
             login_user(user_obj)
             return jsonify({'message': 'Login successful'}), 200
             # return redirect(url_for('index'))

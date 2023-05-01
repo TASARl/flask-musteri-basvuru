@@ -118,12 +118,16 @@ var KTSigninGeneral = (function () {
       // Prevent button default action
       e.preventDefault();
 
+      // Show loading indication
+      submitButton.setAttribute("data-kt-indicator", "on");
+
+      setTimeout(() => {
+        submitButton.removeAttribute("data-kt-indicator");
+      }, 1500);
+
       // Validate form
       validator.validate().then(function (status) {
         if (status == "Valid") {
-          // Hide loading indication
-          submitButton.removeAttribute("data-kt-indicator");
-
           // Enable button
           submitButton.disabled = false;
 

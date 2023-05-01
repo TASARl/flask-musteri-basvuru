@@ -1,12 +1,31 @@
 {% extends "base.html" %} {% block title %}Kayıt Et{% endblock %} {% block
 content %}
 <h1>Kaydol</h1>
+
+<h1>Kayıt Et</h1>
 {% if error %}
-<p style="color: red">{{ error }}</p>
+  <p style="color: red;">{{ error }}</p>
 {% endif %}
 <form method="POST" action="{{ url_for('signup') }}">
-  <input type="text" placeholder="Kullanıcı Adı" name="username" required />
-  <input type="password" placeholder="Şifre" name="password" required />
-  <button type="submit">Kaydol</button>
+  <label for="username">Kullanıcı Adı:</label><br>
+  <input type="text" id="username" name="username" required><br>
+
+  <label for="password">Şifre:</label><br>
+  <input type="password" id="password" name="password" required><br>
+
+  <label for="gallery_name">Galeri İsmi:</label><br>
+  <input type="text" id="gallery_name" name="gallery_name"><br>
+
+  <label for="city">Şehir:</label><br>
+  <input type="text" id="city" name="city"><br>
+
+  <label for="district">İlçe:</label><br>
+  <input type="text" id="district" name="district"><br>
+
+  <label for="address">Adres:</label><br>
+  <input type="text" id="address" name="address"><br>
+
+  <br><br>
+  <input type="submit" value="Kayıt Ol">
 </form>
 {% endblock %}
