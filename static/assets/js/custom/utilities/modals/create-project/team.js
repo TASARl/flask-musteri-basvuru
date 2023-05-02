@@ -12,6 +12,15 @@ var KTModalCreateProjectTeam = (function () {
 
   // Private functions
   var initForm = function () {
+    // Currency
+    Inputmask("₺ 999.999.999", {
+      numericInput: true,
+    }).mask("#arac_satis_tutari");
+
+    Inputmask("₺ 999.999.999", {
+      numericInput: true,
+    }).mask("#kredi_tutari");
+
     // Tags. For more info, please visit the official plugin site: https://yaireo.github.io/tagify/
     var tags = new Tagify(form.querySelector('[name="target_tags"]'), {
       whitelist: ["48", "36", "24", "12"],

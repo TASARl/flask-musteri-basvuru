@@ -297,7 +297,8 @@ def signup():
         # Kullanıcının mevcut olup olmadığını kontrol edin
         existing_user = users_collection.find_one({'username': username})
         if existing_user:
-            return 'Bu kullanıcı adı zaten kullanılıyor. Lütfen farklı bir kullanıcı adı seçin.'
+            error = 'Bu kullanıcı adı zaten kullanılıyor. Lütfen farklı bir kullanıcı adı seçin.'
+            return render_template('signup.html', error=error)
 
         # Şifreyi hashleyin, kullanıcıyı veritabanına kaydedin ve otomatik olarak giriş yapın
         hashed_password = generate_password_hash(password)
@@ -352,8 +353,8 @@ def logout():
 
 ####### ARAC SECIMI BASLANGIC  ####
 
-mydb = client["arabalar"]
-modellerDb = mydb["modeller"]
+hazir_veriler = client["form_hazir_verileri"]
+modellerDb = hazir_veriler["modeller"]
 
 # Model Yılı Seçenekleri endpoint'i
 @app.route('/model_yili_secenekleri', methods=['GET'])
@@ -444,7 +445,40 @@ def fiyat2():
 
 ####### ARAC SECIMI SON  ########
 
+####### il ilçe SECIMI BASLANGIC  ####
 
+hazir_veriler = client["form_hazir_verileri"]
+il_ilce_tb = hazir_veriler["il_ilce"]
+
+# Model Yılı Seçenekleri endpoint'i
+@app.route('/il_secimi', methods=['GET'])
+def il_secimi():
+    # Veritabanından tüm model yıllarını çek
+    iller = il_ilce_tb.distinct('il')
+
+    # JSON formatında model yıllarını döndür
+
+    json_response = json.dumps(iller, ensure_ascii=False)
+
+    return json_response, 200
+    
+
+@app.route('/ilce_secimi', methods=['GET'])
+def ilce_secimi():
+    # İstemciden model yılını al
+    il = request.args.get('il_secimi')
+
+    # Veritabanından model yılına ait markai çek
+    ilceler = il_ilce_tb.distinct('ilce', {'il': il})
+    
+    # JSON formatında modelleri döndür
+    
+    
+    json_response = json.dumps(ilceler, ensure_ascii=False)
+
+    return json_response, 200
+
+####### il ilçe SECIMI SON  ####
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -273,48 +273,7 @@ function updateData() {
       $("#kasko_bedeli").val(response.kaskobedeli);
       $("#kaskokodu").val(response.kaskokodu);
 
-      let arac_aciklama = `${response.modelyili} ${response.marka} ${response.model} araç seçimi yaptınız.`;
-      let bilgiler =
-        "Kasko bedeli 2.000.000 TL üzerindeki araçlara kredi verilmemektedir.";
-      if (response.kaskobedeli <= 400000) {
-        bilgiler =
-          "Seçili aracın kasko bedeli 0-400.000 TL aralığında olduğu için kasko tutarınin %70’ine kadar (" +
-          parseFloat(response.kaskobedeli * 0.7).toLocaleString("tr-TR", {
-            style: "currency",
-            currency: "TRY",
-          }) +
-          ") ve maksimum 48 ay vade ile kredi kullanabilirsiniz.";
-      }
-      if (response.kaskobedeli > 400000 && response.kaskobedeli <= 800000) {
-        bilgiler =
-          "Seçili aracın kasko bedeli 400.000,01-800.000 TL aralığında olduğu için kasko tutarınin %50’sine kadar (" +
-          parseFloat(response.kaskobedeli * 0.5).toLocaleString("tr-TR", {
-            style: "currency",
-            currency: "TRY",
-          }) +
-          ") ve maksimum 36 ay vade ile kredi kullanabilirsiniz.";
-      }
-      if (response.kaskobedeli > 800000 && response.kaskobedeli <= 1200000) {
-        bilgiler =
-          "Seçili aracın kasko bedeli 800.000,01-1.200.000 TL aralığında olduğu için kasko tutarınin %30’una kadar (" +
-          parseFloat(response.kaskobedeli * 0.3).toLocaleString("tr-TR", {
-            style: "currency",
-            currency: "TRY",
-          }) +
-          ") ve maksimum 24 ay vade ile kredi kullanabilirsiniz.";
-      }
-      if (response.kaskobedeli > 1200000 && response.kaskobedeli <= 2000000) {
-        bilgiler =
-          "Seçili aracın kasko bedeli 1.200.000,01-2.000.000 TL aralığında olduğu için kasko tutarınin %20’sine kadar (" +
-          parseFloat(response.kaskobedeli * 0.2).toLocaleString("tr-TR", {
-            style: "currency",
-            currency: "TRY",
-          }) +
-          ") ve maksimum 12 ay vade ile kredi kullanabilirsiniz.";
-      }
-
-      $("#kaskobilgi").text(arac_aciklama + bilgiler);
-      $("#krediBilgiEkrani").text(arac_aciklama + bilgiler);
+      aciklama(response);
     },
   });
 }
@@ -377,50 +336,10 @@ $(document).ready(function () {
       },
       success: function (response) {
         $("#kasko_bedeli").val(response.kaskobedeli);
+        $("#marka_adi").prop("selectedIndex", 0);
+        $("#tip_adi").empty();
 
-        let arac_aciklama = `${response.modelyili} ${response.marka} ${response.model} araç seçimi yaptınız. `;
-
-        let bilgiler =
-          "Seçili aracın kasko bedeli 2.000.000 TL üzerinde olduğu için taşıt kredisi kullanılamaz.";
-        if (response.kaskobedeli <= 400000) {
-          bilgiler =
-            "Seçili aracın kasko bedeli 0-400.000 TL aralığında olduğu için kasko tutarınin %70’ine kadar (" +
-            parseFloat(response.kaskobedeli * 0.7).toLocaleString("tr-TR", {
-              style: "currency",
-              currency: "TRY",
-            }) +
-            ") ve maksimum 48 ay vade ile kredi kullanabilirsiniz.";
-        }
-        if (response.kaskobedeli > 400000 && response.kaskobedeli <= 800000) {
-          bilgiler =
-            "Seçili aracın kasko bedeli 400.000,01-800.000 TL aralığında olduğu için kasko tutarınin %50’sine kadar (" +
-            parseFloat(response.kaskobedeli * 0.5).toLocaleString("tr-TR", {
-              style: "currency",
-              currency: "TRY",
-            }) +
-            ") ve maksimum 36 ay vade ile kredi kullanabilirsiniz.";
-        }
-        if (response.kaskobedeli > 800000 && response.kaskobedeli <= 1200000) {
-          bilgiler =
-            "Seçili aracın kasko bedeli 800.000,01-1.200.000 TL aralığında olduğu için kasko tutarınin %30’una kadar (" +
-            parseFloat(response.kaskobedeli * 0.3).toLocaleString("tr-TR", {
-              style: "currency",
-              currency: "TRY",
-            }) +
-            ") ve maksimum 24 ay vade ile kredi kullanabilirsiniz.";
-        }
-        if (response.kaskobedeli > 1200000 && response.kaskobedeli <= 2000000) {
-          bilgiler =
-            "Seçili aracın kasko bedeli 1.200.000,01-2.000.000 TL aralığında olduğu için kasko tutarınin %20’sine kadar (" +
-            parseFloat(response.kaskobedeli * 0.2).toLocaleString("tr-TR", {
-              style: "currency",
-              currency: "TRY",
-            }) +
-            ") ve maksimum 12 ay vade ile kredi kullanabilirsiniz.";
-        }
-
-        $("#kaskobilgi").text(arac_aciklama + bilgiler);
-        $("#krediBilgiEkrani").text(arac_aciklama + bilgiler);
+        aciklama(response);
       },
       error: function (xhr) {
         // hata durumunda burası çalışır
@@ -429,3 +348,79 @@ $(document).ready(function () {
     });
   });
 });
+
+const aciklama = function (response) {
+  let arac_aciklama = `${response.modelyili} ${response.marka} ${
+    response.model
+  } araç seçimi yaptınız. Seçili aracın kasko bedeli ${parseFloat(
+    response.kaskobedeli
+  ).toLocaleString("tr-TR", {
+    style: "currency",
+    currency: "TRY",
+  })} dir. `;
+  let bilgiler =
+    "Kasko bedeli 2.000.000 TL üzerindeki araçlara kredi verilmemektedir.";
+  if (response.kaskobedeli <= 400000) {
+    const max_kredi = parseFloat(response.kaskobedeli * 0.7).toLocaleString(
+      "tr-TR",
+      {
+        style: "currency",
+        currency: "TRY",
+        maximumFractionDigits: 0,
+      }
+    );
+    bilgiler =
+      "Aracın kasko bedeli 0-400.000 TL aralığında olduğu için kasko tutarınin %70’ine kadar (" +
+      max_kredi +
+      ") ve maksimum 48 ay vade ile kredi kullanabilirsiniz.";
+    $("#max_kredi").text(max_kredi);
+  }
+  if (response.kaskobedeli > 400000 && response.kaskobedeli <= 800000) {
+    const max_kredi = parseFloat(response.kaskobedeli * 0.5).toLocaleString(
+      "tr-TR",
+      {
+        style: "currency",
+        currency: "TRY",
+        maximumFractionDigits: 0,
+      }
+    );
+    bilgiler =
+      "Aracın kasko bedeli 400.000,01-800.000 TL aralığında olduğu için kasko tutarınin %50’sine kadar (" +
+      max_kredi +
+      ") ve maksimum 36 ay vade ile kredi kullanabilirsiniz.";
+    $("#max_kredi").text(max_kredi);
+  }
+  if (response.kaskobedeli > 800000 && response.kaskobedeli <= 1200000) {
+    const max_kredi = parseFloat(response.kaskobedeli * 0.3).toLocaleString(
+      "tr-TR",
+      {
+        style: "currency",
+        currency: "TRY",
+        maximumFractionDigits: 0,
+      }
+    );
+    bilgiler =
+      "Aracın kasko bedeli 800.000,01-1.200.000 TL aralığında olduğu için kasko tutarınin %30’una kadar (" +
+      max_kredi +
+      ") ve maksimum 24 ay vade ile kredi kullanabilirsiniz.";
+    $("#max_kredi").text(max_kredi);
+  }
+  if (response.kaskobedeli > 1200000 && response.kaskobedeli <= 2000000) {
+    const max_kredi = parseFloat(response.kaskobedeli * 0.2).toLocaleString(
+      "tr-TR",
+      {
+        style: "currency",
+        currency: "TRY",
+        maximumFractionDigits: 0,
+      }
+    );
+    bilgiler =
+      "Aracın kasko bedeli 1.200.000,01-2.000.000 TL aralığında olduğu için kasko tutarınin %20’sine kadar (" +
+      max_kredi +
+      ") ve maksimum 12 ay vade ile kredi kullanabilirsiniz.";
+    $("#max_kredi").text(max_kredi);
+  }
+  const detay = `<br/><br/> Araç model yılına göre bankaların uyguladığı faiz ve vade oranları değişkenlik göstermektedir. <br/><br/> ${response.modelyili} model araçlara bankaların uyguladığı vade ve faiz oranları aşağıdadır. Belirtilen faiz tutarları Findeks puanınıza ve araç bilgilerine göre değişkenlik gösterebilir.`;
+  $("#kaskobilgi").html(arac_aciklama + bilgiler + detay);
+  $("#krediBilgiEkrani").text(arac_aciklama + bilgiler);
+};

@@ -1,104 +1,112 @@
 "use strict";
 
 // Class definition
-var KTModalCreateProjectType = function () {
-	// Variables
-	var nextButton;
-	var validator;
-	var form;
-	var stepper;
+var KTModalCreateProjectType = (function () {
+  // Variables
+  var nextButton;
+  var validator;
+  var form;
+  var stepper;
 
-	// Private functions
-	var initValidation = function() {
-		// Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
-		validator = FormValidation.formValidation(
-			form,
-			{
-				fields: {
-					'project_type': {
-						validators: {
-							notEmpty: {
-								message: 'Project type is required'
-							}
-						}
-					}
-				},
-				
-				plugins: {
-					trigger: new FormValidation.plugins.Trigger(),
-					bootstrap: new FormValidation.plugins.Bootstrap5({
-						rowSelector: '.fv-row',
-                        eleInvalidClass: '',
-                        eleValidClass: ''
-					})
-				}
-			}
-		);
-	}
+  // Private functions
+  var initValidation = function () {
+    // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
+    validator = FormValidation.formValidation(form, {
+      fields: {
+        project_type: {
+          validators: {
+            notEmpty: {
+              message: "Project type is required",
+            },
+          },
+        },
+      },
 
-	var handleForm = function() {
-		nextButton.addEventListener('click', function (e) {
-			// Prevent default button action
-			e.preventDefault();
+      plugins: {
+        trigger: new FormValidation.plugins.Trigger(),
+        bootstrap: new FormValidation.plugins.Bootstrap5({
+          rowSelector: ".fv-row",
+          eleInvalidClass: "",
+          eleValidClass: "",
+        }),
+      },
+    });
+  };
 
-			// Disable button to avoid multiple click 
-			nextButton.disabled = true;
+  var handleForm = function () {
+    nextButton.addEventListener("click", function (e) {
+      // Prevent default button action
+      e.preventDefault();
 
-			// Validate form before submit
-			if (validator) {
-				validator.validate().then(function (status) {
-					console.log('validated!');
-					e.preventDefault();
+      // Disable button to avoid multiple click
+      nextButton.disabled = true;
 
-					if (status == 'Valid') {
-						// Show loading indication
-						nextButton.setAttribute('data-kt-indicator', 'on');
+      // Validate form before submit
+      if (validator) {
+        validator.validate().then(function (status) {
+          console.log("validated!");
+          e.preventDefault();
 
-						// Simulate form submission
-						setTimeout(function() {
-							// Simulate form submission
-							nextButton.removeAttribute('data-kt-indicator');
-							
-							// Enable button
-							nextButton.disabled = false;
-							
-							// Go to next step
-							stepper.goNext();
-						}, 1000);   						
-					} else {
-						// Enable button
-						nextButton.disabled = false;
-						
-						// Show popup warning. For more info check the plugin's official documentation: https://sweetalert2.github.io/
-						Swal.fire({
-							text: "Sorry, looks like there are some errors detected, please try again.",
-							icon: "error",
-							buttonsStyling: false,
-							confirmButtonText: "Ok, got it!",
-							customClass: {
-								confirmButton: "btn btn-primary"
-							}
-						});
-					}
-				});
-			}			
-		});
-	}
+          if (status == "Valid") {
+            // Show loading indication
+            nextButton.setAttribute("data-kt-indicator", "on");
 
-	return {
-		// Public functions
-		init: function () {
-			form = KTModalCreateProject.getForm();
-			stepper = KTModalCreateProject.getStepperObj();
-			nextButton = KTModalCreateProject.getStepper().querySelector('[data-kt-element="type-next"]');
+            // Simulate form submission
+            setTimeout(function () {
+              // Simulate form submission
+              nextButton.removeAttribute("data-kt-indicator");
 
-			initValidation();
-			handleForm();
-		}
-	};
-}();
+              // Enable button
+              nextButton.disabled = false;
+
+              // Go to next step
+              stepper.goNext();
+
+              // modal yukari kaydir
+              $("#kt_modal_create_project .modal-body").animate(
+                {
+                  scrollTop: 0,
+                },
+                500
+              );
+              ////
+            }, 1500);
+          } else {
+            // Enable button
+            nextButton.disabled = false;
+
+            // Show popup warning. For more info check the plugin's official documentation: https://sweetalert2.github.io/
+            Swal.fire({
+              text: "Sorry, looks like there are some errors detected, please try again.",
+              icon: "error",
+              buttonsStyling: false,
+              confirmButtonText: "Ok, got it!",
+              customClass: {
+                confirmButton: "btn btn-primary",
+              },
+            });
+          }
+        });
+      }
+    });
+  };
+
+  return {
+    // Public functions
+    init: function () {
+      form = KTModalCreateProject.getForm();
+      stepper = KTModalCreateProject.getStepperObj();
+      nextButton = KTModalCreateProject.getStepper().querySelector(
+        '[data-kt-element="type-next"]'
+      );
+
+      initValidation();
+      handleForm();
+    },
+  };
+})();
 
 // Webpack support
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-	window.KTModalCreateProjectType = module.exports = KTModalCreateProjectType;
+if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
+  window.KTModalCreateProjectType = module.exports = KTModalCreateProjectType;
 }

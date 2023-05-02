@@ -796,7 +796,7 @@
 														<!--begin::Info-->
 														<span class="ms-4">
 															<span class="fs-3 fw-bold text-gray-900 mb-2 d-block">Bireysel</span>
-															<span class="fw-semibold fs-4 text-muted">If you need more info, please check it out</span>
+															<span class="fw-semibold fs-4 text-muted">Böyle bir bilgiye ihtiyacımız varmı. Toplayacağımız bilgilerde ne değğşiklik olur</span>
 														</span>
 														<!--end::Info-->
 													</span>
@@ -828,6 +828,40 @@
 												<!--end::Option-->
 											</div>
 											<!--end::Input group-->
+
+											<!--begin::Input group-->
+											<div class="row g-9 mb-8">
+												<!--begin::Col-->
+												<div class="col-md-6 fv-row">
+													<label class="required fs-6 fw-semibold mb-2">Galeri Telefonu</label>
+													<input type="text" class="form-control form-control-solid" placeholder="Galeri Telefonu" name="galeri_telefonu" />
+												</div>
+												<!--end::Col-->
+												<!--begin::Col-->
+												<div class="col-md-6 fv-row">
+													<label class="required fs-6 fw-semibold mb-2">Galeri Adı</label>
+													<input type="text" class="form-control form-control-solid" placeholder="Galeri Adı" name="galeri_adi" />
+												</div>
+												<!--end::Col-->
+											</div>
+											<!--end::Input group-->
+
+											<!--begin::Input group-->
+											<div class="fv-row mb-15">
+												<!--begin::Wrapper-->
+												<div class="d-flex flex-stack">
+													<!--begin::Label-->
+													<div class="me-5">
+														<label class=" fs-6 fw-semibold"></label>
+														<div class="fs-3 fw-semibold text-muted" >Kullanıcı kontrolu yap. Bilgi girişi yapan bizden biri ise görünsün. telefon no anında kontrol. eğer galeri kayıtlıysa ismi getir isim kutusunu deaktif et. isleme baslandı whatsapp mesajı gönder</div>
+													</div>
+													<!--end::Label-->
+													
+												</div>
+												<!--begin::Wrapper-->
+											</div>
+											<!--end::Input group-->
+
 											<!--begin::Actions-->
 											<div class="d-flex justify-content-end">
 												<button type="button" class="btn btn-lg btn-primary" data-kt-element="type-next">
@@ -983,8 +1017,8 @@
 											<div class="fv-row mb-8">
 												<!--begin::Label-->
 												<label class="d-flex align-items-center fs-6 fw-semibold form-label mb-2">
-													<span class="required">Kasko Bedeli</span>
-													<span class="ms-1" data-bs-toggle="tooltip" title="Yukardaki seçimlere göre belirlenir">
+													<span class="">Kasko Bedeli</span>
+													<span class="ms-1" data-bs-toggle="tooltip" title="Yukardaki seçimlere göre sistem tarafından belirlenir">
 														<i class="ki-duotone ki-information-5 text-gray-500 fs-6">
 															<span class="path1"></span>
 															<span class="path2"></span>
@@ -1042,7 +1076,7 @@
 												<h1 class="fw-bold text-dark">Araç Bilgileri</h1>
 												<!--end::Title-->
 												<!--begin::Description-->
-												<div class="text-muted fw-semibold fs-4">Rusatta yazan bilgileri girin
+												<div class="text-muted fw-semibold fs-4">Ruhsatta yazan bilgileri girin
 												</div>
 												<!--end::Description-->
 											</div>
@@ -1089,22 +1123,35 @@
 											<!--end::Input group-->
 
 											<!--begin::Input group-->
-											<div class="fv-row mb-8">
-												<!--begin::Label-->
-												<label class="d-flex align-items-center fs-6 fw-semibold form-label mb-2">
-													<span class="required">Tescil Belge No</span>
-													<span class="ms-1" data-bs-toggle="tooltip" title="...">
-														<i class="ki-duotone ki-information-5 text-gray-500 fs-6">
-															<span class="path1"></span>
-															<span class="path2"></span>
-															<span class="path3"></span>
-														</i>
-													</span>
-												</label>
-												<!--end::Label-->
-												<!--begin::Input-->
-												<input type="text" class="form-control form-control-solid" placeholder="Tescil Belge No"  name="tescil_belge_no" id="tescil_belge_no" />
-												<!--end::Input-->
+											<div class="row g-9 mb-8">
+												<!--begin::Col-->
+												<div class="col-md-6 fv-row">
+													<label class="required fs-6 fw-semibold mb-2">Tescil Belge No</label>
+													<input type="text" class="form-control form-control-solid" placeholder="Tescil Belge No" name="tescil_belge_no" id="tescil_belge_no" />
+												</div>
+												<!--end::Col-->
+												<!--begin::Col-->
+												<div class="col-md-6 fv-row">
+													<label class="required fs-6 fw-semibold mb-2">Araç Plakası</label>
+													<input type="text" class="form-control form-control-solid" placeholder="Araç Plakası" name="arac_plakasi" />
+												</div>
+												<!--end::Col-->
+											</div>
+											<!--end::Input group-->
+
+											<!--begin::Input group-->
+											<div class="fv-row mb-15">
+												<!--begin::Wrapper-->
+												<div class="d-flex flex-stack">
+													<!--begin::Label-->
+													<div class="me-5">
+														<label class=" fs-6 fw-semibold"></label>
+														<div class="fs-3 fw-semibold text-muted" >Kullanıcı kontrolu yap. Bilgi girişi yapan bizden biri ise sigortacıya kasko kodu sorgulama için mesaj gönder.</div>
+													</div>
+													<!--end::Label-->
+													
+												</div>
+												<!--begin::Wrapper-->
 											</div>
 											<!--end::Input group-->
 
@@ -1162,7 +1209,7 @@
 												<!--begin::Label-->
 												<label class="d-flex align-items-center fs-6 fw-semibold form-label mb-2">
 													<span class="required">Kredi Tutarı</span>
-													<span class="ms-1" data-bs-toggle="tooltip" title="...">
+													<span class="ms-1" data-bs-toggle="tooltip" title="Kredi tutarı araç satış tutarından az olmalı">
 														<i class="ki-duotone ki-information-5 text-gray-500 fs-6">
 															<span class="path1"></span>
 															<span class="path2"></span>
@@ -1174,6 +1221,7 @@
 												<!--begin::Input-->
 												<input type="text" class="form-control form-control-solid" placeholder="Kredi Tutarı"  name="kredi_tutari" id="kredi_tutari" />
 												<!--end::Input-->
+												<div class="fs-7 fw-semibold text-muted">Kredi tutarı en fazla <span id="max_kredi">...</span> olmalı.</div>
 											</div>
 											<!--end::Input group-->
 
@@ -1181,6 +1229,7 @@
 											<div class="fv-row mb-8">
 												<label class="required fs-6 fw-semibold mb-2">Vade(ay)</label>
 												<input class="form-control form-control-solid" value="48, 36" name="target_tags" />
+												<div class="fs-7 fw-semibold text-muted">Vade en fazla .... olmalı.</div>
 											</div>
 											<!--end::Input group-->
 
@@ -1216,10 +1265,36 @@
 											<!--end::Heading-->
 											<!--begin::Input group-->
 											<div class="fv-row mb-8">
+												<label class="fs-6 required fw-semibold mb-2">Cep Telefonu Numarası</label>
+												<input type="text" class="form-control form-control-solid" placeholder="Cep Telefonu Numarası" name="musteri_cep_telefonu" />
+											</div>
+											<!--end::Input group-->
+
+											<!--begin::Input group-->
+											<div class="fv-row mb-8">
 												<label class="fs-6 required fw-semibold mb-2">TC Kimlik No</label>
 												<input type="text" class="form-control form-control-solid" placeholder="TC Kimlik No" name="tc" />
 											</div>
 											<!--end::Input group-->
+
+
+											<!--begin::Input group-->
+											<div class="row g-9 mb-8">
+												<!--begin::Col-->
+												<div class="col-md-6 fv-row">
+													<label class="required fs-6 fw-semibold mb-2">Adı</label>
+													<input type="text" class="form-control form-control-solid" placeholder="Adı" name="adi" />
+												</div>
+												<!--end::Col-->
+												<!--begin::Col-->
+												<div class="col-md-6 fv-row">
+													<label class="required fs-6 fw-semibold mb-2">Soyadı</label>
+													<input type="text" class="form-control form-control-solid" placeholder="Soyadı" name="soyadi" />
+												</div>
+												<!--end::Col-->
+											</div>
+											<!--end::Input group-->
+
 											<!--begin::Input group-->
 											<div class="row g-9 mb-8">
 												<!--begin::Col-->
@@ -1251,19 +1326,21 @@
 											</div>
 											<!--end::Input group-->
 
+											<div class="separator separator-content my-15">Eğitim ve Meslek Bilgileri</div>
+
 											<!--begin::Input group-->
 											<div class="row g-9 mb-8">
 												<!--begin::Col-->
 												<div class="col-md-6 fv-row">
 													<label class="required fs-6 fw-semibold mb-2">Eğitim Durumu</label>
-													<select class="form-select form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Eğitim Durumu" name="egitim_durumu" >
+													<select class="form-select form-select-solid" data-control="select2" data-hide-search="true" data-dropdown-parent="#kt_modal_create_project" data-placeholder="Eğitim Durumu" name="egitim_durumu" >
 														<option></option>
-                                                            <option value="1">İLKÖĞRETİM</option>
-                                                            <option value="2">LİSE</option>
-															<option value="3">YÜKSEKOKUL</option>
-                                                            <option value="4">ÜNİVERSİTE</option>
-                                                            <option value="5">MASTER</option>
-                                                            <option value="6">DOKTORA</option>
+                                                            <option value="İLKÖĞRETİM">İLKÖĞRETİM</option>
+                                                            <option value="LİSE">LİSE</option>
+															<option value="YÜKSEKOKUL">YÜKSEKOKUL</option>
+                                                            <option value="ÜNİVERSİTE">ÜNİVERSİTE</option>
+                                                            <option value="MASTER">MASTER</option>
+                                                            <option value="DOKTORA">DOKTORA</option>
 													</select>
 												</div>
 												<!--end::Col-->
@@ -1273,60 +1350,364 @@
 													<label class="required fs-6 fw-semibold mb-2">Meslek Gurubu</label>
 													<select class="form-select form-select-solid" data-control="select2"  data-dropdown-parent="#kt_modal_create_project" data-placeholder="Meslek Gurubu" name="meslek_gurubu">
 															<option></option>
-															<option value="1" >ÇALIŞMIYOR</option>
-                                                            <option value="2" >ÇİFTÇİ</option>
-                                                            <option value="3" >EMEKLİ</option>
-                                                            <option value="4" >EMEKLİ ÇALIŞAN</option>
-                                                            <option value="5" >EV HANIMI</option>
-                                                            <option value="6" >KAMU SEKTÖR ÜCRETLİ</option>
-                                                            <option value="7" >ÖĞRENCİ</option>
-                                                            <option value="8" >ÖZEL SEKTÖR ÜCRETLİ</option>
-                                                            <option value="9" >SERBEST MESLEK SAHİBİ</option>
+															<option value="ÇALIŞMIYOR" >ÇALIŞMIYOR</option>
+                                                            <option value="ÇİFTÇİ" >ÇİFTÇİ</option>
+                                                            <option value="EMEKLİ" >EMEKLİ</option>
+                                                            <option value="EMEKLİ ÇALIŞAN" >EMEKLİ ÇALIŞAN</option>
+                                                            <option value="EV HANIMI" >EV HANIMI</option>
+                                                            <option value="KAMU SEKTÖR ÜCRETLİ" >KAMU SEKTÖR ÜCRETLİ</option>
+                                                            <option value="ÖĞRENCİ" >ÖĞRENCİ</option>
+                                                            <option value="ÖZEL SEKTÖR ÜCRETLİ" >ÖZEL SEKTÖR ÜCRETLİ</option>
+                                                            <option value="SERBEST MESLEK SAHİBİ" >SERBEST MESLEK SAHİBİ</option>
 													</select>
 												</div>
 												<!--end::Col-->
 											</div>
 											<!--end::Input group-->
 
-											
+											<!--begin::Input group-->
+											<div class="row g-9 mb-8">
+												<!--begin::Col-->
+												<div class="col-md-6 fv-row">
+													<label class="required fs-6 fw-semibold mb-2">Meslek</label>
+													<select class="form-select form-select-solid" data-control="select2"  data-dropdown-parent="#kt_modal_create_project" data-placeholder="Meslek" name="meslek" >
+														<option></option>
+															<option value="1">AKADEMİSYEN</option>
+															<option value="2">ANTRENÖR / TEKNİK DİREKTÖR</option>
+															<option value="3">AŞÇI</option>
+															<option value="4">AVUKAT</option>
+															<option value="5">AYAKKABI İMALATÇISI / SATIŞI</option>
+															<option value="6">BAKAN / MİLLETVEKİLİ / SİYASİ PARTİ TEMSİLCİSİ</option>
+															<option value="7">BALIKÇI / DALGIÇ</option>
+															<option value="8">BANKACI, FİNANS ÇALIŞANI</option>
+															<option value="9">BARMEN-BARMAİD-ANİMATÖR</option>
+															<option value="10">BİLGİSAYAR BAKIM VE ONARIMCISI</option>
+															<option value="11">BİYOKİMYAGER / BİYOLOG / DİYETİSYEN / KİMYAGER</option>
+															<option value="12">BORSA,YATIRIM UZMANI/FİNANSAL DANIŞMAN/EKONOMİST</option>
+															<option value="13">BOYACI/TESİSATÇI/TAMİRCİ/ÇİLİNGİR/ELEKTRİKÇİ</option>
+															<option value="14">BUTİK / HAZIR GİYİM SATIŞI</option>
+															<option value="16">BÜYÜKELÇİ / KONSOLOS / ATAŞE</option>
+															<option value="15">BÜYÜK FİRMA ORTAĞI / SAHİBİ</option>
+															<option value="17">ÇİFTÇİ</option>
+															<option value="18">DANIŞMAN</option>
+															<option value="19">DERNEK, VAKIF ÇALIŞANI</option>
+															<option value="20">DİĞER</option>
+															<option value="21">DİĞER GELİR SAHİBİ</option>
+															<option value="22">DOKTOR, DİŞ HEKİMİ, PSİKİYATRİST</option>
+															<option value="23">ECZACI</option>
+															<option value="24">EMLAKÇI</option>
+															<option value="25">GARSON</option>
+															<option value="26">GAZETECİ / EDİTÖR / YAZAR</option>
+															<option value="27">GAZİNO VE KUMARHANE ÇALIŞANI</option>
+															<option value="28">GECE KLUBÜ / BAR İŞLETMECİSİ</option>
+															<option value="29">GELİRİ YOK /İŞSİZ</option>
+															<option value="30">GENEL EV ÇALIŞANI</option>
+															<option value="31">GIDA / YEMEK SATIŞ, İŞLETMECİSİ / PASTANE..VS</option>
+															<option value="32">GÜVENLİK GÖREVLİSİ</option>
+															<option value="33">HAKİM / SAVCI</option>
+															<option value="34">HEMŞİRE, HASTA BAKICI, HOST, HOSTES</option>
+															<option value="35">İMALATÇI</option>
+															<option value="36">İŞÇİ</option>
+															<option value="37">İTFAİYECİ</option>
+															<option value="38">JOKEY / SEYİS</option>
+															<option value="39">KAYMAKAM / VALİ / BÜROKRAT</option>
+															<option value="40">KOOPERATİF ÇALIŞANI</option>
+															<option value="41">KOOPERATİF SAHİBİ</option>
+															<option value="42">KUAFÖR, GÜZELLİK UZMANI</option>
+															<option value="44">KÜÇÜK İŞLETME ÇALIŞANI</option>
+															<option value="45">KÜÇÜK İŞLETME ORTAĞI / ESNAF</option>
+															<option value="43">KUYUMCU / HALICI / SARRAF</option>
+															<option value="46">MAKİNİST</option>
+															<option value="47">MEMUR</option>
+															<option value="48">MİMAR</option>
+															<option value="50">MÜFETTİŞ</option>
+															<option value="49">MUHASEBECİ</option>
+															<option value="51">MÜHENDİS</option>
+															<option value="52">NOTER</option>
+															<option value="56">ÖĞRETMEN</option>
+															<option value="53">ORTA DÜZEY YÖNETİCİ</option>
+															<option value="54">OTO GALERİCİSİ, KİRALAMACISI</option>
+															<option value="55">OTO KİRALAMA ÇALIŞANI</option>
+															<option value="57">PİLOT, KAPTAN</option>
+															<option value="58">POLİS, EMNİYET MÜDÜRÜ</option>
+															<option value="59">REKLAM, TANITIM, HALKLA İLİŞKİLER, TV, RADYO</option>
+															<option value="60">SANATÇI, MANKEN, MODELİST, STİLİST, RADYO-TV</option>
+															<option value="61">SATIŞ, MÜŞTERİ TEMSİLCİSİ, SİGORTACI</option>
+															<option value="62">SEKRETER, YÖNETİCİ ASİSTANI</option>
+															<option value="63">SİVİL TOPLUM ÖRGÜTÜ TEMSİLCİSİ</option>
+															<option value="64">SMM, YMM, VERGİ DENETMENİ</option>
+															<option value="68">ŞÖFÖR</option>
+															<option value="65">SPORCU</option>
+															<option value="66">SUBAY / ASTSUBAY / UZMAN ÇAVUŞ</option>
+															<option value="67">SÜRÜCÜ KURSU SAHİBİ</option>
+															<option value="70">TAKSİCİ</option>
+															<option value="71">TAKSİCİ (PLAKA SAHİBİ)</option>
+															<option value="69">TAKSİ DURAĞI SAHİBİ, İŞLETMECİSİ</option>
+															<option value="72">TEKNİSYEN</option>
+															<option value="73">TERZİ, MARANGOZ, KURU TEMİZLEMECİ</option>
+															<option value="74">ÜST DÜZEY YÖNETİCİ</option>
+															<option value="75">VETERİNER</option>
+															<option value="76">ZABITA / BEKÇİ</option>
+                                                    
+
+													</select>
+												</div>
+												<!--end::Col-->
+			
+												<!--begin::Col-->
+												<!--begin::Col-->
+												<div class="col-md-6 fv-row">
+													<label class="required fs-6 fw-semibold mb-2">Aylık Gelir</label>
+													<input type="text" class="form-control form-control-solid" placeholder="Aylık Gelir" name="aylik gelir" />
+												</div>
+												<!--end::Col-->
+												<!--end::Col-->
+											</div>
+											<!--end::Input group-->
+
+											<!--begin::Input group-->
+											<div class="row g-9 mb-8">
+												<!--begin::Col-->
+												<div class="col-md-6 fv-row">
+													<label class="required fs-6 fw-semibold mb-2">Sosyal Güvenlik</label>
+													<select class="form-select form-select-solid" data-control="select2" data-hide-search="true" data-dropdown-parent="#kt_modal_create_project" data-placeholder="Sosyal Güvenlik" name="sosyal_guvenlik" >
+														<option></option>
+														<option value="BAĞKUR">BAĞKUR</option>
+														<option value="EMEKLİ SANDIĞI">EMEKLİ SANDIĞI</option>
+														<option value="ÖZEL">ÖZEL</option>
+														<option value="SOSYAL GÜVENLİK KURUMU">SOSYAL GÜVENLİK KURUMU</option>
+													</select>
+												</div>
+												<!--end::Col-->
+			
+												<!--begin::Col-->
+												<div class="col-md-6 fv-row">
+													<label class="required fs-6 fw-semibold mb-2">Sektör</label>
+													<select class="form-select form-select-solid" data-control="select2"  data-dropdown-parent="#kt_modal_create_project" data-placeholder="Sektör" name="sektor">
+														<option></option>
+														<option value="1">AĞAÇ VE AĞAÇ ÜRÜNLERİ SANAYİ</option>
+														<option value="2">ARAŞTIRMA / DANIŞMANLIK</option>
+														<option value="3">BELEDİYE</option>
+														<option value="4">BİLİŞİM / ELEKTRONİK</option>
+														<option value="5">DAYANIKLI TÜKETİM ÜRÜNLERİ</option>
+														<option value="6">DEMİR ÇELİK ANA SANAYİ</option>
+														<option value="7">DEVLET DAİRESİ / YEREL YÖNETİM</option>
+														<option value="9">DİĞER HİZMETLER</option>
+														<option value="10">DİĞER TAŞIT/MAKİNE/TEÇHİZAT SATIŞI</option>
+														<option value="8">DIŞ TİCARET / GÜMRÜKLEME</option>
+														<option value="11">EĞİTİM</option>
+														<option value="12">ELEKTRİK / ELEKTRONİK / BİLGİSAYAR</option>
+														<option value="13">ELEKTRİKLİ OPTİK ALETLER</option>
+														<option value="14">ENERJİ / AKARYAKIT</option>
+														<option value="15">FİNANS / BANKACILIK</option>
+														<option value="16">GIDA</option>
+														<option value="17">GÜVENLİK / TEMİZLİK</option>
+														<option value="18">HUKUK</option>
+														<option value="19">İMALAT</option>
+														<option value="20">İNŞAAT / TAAHHÜT İŞLERİ</option>
+														<option value="21">KİMYA / PETROKİMYA / KOZMETİK</option>
+														<option value="22">KOMİSYONCULUK</option>
+														<option value="23">KOOPERATİF</option>
+														<option value="25">KÜLTÜR / SANAT</option>
+														<option value="24">KURYE HİZMETLERİ</option>
+														<option value="26">LOJİSTİK / DEPOLAMA</option>
+														<option value="27">MADENCİLİK</option>
+														<option value="28">MAKİNE / YEDEK PARÇA ÜRETİM</option>
+														<option value="29">MEDYA / REKLAM</option>
+														<option value="30">MUHASEBE / MÜŞAVİRLİK</option>
+														<option value="31">MÜHENDİSLİK</option>
+														<option value="32">OTO KİRALAMA</option>
+														<option value="33">OTOMOTİV</option>
+														<option value="34">SAĞLIK / İLAÇ</option>
+														<option value="39">ŞANS OYUNLARI</option>
+														<option value="36">SİLAHLI KUVVETLER / EMNİYET MENSUPLARI</option>
+														<option value="35">SİLAH VE SAVUNMA SANAYİ</option>
+														<option value="37">SPOR</option>
+														<option value="38">SU TOPLAMA / ARITIM VE DAĞITIMI</option>
+														<option value="40">TARIM / HAYVANCILIK</option>
+														<option value="42">TAŞIMACILIK</option>
+														<option value="41">TAŞ / TOPRAK / CAM</option>
+														<option value="43">TEKSTİL / MEFRUŞAT / GİYİM</option>
+														<option value="44">TELEKOMÜNİKASYON / HABERLEŞME</option>
+														<option value="45">TURİZM / EĞLENCE / ORGANİZASYON</option>
+													</select>
+												</div>
+												<!--end::Col-->
+											</div>
+											<!--end::Input group-->
+
+											<!--begin::Input group-->
+											<div class="row g-9 mb-8">
+												<!--begin::Col-->
+												<div class="col-md-6 fv-row">
+													<label class="required fs-6 fw-semibold mb-2">Çalışma Süresi - Yıl</label>
+													<input type="text" class="form-control form-control-solid" placeholder="Çalışma Süresi - Yıl" name="calisma_suresi_yil" />
+												</div>
+												<!--end::Col-->
+												<!--begin::Col-->
+												<div class="col-md-6 fv-row">
+													<label class="required fs-6 fw-semibold mb-2">Çalışma Süresi - Ay</label>
+													<input type="text" class="form-control form-control-solid" placeholder="Çalışma Süresi - Ay" name="calisma_suresi_ay" />
+												</div>
+												<!--end::Col-->
+											</div>
+											<!--end::Input group-->
+
 											<!--begin::Input group-->
 											<div class="fv-row mb-15">
 												<!--begin::Wrapper-->
 												<div class="d-flex flex-stack">
 													<!--begin::Label-->
 													<div class="me-5">
-														<label class="fs-6 fw-semibold">Bildirimler</label>
-														<div class="fs-7 fw-semibold text-muted">Deneme alanı</div>
+														<label class=" fs-6 fw-semibold"></label>
+														<div class="fs-3 fw-semibold text-muted" >Buradaki gereksiz kutuları sor. Meslek gurubuna göre sosyal güvenlik, sektor, calisma sureleri ve is adresi bolumleri kaldırılacak. kaldırırken form verilerini silmeyi unutma.</div>
 													</div>
 													<!--end::Label-->
-													<!--begin::Checkboxes-->
-													<div class="d-flex">
-														<!--begin::Checkbox-->
-														<label class="form-check form-check-custom form-check-solid me-10">
-															<!--begin::Input-->
-															<input class="form-check-input h-20px w-20px" type="checkbox" value="email" name="target_notifications[]" />
-															<!--end::Input-->
-															<!--begin::Label-->
-															<span class="form-check-label fw-semibold">Email</span>
-															<!--end::Label-->
-														</label>
-														<!--end::Checkbox-->
-														<!--begin::Checkbox-->
-														<label class="form-check form-check-custom form-check-solid">
-															<!--begin::Input-->
-															<input class="form-check-input h-20px w-20px" type="checkbox" value="phone" checked="checked" name="target_notifications[]" />
-															<!--end::Input-->
-															<!--begin::Label-->
-															<span class="form-check-label fw-semibold">Phone</span>
-															<!--end::Label-->
-														</label>
-														<!--end::Checkbox-->
-													</div>
-													<!--end::Checkboxes-->
+													
 												</div>
-												<!--end::Wrapper-->
+												<!--begin::Wrapper-->
 											</div>
 											<!--end::Input group-->
+
+											<div class="separator separator-content my-15">İkametgah Adresi</div>
+
+											
+											<!--begin::Input group-->
+											<div class="row g-9 mb-8">
+												<!--begin::Col-->
+												<div class="col-md-6 fv-row">
+													<label class="required fs-6 fw-semibold mb-2">İkamet Tipi</label>
+													<select class="form-select form-select-solid" data-control="select2" data-hide-search="true" data-dropdown-parent="#kt_modal_create_project" data-placeholder="İkamet Tipi" name="ikamet_tipi" >
+														<option></option>
+                                                            <option value="AİLESİNE AİT">AİLESİNE AİT</option>
+                                                            <option value="BAŞKASINA AİT">BAŞKASINA AİT</option>
+															<option value="KENDİSİNE AİT">KENDİSİNE AİT</option>
+                                                            <option value="KİRA">KİRA</option>
+                                                            <option value="KONUT KREDİLİ">KONUT KREDİLİ</option>
+                                                            <option value="LOJMAN">LOJMAN</option>
+													</select>
+												</div>
+												<!--end::Col-->
+			
+												
+											</div>
+											<!--end::Input group-->
+
+											<!--begin::Input group-->
+											<div class="row g-9 mb-8">
+												<!--begin::Col-->
+												<div class="col-md-6 fv-row">
+													<label class="required fs-6 fw-semibold mb-2">İl Seçimi - Ev</label>
+													<select class="form-select form-select-solid" data-control="select2" data-dropdown-parent="#kt_modal_create_project" data-placeholder="İl Seçimi" name="il_secimi_ev" id="il_secimi_ev">
+														<option></option>
+                                                            
+													</select>
+												</div>
+												<!--end::Col-->
+			
+												<!--begin::Col-->
+												<div class="col-md-6 fv-row">
+													<label class="required fs-6 fw-semibold mb-2">İlçe Seçimi - Ev</label>
+													<select class="form-select form-select-solid" data-control="select2"  data-dropdown-parent="#kt_modal_create_project" data-placeholder="İlçe Seçimi" name="ilce_secimi_ev" id="ilce_secimi_ev">
+															<option></option>
+															
+													</select>
+												</div>
+												<!--end::Col-->
+											</div>
+											<!--end::Input group-->
+
+											<!--begin::Input group-->
+											<div class="row g-9 mb-8">
+												<!--begin::Col-->
+												<div class="col-md-6 fv-row">
+													<label class="required fs-6 fw-semibold mb-2">Mahalle</label>
+													<input type="text" class="form-control form-control-solid" placeholder="Mahalle" name="mahalle_ev" />
+												</div>
+												<!--end::Col-->
+												<!--begin::Col-->
+												<div class="col-md-6 fv-row">
+													<label class="required fs-6 fw-semibold mb-2">İkamet Süresi (Ev - Yıl)</label>
+													<input type="text" class="form-control form-control-solid" placeholder="İkamet Süresi (Ev - Yıl)" name="ikamet_sure_ev" />
+												</div>
+												<!--end::Col-->
+											</div>
+											<!--end::Input group-->
+
+											<div class="fv-row mb-8 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid">
+												<!--begin::Label-->
+												<label class="required fs-6 fw-semibold mb-2">Açık Adres</label>
+												<!--end::Label-->
+
+												<!--begin::Input-->
+												<textarea class="form-control form-control-solid" rows="3" placeholder="Açık Adres" name="acik_adres_ev"></textarea>
+												<!--end::Input-->
+											<div class="fv-plugins-message-container invalid-feedback"></div></div>
+											
+											<div class="separator separator-content my-15">İş Adresi</div>
+
+											<!--begin::Input group-->
+											<div class="row g-9 mb-8">
+												<!--begin::Col-->
+												<div class="col-md-6 fv-row">
+													<label class="required fs-6 fw-semibold mb-2">İşyeri Adı</label>
+													<input type="text" class="form-control form-control-solid" placeholder="İşyeri Adı" name="isyeri_adi" />
+												</div>
+												<!--end::Col-->
+												<!--begin::Col-->
+												<div class="col-md-6 fv-row">
+													<label class="required fs-6 fw-semibold mb-2">İş Telefonu</label>
+													<input type="text" class="form-control form-control-solid" placeholder="İş Telefonu" name="isyeri_telefonu" />
+												</div>
+												<!--end::Col-->
+											</div>
+											<!--end::Input group-->
+
+											<!--begin::Input group-->
+											<div class="row g-9 mb-8">
+												<!--begin::Col-->
+												<div class="col-md-6 fv-row">
+													<label class="required fs-6 fw-semibold mb-2">İl Seçimi - İş</label>
+													<select class="form-select form-select-solid" data-control="select2" data-dropdown-parent="#kt_modal_create_project" data-placeholder="İl Seçimi - İş" name="il_secimi_is" id="il_secimi_is">
+														<option></option>
+                                                            
+													</select>
+												</div>
+												<!--end::Col-->
+			
+												<!--begin::Col-->
+												<div class="col-md-6 fv-row">
+													<label class="required fs-6 fw-semibold mb-2">İlçe Seçimi - İş</label>
+													<select class="form-select form-select-solid" data-control="select2"  data-dropdown-parent="#kt_modal_create_project" data-placeholder="İlçe Seçimi - İş" name="ilce_secimi_is" id="ilce_secimi_is">
+															<option></option>
+															
+													</select>
+												</div>
+												<!--end::Col-->
+											</div>
+											<!--end::Input group-->
+											
+											<!--begin::Input group-->
+											<div class="row g-9 mb-8">
+												<!--begin::Col-->
+												<div class="col-md-6 fv-row">
+													<label class="required fs-6 fw-semibold mb-2">Mahalle - İş</label>
+													<input type="text" class="form-control form-control-solid" placeholder="Mahalle - İş" name="mahalle_is" />
+												</div>
+												<!--end::Col-->
+												
+											</div>
+											<!--end::Input group-->
+
+											<div class="fv-row mb-8 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid">
+												<!--begin::Label-->
+												<label class="required fs-6 fw-semibold mb-2">Açık Adres - İş</label>
+												<!--end::Label-->
+
+												<!--begin::Input-->
+												<textarea class="form-control form-control-solid" rows="3" placeholder="Açık Adres - İş" name="acik_adres_is"></textarea>
+												<!--end::Input-->
+											<div class="fv-plugins-message-container invalid-feedback"></div></div>
 
 
 

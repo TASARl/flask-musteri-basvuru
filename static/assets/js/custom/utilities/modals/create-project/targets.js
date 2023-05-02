@@ -198,3 +198,77 @@ if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
   window.KTModalCreateProjectTargets = module.exports =
     KTModalCreateProjectTargets;
 }
+
+$(document).ready(function () {
+  // Load City Options
+  $.get("/il_secimi", function (response) {
+    const cityNames = JSON.parse(response);
+    var select = $("#il_secimi_ev");
+
+    cityNames.forEach((city) => {
+      select.append('<option value="' + city + '">' + city + "</option>");
+    });
+  });
+
+  // Load District Options
+  $("#il_secimi_ev").change(function () {
+    $("#ilce_secimi_ev").empty();
+
+    var il_secimi = $("#il_secimi_ev").val();
+    console.log(il_secimi);
+    $.ajax({
+      url: "/ilce_secimi",
+      method: "GET",
+      data: {
+        il_secimi: il_secimi,
+      },
+      success: function (response) {
+        const ilceName = JSON.parse(response);
+        var select = $("#ilce_secimi_ev");
+
+        ilceName.forEach((ilce_isim) => {
+          select.append(
+            '<option value="' + ilce_isim + '">' + ilce_isim + "</option>"
+          );
+        });
+      },
+    });
+  });
+});
+
+$(document).ready(function () {
+  // Load City Options
+  $.get("/il_secimi", function (response) {
+    const cityNames = JSON.parse(response);
+    var select = $("#il_secimi_is");
+
+    cityNames.forEach((city) => {
+      select.append('<option value="' + city + '">' + city + "</option>");
+    });
+  });
+
+  // Load District Options
+  $("#il_secimi_is").change(function () {
+    $("#ilce_secimi_is").empty();
+
+    var il_secimi = $("#il_secimi_is").val();
+    console.log(il_secimi);
+    $.ajax({
+      url: "/ilce_secimi",
+      method: "GET",
+      data: {
+        il_secimi: il_secimi,
+      },
+      success: function (response) {
+        const ilceName = JSON.parse(response);
+        var select = $("#ilce_secimi_is");
+
+        ilceName.forEach((ilce_isim) => {
+          select.append(
+            '<option value="' + ilce_isim + '">' + ilce_isim + "</option>"
+          );
+        });
+      },
+    });
+  });
+});
