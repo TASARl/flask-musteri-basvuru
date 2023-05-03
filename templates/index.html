@@ -796,7 +796,7 @@
 														<!--begin::Info-->
 														<span class="ms-4">
 															<span class="fs-3 fw-bold text-gray-900 mb-2 d-block">Bireysel</span>
-															<span class="fw-semibold fs-4 text-muted">Böyle bir bilgiye ihtiyacımız varmı. Toplayacağımız bilgilerde ne değğşiklik olur</span>
+															<span class="fw-semibold fs-4 text-muted">lkfsldk</span>
 														</span>
 														<!--end::Info-->
 													</span>
@@ -853,7 +853,7 @@
 													<!--begin::Label-->
 													<div class="me-5">
 														<label class=" fs-6 fw-semibold"></label>
-														<div class="fs-3 fw-semibold text-muted" >Kullanıcı kontrolu yap. Bilgi girişi yapan bizden biri ise görünsün. telefon no anında kontrol. eğer galeri kayıtlıysa ismi getir isim kutusunu deaktif et. isleme baslandı whatsapp mesajı gönder</div>
+														<div class="fs-3 fw-semibold text-muted" >1- Kullanıcı kontrolu yap. Bilgi girişi yapan bizden biri ise görünsün. telefon no anında kontrol. eğer galeri kayıtlıysa ismi getir isim kutusunu deaktif et. isleme baslandı whatsapp mesajı gönder. <br /> 2- bireysel tüzel bilgisine ihtiyaç var mı? eğer ihtiyaç varsa form devamında ne değişiklikler olsun?</div>
 													</div>
 													<!--end::Label-->
 													
@@ -1553,6 +1553,7 @@
 											</div>
 											<!--end::Input group-->
 
+
 											<!--begin::Input group-->
 											<div class="fv-row mb-15">
 												<!--begin::Wrapper-->
@@ -1560,12 +1561,50 @@
 													<!--begin::Label-->
 													<div class="me-5">
 														<label class=" fs-6 fw-semibold"></label>
-														<div class="fs-3 fw-semibold text-muted" >Buradaki gereksiz kutuları sor. Meslek gurubuna göre sosyal güvenlik, sektor, calisma sureleri ve is adresi bolumleri kaldırılacak. kaldırırken form verilerini silmeyi unutma.</div>
+														<div class="fs-3 fw-semibold text-muted" >1- Buradaki gereksiz kutuları sor. Meslek gurubuna göre sosyal güvenlik, sektor, calisma sureleri ve is adresi bolumleri kaldırılacak. kaldırırken form verilerini silmeyi unutma. <br/> 2- aşağıdaki bölüm sadece serbest meslek gurubunda geçerli. bunu iş yeri adresi bölümüne almamı istermisin? iş yeri ili ile vergi dairesi ili herzaman aynımı? vergi dairesi için bu liste yeterli mi? https://docs.google.com/spreadsheets/d/1a7xXkhSK1A3_hEcrxQ5fvodH_vTHeWRe/edit?usp=sharing&ouid=105682936863644779770&rtpof=true&sd=true </div>
 													</div>
 													<!--end::Label-->
 													
 												</div>
 												<!--begin::Wrapper-->
+											</div>
+											<!--end::Input group-->
+
+											<!--begin::Input group-->
+											<div class="row g-9 mb-8">
+												<!--begin::Col-->
+												<div class="col-md-6 fv-row">
+													<label class="required fs-6 fw-semibold mb-2">Vergi Dairesi İl</label>
+													<select class="form-select form-select-solid" data-control="select2" data-dropdown-parent="#kt_modal_create_project" data-placeholder="Vergi Dairesi İl" name="vergi_dairesi_il" id="vergi_dairesi_il">
+														<option></option>
+                                                            
+													</select>
+												</div>
+												<!--end::Col-->
+			
+												<!--begin::Col-->
+												<div class="col-md-6 fv-row">
+													<label class="required fs-6 fw-semibold mb-2">Vergi Dairesi İlçe</label>
+													<select class="form-select form-select-solid" data-control="select2"  data-dropdown-parent="#kt_modal_create_project" data-placeholder="Vergi Dairesi İlçe" name="vergi_dairesi_ilce" id="vergi_dairesi_ilce">
+															<option></option>
+															
+													</select>
+												</div>
+												<!--end::Col-->
+											</div>
+											<!--end::Input group-->
+
+											<!--begin::Input group-->
+											<div class="row g-9 mb-8">
+												<!--begin::Col-->
+												<div class="col-md-6 fv-row">
+													<label class="required fs-6 fw-semibold mb-2">Vergi No</label>
+													<input type="text" class="form-control form-control-solid" placeholder="Vergi No" name="vergi_no" />
+												</div>
+												<!--end::Col-->
+												<!--begin::Col-->
+												
+												<!--end::Col-->
 											</div>
 											<!--end::Input group-->
 
@@ -1708,8 +1747,7 @@
 												<textarea class="form-control form-control-solid" rows="3" placeholder="Açık Adres - İş" name="acik_adres_is"></textarea>
 												<!--end::Input-->
 											<div class="fv-plugins-message-container invalid-feedback"></div></div>
-
-
+											
 
 											<!--begin::Actions-->
 											<div class="d-flex flex-stack">
