@@ -39,6 +39,10 @@ var KTModalCreateProjectSettings = (function () {
     //   // Revalidate the field when an option is chosen
     //   validator.revalidateField("kasko_bedeli");
     // });
+    Inputmask({
+      regex: "^[A-HJ-NPR-Z0-9]{17}$",
+      casing: "upper",
+    }).mask("#sasi_no");
   };
 
   var initValidation = function () {
@@ -57,6 +61,13 @@ var KTModalCreateProjectSettings = (function () {
             notEmpty: {
               message:
                 "Yukarıdaki eksik bilgileri tamamladığınızda kasko bedeli görünecektir",
+            },
+          },
+        },
+        sasi_no: {
+          validators: {
+            notEmpty: {
+              message: "Şasi no yazılmalıdır",
             },
           },
         },
@@ -208,7 +219,7 @@ $(document).ready(function () {
       },
       success: function (response) {
         var select = $("#marka_adi");
-        select.append('<option value="----">----</option>');
+        select.append('<option value=""></option>');
         $.each(response, function (index, value) {
           select.append('<option value="' + value + '">' + value + "</option>");
         });
@@ -233,7 +244,7 @@ $(document).ready(function () {
       },
       success: function (response) {
         var select = $("#tip_adi");
-        select.append('<option value="----">----</option>');
+        select.append('<option value=""></option>');
         $.each(response, function (index, value) {
           select.append('<option value="' + value + '">' + value + "</option>");
         });
@@ -279,34 +290,20 @@ function updateData() {
 }
 
 /////////////////////
-// Kasko Kodu seçiminde ikifarklı sutundan hangisi aktif olacak
+// Kasko Kodu seçiminde swıtch buton fonksıyonu
 
-// Seçenekleri belirleyin
-const secenek1 = document.querySelector(
-  'input[name="aracSecimTipi"][value="1"]'
-);
-const secenek2 = document.querySelector(
-  'input[name="aracSecimTipi"][value="2"]'
-);
+const checkbox = document.getElementById("aracSecimTipiKod");
 
-// Event listenerlarını ekle
-secenek1.addEventListener("change", aracSecimiYapildi);
-secenek2.addEventListener("change", aracSecimiYapildi);
+// Marka ve model div'i görüntülenecek
+const markaModelDiv = document.querySelector(".markaModelDiv");
+markaModelDiv.style.display = "none";
 
-function aracSecimiYapildi(e) {
-  // Seçeneği belirleyin
-  const secilenSecenek = e.target.value;
+// Kasko koduna disabled ozelligi kaldir
+const modelKasko = document.querySelector("#kaskokodu");
+modelKasko.disabled = false;
 
-  // Div'leri gizle veya göster
-  if (secilenSecenek === "1") {
-    // Marka ve model div'i görüntülenecek
-    const markaModelDiv = document.querySelector(".markaModelDiv");
-    markaModelDiv.style.display = "block";
-
-    // Kasko koduna disabled ozelligi ekle
-    const modelKasko = document.querySelector("#kaskokodu");
-    modelKasko.disabled = true;
-  } else if (secilenSecenek === "2") {
+checkbox.addEventListener("change", function () {
+  if (this.checked) {
     // Marka ve model div'i görüntülenecek
     const markaModelDiv = document.querySelector(".markaModelDiv");
     markaModelDiv.style.display = "none";
@@ -314,8 +311,18 @@ function aracSecimiYapildi(e) {
     // Kasko koduna disabled ozelligi kaldir
     const modelKasko = document.querySelector("#kaskokodu");
     modelKasko.disabled = false;
+  } else {
+    // Marka ve model div'i görüntülenecek
+    const markaModelDiv = document.querySelector(".markaModelDiv");
+    markaModelDiv.style.display = "block";
+
+    // Kasko koduna disabled ozelligi ekle
+    const modelKasko = document.querySelector("#kaskokodu");
+    modelKasko.disabled = true;
+
+    $("#model_yili").val(null).trigger("change");
   }
-}
+});
 
 /////////////////////////
 // Kasko kodu degistiginde ajax sorgu yap ve ozet bilgi degistir
@@ -336,7 +343,8 @@ $(document).ready(function () {
       },
       success: function (response) {
         $("#kasko_bedeli").val(response.kaskobedeli);
-        $("#marka_adi").prop("selectedIndex", 0);
+
+        $("#marka_adi").empty();
         $("#tip_adi").empty();
 
         aciklama(response);

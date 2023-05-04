@@ -43,6 +43,8 @@ db = client.otovitrin
 customers = db.musteriler
 users_collection = db['users']
 selected_customers = db.selected_customers
+hazir_veriler = client["form_hazir_verileri"]
+modellerDb = hazir_veriler["modeller"]
 
 
 # ENV degisken ekle
@@ -63,94 +65,136 @@ def basvuru():
     # index.html adlı template'i döndür
     return render_template('basvuru.html', current_user=current_user.id)
 
-@app.route('/form', methods=['POST'])
+@app.route('/form', methods=['GET', 'POST'])
 @login_required
 def form():
-    # Formdan gönderilen verileri al
-    basvuruTuru = request.form.get('basvuruTuru')
-    tc = request.form['tc']
-    ad_soyad = request.form['ad_soyad']
-    dogum_tarihi = request.form['dogum_tarihi']
-    telefon = request.form['telefon']
-    email = request.form['email']
-    aylik_net_gelir = request.form['aylik_net_gelir']
-    kredi_miktar = request.form['kredi_miktar']
-    kredi_vadesi = request.form['kredi_vadesi']
-    calisma_sekli = request.form['calisma_sekli']
-    il_secimi = request.form['il_secimi']
-    model_yili = request.form['model_yili']
-    marka_adi = request.form['marka_adi']
-    tip_adi = request.form['tip_adi']
-    kasko_bedeli = request.form.get('kasko_bedeli', 0)
-    kaskokodu = request.form.get('kaskokodu', 0)
+    if request.method == 'POST':
+        # basvuruTuru = request.form.get('basvuruTuru', '')
+        # galeri_telefonu = request.form.get('galeri_telefonu', '')
+        # galeri_adi = request.form.get('galeri_adi', '')
+        # model_yili = request.form.get('model_yili', '')
+        # marka_adi = request.form.get('marka_adi', '')
+        # tip_adi = request.form.get('tip_adi', '')
+        # kaskokodu = request.form.get('kaskokodu', '')
+        # kasko_bedeli = request.form.get('kasko_bedeli', '')
+        # sasi_no = request.form.get('sasi_no', '')
+        # motor_no = request.form.get('motor_no', '')
+        # tescil_belge_no = request.form.get('tescil_belge_no', '')
+        # arac_plakasi = request.form.get('arac_plakasi', '')
+        # arac_satis_tutari = request.form.get('arac_satis_tutari', '')
+        # kredi_tutari = request.form.get('kredi_tutari', '')
+        # target_tags = request.form.get('target_tags', '')
+        # musteri_cep_telefonu = request.form.get('musteri_cep_telefonu', '')
+        # tc = request.form.get('tc', '')
+        # adi = request.form.get('adi', '')
+        # soyadi = request.form.get('soyadi', '')
+        # kimlik_seri = request.form.get('kimlik_seri', '')
+        # dogum_tarihi = request.form.get('dogum_tarihi', '')
+        # egitim_durumu = request.form.get('egitim_durumu', '')
+        # meslek_gurubu = request.form.get('meslek_gurubu', '')
+        # meslek = request.form.get('meslek', '')
+        # aylik_gelir = request.form.get('aylik_gelir', '')
+        # sosyal_guvenlik = request.form.get('sosyal_guvenlik', '')
+        # sektor = request.form.get('sektor', '')
+        # calisma_suresi_yil = request.form.get('calisma_suresi_yil', '')
+        # calisma_suresi_ay = request.form.get('calisma_suresi_ay', '')
+        # vergi_dairesi_il = request.form.get('vergi_dairesi_il', '')
+        # vergi_dairesi_ilce = request.form.get('vergi_dairesi_ilce', '')
+        # vergi_no = request.form.get('vergi_no', '')
+        
+        data = request.json
 
-    # tc = request.form.get('tc', 'boş')
-    # ad_soyad = request.form.get('ad_soyad', 'boş')
-    # dogum_tarihi = request.form.get('dogum_tarihi')
-    # telefon = request.form.get('telefon', 'boş')
-    # email = request.form.get('email', 'boş')
-    # calisma_durumu = request.form.get('calisma_durumu', 'boş')
-    # aylik_net_gelir = request.form.get('aylik_net_gelir', 'boş')
-    # kredi_miktar = request.form.get('kredi_miktar', 'boş')
-    # kredi_vadesi = request.form.get('kredi_vadesi', 'boş')
-    # calisma_sekli = request.form.get('calisma_sekli', 'boş')
+        # form gonderildiginde kasko kodu ve model yili verisiyle arac marka modeli getirilir
+        kasko_kodu = str(request.json.get('kaskokodu'))
+        model_yili = int(request.json.get('model_yili'))
 
-    # Dogum tarihi donustur
-    if (dogum_tarihi):
-        dogum_tarihi_str = dogum_tarihi 
-        dogum_tarihi_obj = datetime.strptime(dogum_tarihi_str, '%Y-%m-%d')
-        dogum_tarihi_formatted = dogum_tarihi_obj.strftime('%d.%m.%Y')
-    else:
-        dogum_tarihi_formatted= 0
+        if model_yili is not None:
+            # Veritabanından model yılına ait araci çek
+            arac_kasko_bedel = modellerDb.find_one({
+                                            "Model yılı": model_yili,
+                                            "Kasko Kodu": kasko_kodu
+                                            })
+            
+        if arac_kasko_bedel is not None:
+            data["marka_adi"] = arac_kasko_bedel['Marka']
+            data["tip_adi"] = arac_kasko_bedel['Model']
+            
+        # deneme = request.json.get('marka_adi')
+        
+        
+        # Burada formdan gelen verileri kullanarak bir şeyler yapabilirsiniz
+        # Örneğin, verileri bir veritabanına kaydedebilirsiniz
+        
+        
+        # Formdan gönderilen verileri al
+        # basvuruTuru = request.form.get('basvuruTuru')
+        # tc = request.form['tc']
+        # ad_soyad = request.form['ad_soyad']
+        # dogum_tarihi = request.form['dogum_tarihi']
+        # telefon = request.form['telefon']
+        # email = request.form['email']
+        # aylik_net_gelir = request.form['aylik_net_gelir']
+        # kredi_miktar = request.form['kredi_miktar']
+        # kredi_vadesi = request.form['kredi_vadesi']
+        # calisma_sekli = request.form['calisma_sekli']
+        # il_secimi = request.form['il_secimi']
+        # model_yili = request.form['model_yili']
+        # marka_adi = request.form['marka_adi']
+        # tip_adi = request.form['tip_adi']
+        # kasko_bedeli = request.form.get('kasko_bedeli', 0)
+        # kaskokodu = request.form.get('kaskokodu', 0)
 
-    data = {
-        'basvuruTuru': basvuruTuru,
-        'tc': tc,
-        'ad_soyad': ad_soyad,
-        'dogum_tarihi': dogum_tarihi_formatted,
-        'telefon': telefon,
-        'email': email,
-        'aylik_net_gelir': aylik_net_gelir,
-        'calisma_sekli': calisma_sekli,
-        'kredi_miktar': kredi_miktar,
-        'kredi_vadesi': kredi_vadesi,
-        'il_secimi': il_secimi,
-        'arac':{'model_yili': model_yili,
-        'marka_adi' : marka_adi,
-        'tip_adi' : tip_adi,
-        'kasko_bedeli': kasko_bedeli,
-        'kaskokodu':kaskokodu},
-        'timestamp': datetime.now()
-    }
+        # tc = request.form.get('tc', 'boş')
+        # ad_soyad = request.form.get('ad_soyad', 'boş')
+        # dogum_tarihi = request.form.get('dogum_tarihi')
+        # telefon = request.form.get('telefon', 'boş')
+        # email = request.form.get('email', 'boş')
+        # calisma_durumu = request.form.get('calisma_durumu', 'boş')
+        # aylik_net_gelir = request.form.get('aylik_net_gelir', 'boş')
+        # kredi_miktar = request.form.get('kredi_miktar', 'boş')
+        # kredi_vadesi = request.form.get('kredi_vadesi', 'boş')
+        # calisma_sekli = request.form.get('calisma_sekli', 'boş')
 
+        # Dogum tarihi donustur
+        # if (dogum_tarihi):
+        #     dogum_tarihi_str = dogum_tarihi 
+        #     dogum_tarihi_obj = datetime.strptime(dogum_tarihi_str, '%Y-%m-%d')
+        #     dogum_tarihi_formatted = dogum_tarihi_obj.strftime('%d.%m.%Y')
+        # else:
+        #     dogum_tarihi_formatted= 0
 
-    result = customers.insert_one(data)
+        # data = {
+        #     'basvuruTuru': basvuruTuru,
+        #     'tc': tc,
+        #     'ad_soyad': ad_soyad,
+        #     'dogum_tarihi': dogum_tarihi_formatted,
+        #     'telefon': telefon,
+        #     'email': email,
+        #     'aylik_net_gelir': aylik_net_gelir,
+        #     'calisma_sekli': calisma_sekli,
+        #     'kredi_miktar': kredi_miktar,
+        #     'kredi_vadesi': kredi_vadesi,
+        #     'il_secimi': il_secimi,
+        #     'arac':{'model_yili': model_yili,
+        #     'marka_adi' : marka_adi,
+        #     'tip_adi' : tip_adi,
+        #     'kasko_bedeli': kasko_bedeli,
+        #     'kaskokodu':kaskokodu},
+        #     'timestamp': datetime.now()
+        # }
 
-    document_id = result.inserted_id
-    print(f"_id of inserted document {document_id}")
+        
 
+        result = customers.insert_one(data)
 
-    # # Verileri bir TXT dosyasına yaz
-    # dosya_adi = f"{tc}.txt"
+        document_id = result.inserted_id
+        print(f"_id of inserted document {document_id}")
 
-    # with open(dosya_adi, "w") as f:
-    #     f.write("")
-
-    # with open(dosya_adi, "a") as f:
-    #     f.write(f"TC Kimlik Numarası: {tc}\n")
-    #     f.write(f"Ad Soyad: {ad_soyad}\n")
-    #     f.write(f"Doğum Tarihi: {dogum_tarihi_formatted}\n")
-    #     f.write(f"Telefon: {telefon}\n")
-    #     f.write(f"E-posta: {email}\n")
-    #     f.write(f"Çalışma Durumu: {calisma_durumu}\n")
-    #     f.write(f"Aylık Net Gelir: {aylik_net_gelir}\n")
-    #     f.write(f"Çalışma Şekli: {calisma_sekli}\n")
-    #     f.write(f"Kredi Talep Edilen Miktar: {kredi_miktar}\n")
-    #     f.write(f"Kredi Vadesi: {kredi_vadesi}\n")
-    #     f.write(f"İl: {il_secimi}\n")
-
-    # Başarılı bir şekilde kaydedildi sayfasını göster
-    return render_template('kaydedildi.html', tc=tc, current_user=current_user.id)
+        # Başarılı bir şekilde kaydedildi sayfasını göster
+        return jsonify({'message': 'Form kaydedildi'}), 200
+        
+        return render_template('kaydedildi.html', tc=request.json.get('tc'), current_user=current_user.id)
+    return jsonify({'message': 'Form gonderilmedi'}), 401
 
 
 # GET isteği ile müşterileri pagination ile getirme
@@ -353,8 +397,6 @@ def logout():
 
 ####### ARAC SECIMI BASLANGIC  ####
 
-hazir_veriler = client["form_hazir_verileri"]
-modellerDb = hazir_veriler["modeller"]
 
 # Model Yılı Seçenekleri endpoint'i
 @app.route('/model_yili_secenekleri', methods=['GET'])
@@ -450,7 +492,6 @@ def fiyat2():
 hazir_veriler = client["form_hazir_verileri"]
 il_ilce_tb = hazir_veriler["il_ilce"]
 
-# Model Yılı Seçenekleri endpoint'i
 @app.route('/il_secimi', methods=['GET'])
 def il_secimi():
     # Veritabanından tüm model yıllarını çek
@@ -478,7 +519,54 @@ def ilce_secimi():
 
     return json_response, 200
 
+
+# vergi daireleri il ilce sorgu
+vergi_daire_il_ilceler = hazir_veriler["vergi_daireleri"]
+
+@app.route('/vergi_ilce_secimi', methods=['GET'])
+def vergi_ilce_secimi():
+    def turkish_upper(text):
+        # Türkçe karakterleri büyütme
+        text = text.replace("i", "İ").replace("ı", "I").upper()
+        return text
+    
+    # İstemciden ili al
+    il = turkish_upper(request.args.get('il_secimi'))
+    print(il)
+    # Veritabanından model yılına ait markai çek
+    ilceler = vergi_daire_il_ilceler.distinct('vergi_dairesi', {'ili': il})
+    
+    # JSON formatında modelleri döndür
+    
+    
+    json_response = json.dumps(ilceler, ensure_ascii=False)
+
+    return json_response, 200
 ####### il ilçe SECIMI SON  ####
+
+
+####### Telefondan Oto Galeri bul baslangic  ####
+
+@app.route('/galeri_sorgu', methods=['GET'])
+def galeri_sorgu():
+    # İstemciden ili al
+    galeri_telefonu = request.args.get('galeri_telefonu')
+    
+    # Veritabanından model yılına ait markai çek
+    user = users_collection.find_one({'username': galeri_telefonu})
+    
+    # JSON formatında modelleri döndür
+    if user:
+        json_response = {
+            'galeri_adi': user['gallery_name'],
+            'galeri_il': user['city']
+        }
+        return json_response, 200
+    
+    return jsonify({'message': 'Galeri kayıtlı değil'}), 401
+
+####### Telefondan Oto Galeri bul son  ####
+
 
 if __name__ == '__main__':
     app.run(debug=True)

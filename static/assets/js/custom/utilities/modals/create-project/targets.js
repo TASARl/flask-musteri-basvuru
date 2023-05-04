@@ -40,6 +40,12 @@ var KTModalCreateProjectTargets = (function () {
     });
 
     // Expiry year. For more info, plase visit the official plugin site: https://select2.org/
+    $(form.querySelector('[name="egitim_durumu"]')).on("change", function () {
+      // Revalidate the field when an option is chosen
+      validator.revalidateField("egitim_durumu");
+    });
+
+    // Expiry year. For more info, plase visit the official plugin site: https://select2.org/
     // $(form.querySelector('[name="target_assign"]')).on("change", function () {
     //   // Revalidate the field when an option is chosen
     //   validator.revalidateField("target_assign");
@@ -208,6 +214,18 @@ $(document).ready(function () {
     cityNames.forEach((city) => {
       select.append('<option value="' + city + '">' + city + "</option>");
     });
+
+    var select = $("#il_secimi_is");
+
+    cityNames.forEach((city) => {
+      select.append('<option value="' + city + '">' + city + "</option>");
+    });
+
+    var select = $("#vergi_dairesi_il");
+
+    cityNames.forEach((city) => {
+      select.append('<option value="' + city + '">' + city + "</option>");
+    });
   });
 
   // Load District Options
@@ -237,16 +255,6 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-  // Load City Options
-  $.get("/il_secimi", function (response) {
-    const cityNames = JSON.parse(response);
-    var select = $("#il_secimi_is");
-
-    cityNames.forEach((city) => {
-      select.append('<option value="' + city + '">' + city + "</option>");
-    });
-  });
-
   // Load District Options
   $("#il_secimi_is").change(function () {
     $("#ilce_secimi_is").empty();
@@ -270,5 +278,44 @@ $(document).ready(function () {
         });
       },
     });
+  });
+});
+
+// vergi dairesi ilce menusu yukle
+$(document).ready(function () {
+  // Load District Options
+  $("#vergi_dairesi_il").change(function () {
+    $("#vergi_dairesi_ilce").empty();
+
+    var il_secimi = $("#vergi_dairesi_il").val();
+
+    $.ajax({
+      url: "/vergi_ilce_secimi",
+      method: "GET",
+      data: {
+        il_secimi: il_secimi,
+      },
+      success: function (response) {
+        const ilceName = JSON.parse(response);
+        var select = $("#vergi_dairesi_ilce");
+
+        ilceName.forEach((ilce_isim) => {
+          select.append(
+            '<option value="' + ilce_isim + '">' + ilce_isim + "</option>"
+          );
+        });
+      },
+    });
+  });
+});
+
+// vergi dairesi ilce menusu yukle
+$(document).ready(function () {
+  // Load District Options
+  $("#meslek_gurubu").change(function () {
+    $("#sosyal_guvenlik").val(null).trigger("change");
+    $("#sektor").val(null).trigger("change");
+    $("#calisma_suresi_yil").val(null).trigger("change");
+    $("#calisma_suresi_ay").val(null).trigger("change");
   });
 });

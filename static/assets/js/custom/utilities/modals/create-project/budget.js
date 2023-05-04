@@ -15,13 +15,6 @@ var KTModalCreateProjectBudget = (function () {
     // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
     validator = FormValidation.formValidation(form, {
       fields: {
-        sasi_no: {
-          validators: {
-            notEmpty: {
-              message: "Şasi no yazılmalıdır",
-            },
-          },
-        },
         // budget_setup: {
         //   validators: {
         //     notEmpty: {
@@ -32,7 +25,6 @@ var KTModalCreateProjectBudget = (function () {
         //       callback: function (input) {
         //         var currency = input.value;
         //         currency = currency.replace(/[$,]+/g, "");
-
         //         if (parseFloat(currency) < 100) {
         //           return false;
         //         }

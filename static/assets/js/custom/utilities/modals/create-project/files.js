@@ -26,19 +26,12 @@ var KTModalCreateProjectFiles = (function () {
     //   // Revalidate the field when an option is chosen
     //   validator.revalidateField("tags");
     // });
-
     // Due date. For more info, please visit the official plugin site: https://flatpickr.js.org/
     // var dueDate = $(form.querySelector('[name="dogum_tarihi"]'));
     // dueDate.flatpickr({
     //   enableTime: false,
     //   dateFormat: "d.m.Y",
     // });
-
-    // Expiry year. For more info, plase visit the official plugin site: https://select2.org/
-    $(form.querySelector('[name="egitim_durumu"]')).on("change", function () {
-      // Revalidate the field when an option is chosen
-      validator.revalidateField("egitim_durumu");
-    });
   };
 
   var initValidation = function () {
@@ -112,23 +105,103 @@ var KTModalCreateProjectFiles = (function () {
 
             // Simulate form submission
             setTimeout(function () {
-              // Simulate form submission
-              nextButton.removeAttribute("data-kt-indicator");
+              const data = {
+                basvuruTuru: $('input[name="basvuruTuru"]').val(),
+                galeri_telefonu: $('input[name="galeri_telefonu"]').val(),
+                galeri_adi: $('input[name="galeri_adi"]').val(),
+                model_yili: $('select[name="model_yili"]').val(),
+                kaskokodu: $('input[name="kaskokodu"]').val(),
+                kasko_bedeli: $('input[name="kasko_bedeli"]').val(),
+                sasi_no: $('input[name="sasi_no"]').val(),
+                motor_no: $('input[name="motor_no"]').val(),
+                tescil_belge_no: $('input[name="tescil_belge_no"]').val(),
+                arac_plakasi: $('input[name="arac_plakasi"]').val(),
+                arac_satis_tutari: $('input[name="arac_satis_tutari"]').val(),
+                kredi_tutari: $('input[name="kredi_tutari"]').val(),
+                kredi_vadesi: $('input[name="target_tags"]').val(),
+                musteri_cep_telefonu: $(
+                  'input[name="musteri_cep_telefonu"]'
+                ).val(),
+                tc: $('input[name="tc"]').val(),
+                adi: $('input[name="adi"]').val(),
+                soyadi: $('input[name="soyadi"]').val(),
+                kimlik_seri: $('input[name="kimlik_seri"]').val(),
+                dogum_tarihi: $('input[name="dogum_tarihi"]').val(),
+                egitim_durumu: $('select[name="egitim_durumu"]').val(),
+                meslek_gurubu: $('select[name="meslek_gurubu"]').val(),
+                meslek: $('select[name="meslek"]').val(),
+                aylik_gelir: $('input[name="aylik_gelir"]').val(),
+                sosyal_guvenlik: $('select[name="sosyal_guvenlik"]').val(),
+                sektor: $('select[name="sektor"]').val(),
+                calisma_suresi_yil: $('input[name="calisma_suresi_yil"]').val(),
+                acik_adres_ev: $('input[name="calisma_suresi_ay"]').val(),
+                vergi_dairesi_il: $('select[name="vergi_dairesi_il"]').val(),
+                vergi_dairesi_ilce: $(
+                  'select[name="vergi_dairesi_ilce"]'
+                ).val(),
+                vergi_no: $('input[name="vergi_no"]').val(),
+                ikamet_tipi: $('select[name="ikamet_tipi"]').val(),
+                il_secimi_ev: $('select[name="il_secimi_ev"]').val(),
+                ilce_secimi_ev: $('select[name="ilce_secimi_ev"]').val(),
+                mahalle_ev: $('input[name="mahalle_ev"]').val(),
+                ikamet_sure_ev: $('input[name="ikamet_sure_ev"]').val(),
+                acik_adres_ev: $('input[name="acik_adres_ev"]').val(),
+                isyeri_adi: $('input[name="ikamet_sure_ev"]').val(),
+                isyeri_telefonu: $('input[name="isyeri_telefonu"]').val(),
+                il_secimi_is: $('select[name="il_secimi_is"]').val(),
+                ilce_secimi_is: $('select[name="ilce_secimi_is"]').val(),
+                mahalle_is: $('input[name="mahalle_is"]').val(),
+                acik_adres_is: $('input[name="acik_adres_is"]').val(),
+              };
 
-              // Enable button
-              nextButton.disabled = false;
+              // Check axios library docs: https://axios-http.com/docs/intro
+              axios
+                .post("/form", data)
+                .then(function (response) {
+                  if (response) {
+                    form.querySelector('[name="galeri_telefonu"]').value = "";
 
-              // Go to next step
-              stepper.goNext();
+                    // Simulate form submission
+                    nextButton.removeAttribute("data-kt-indicator");
 
-              // modal yukari kaydir
-              $("#kt_modal_create_project .modal-body").animate(
-                {
-                  scrollTop: 0,
-                },
-                500
-              );
-              ////
+                    // Enable button
+                    nextButton.disabled = false;
+
+                    // Go to next step
+                    stepper.goNext();
+
+                    // modal yukari kaydir
+                    $("#kt_modal_create_project .modal-body").animate(
+                      {
+                        scrollTop: 0,
+                      },
+                      500
+                    );
+                    ////
+                  } else {
+                    // Show error popup. For more info check the plugin's official documentation: https://sweetalert2.github.io/
+                    Swal.fire({
+                      text: "Bir sorun oluştu.",
+                      icon: "error",
+                      buttonsStyling: false,
+                      confirmButtonText: "Tamam",
+                      customClass: {
+                        confirmButton: "btn btn-primary",
+                      },
+                    });
+                  }
+                })
+                .catch(function (error) {
+                  Swal.fire({
+                    text: "Kayıt esnasında bir problem oluştu.",
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "Tamam",
+                    customClass: {
+                      confirmButton: "btn btn-primary",
+                    },
+                  });
+                });
             }, 1500);
           } else {
             // Enable button

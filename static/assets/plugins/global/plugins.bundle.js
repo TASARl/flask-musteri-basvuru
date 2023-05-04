@@ -18219,10 +18219,10 @@ S2.define('select2/i18n/en',[],function () {
       return message;
     },
     noResults: function () {
-      return 'No results found';
+      return 'Hiç sonuç bulunamadı';
     },
     searching: function () {
-      return 'Searching…';
+      return 'Aranıyor…';
     },
     removeAllItems: function () {
       return 'Remove all items';
@@ -18231,7 +18231,7 @@ S2.define('select2/i18n/en',[],function () {
       return 'Remove item';
     },
     search: function() {
-      return 'Search';
+      return 'Ara';
     }
   };
 });
