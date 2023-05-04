@@ -773,13 +773,14 @@
 												<!--begin::Col-->
 												<div class="col-md-6 fv-row">
 													<label class="required fs-6 fw-semibold mb-2">Araç Plakası</label>
-													<input type="text" class="form-control form-control-solid" placeholder="Araç Plakası" name="arac_plakasi" />
+													<input type="text" class="form-control form-control-solid" placeholder="Araç Plakası" name="arac_plakasi" id="arac_plakasi"/>
 												</div>
 												<!--end::Col-->
 											</div>
 											<!--end::Input group-->
 											
-											
+											<div class="separator border-light my-10"></div>
+
 											<!--begin::Input group-->
 											<div class="fv-row mb-8">
 												<!--begin::Label-->
@@ -1068,7 +1069,7 @@
 											<!--begin::Input group-->
 											<div class="fv-row mb-8">
 												<label class="fs-6 required fw-semibold mb-2">Cep Telefonu Numarası</label>
-												<input type="text" class="form-control form-control-solid" placeholder="Cep Telefonu Numarası" name="musteri_cep_telefonu" />
+												<input type="text" class="form-control form-control-solid" placeholder="Cep Telefonu Numarası" name="musteri_cep_telefonu" id="musteri_cep_telefonu" />
 											</div>
 											<!--end::Input group-->
 
@@ -1267,6 +1268,7 @@
 											</div>
 											<!--end::Input group-->
 
+										<div id="calisma_detay_bilgi" style="display:none;" >
 											<!--begin::Input group-->
 											<div class="row g-9 mb-8">
 												<!--begin::Col-->
@@ -1355,22 +1357,11 @@
 											</div>
 											<!--end::Input group-->
 
+										</div>
 
-											<!--begin::Input group-->
-											<div class="fv-row mb-15">
-												<!--begin::Wrapper-->
-												<div class="d-flex flex-stack">
-													<!--begin::Label-->
-													<div class="me-5">
-														<label class=" fs-6 fw-semibold"></label>
-														<div class="fs-3 fw-semibold text-muted" >1- Buradaki gereksiz kutuları sor. Meslek gurubuna göre sosyal güvenlik, sektor, calisma sureleri ve is adresi bolumleri kaldırılacak. kaldırırken form verilerini silmeyi unutma. <br/> 2- aşağıdaki bölüm sadece serbest meslek gurubunda geçerli. bunu iş yeri adresi bölümüne almamı istermisin? iş yeri ili ile vergi dairesi ili herzaman aynımı? vergi dairesi için bu liste yeterli mi? https://docs.google.com/spreadsheets/d/1a7xXkhSK1A3_hEcrxQ5fvodH_vTHeWRe/edit?usp=sharing&ouid=105682936863644779770&rtpof=true&sd=true </div>
-													</div>
-													<!--end::Label-->
-													
-												</div>
-												<!--begin::Wrapper-->
-											</div>
-											<!--end::Input group-->
+											
+
+										<div id="vergi_dairesi_bilgi" style="display:none;" >
 
 											<!--begin::Input group-->
 											<div class="row g-9 mb-8">
@@ -1401,7 +1392,7 @@
 												<!--begin::Col-->
 												<div class="col-md-6 fv-row">
 													<label class="required fs-6 fw-semibold mb-2">Vergi No</label>
-													<input type="text" class="form-control form-control-solid" placeholder="Vergi No" name="vergi_no" />
+													<input type="text" class="form-control form-control-solid" placeholder="Vergi No" name="vergi_no" id="vergi_no" />
 												</div>
 												<!--end::Col-->
 												<!--begin::Col-->
@@ -1409,7 +1400,7 @@
 												<!--end::Col-->
 											</div>
 											<!--end::Input group-->
-
+										</div>
 											<div class="separator separator-content my-15">İkametgah Adresi</div>
 
 											
@@ -1485,6 +1476,7 @@
 												<!--end::Input-->
 											<div class="fv-plugins-message-container invalid-feedback"></div></div>
 											
+										<div id="is_adresi_bilgi" style="display:none;" >	
 											<div class="separator separator-content my-15">İş Adresi</div>
 
 											<!--begin::Input group-->
@@ -1549,7 +1541,7 @@
 												<textarea class="form-control form-control-solid" rows="3" placeholder="Açık Adres - İş" name="acik_adres_is"></textarea>
 												<!--end::Input-->
 											<div class="fv-plugins-message-container invalid-feedback"></div></div>
-											
+										</div>
 
 											<!--begin::Actions-->
 											<div class="d-flex flex-stack">

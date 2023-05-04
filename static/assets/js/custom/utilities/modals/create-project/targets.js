@@ -31,13 +31,17 @@ var KTModalCreateProjectTargets = (function () {
     var dueDate = $(form.querySelector('[name="dogum_tarihi"]'));
     dueDate.daterangepicker({
       singleDatePicker: true,
-      showDropdowns: true,
-      minYear: 1901,
-      maxYear: 2010,
+      showDropdowns: false,
+      autoApply: true,
       locale: {
         format: "DD.MM.YYYY",
       },
     });
+
+    // Init inputmask plugin --- For more info please refer to the official documentation here: https://github.com/RobinHerbots/Inputmask
+    Inputmask({
+      mask: "999 999 99 99",
+    }).mask("#musteri_cep_telefonu");
 
     // Expiry year. For more info, plase visit the official plugin site: https://select2.org/
     $(form.querySelector('[name="egitim_durumu"]')).on("change", function () {
@@ -56,6 +60,18 @@ var KTModalCreateProjectTargets = (function () {
     // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
     validator = FormValidation.formValidation(form, {
       fields: {
+        musteri_cep_telefonu: {
+          validators: {
+            regexp: {
+              regexp: /^(5\d{2})\s?(\d{3})\s?(\d{2})\s?(\d{2})$/,
+              message:
+                "Cep telefonu 5 ile başlamalı ve 10 haneli olmalıdır (555 444 33 22)",
+            },
+            notEmpty: {
+              message: "Cep telefonu gereklidir",
+            },
+          },
+        },
         tc: {
           validators: {
             notEmpty: {
@@ -285,7 +301,7 @@ $(document).ready(function () {
 $(document).ready(function () {
   // Load District Options
   $("#vergi_dairesi_il").change(function () {
-    $("#vergi_dairesi_ilce").empty();
+    $("#vergi_dairesi_ilce").val(null).trigger("change");
 
     var il_secimi = $("#vergi_dairesi_il").val();
 
@@ -309,7 +325,7 @@ $(document).ready(function () {
   });
 });
 
-// vergi dairesi ilce menusu yukle
+// meslek grubu degısınce alttaki degerleri sıfırla ve gosterilecekleri göster
 $(document).ready(function () {
   // Load District Options
   $("#meslek_gurubu").change(function () {
@@ -317,5 +333,49 @@ $(document).ready(function () {
     $("#sektor").val(null).trigger("change");
     $("#calisma_suresi_yil").val(null).trigger("change");
     $("#calisma_suresi_ay").val(null).trigger("change");
+    $("#vergi_dairesi_il").val(null).trigger("change");
+    $("#vergi_dairesi_ilce").val(null).trigger("change");
+    $("#vergi_no").val(null).trigger("change");
+
+    var selectedValue = $(this).val();
+
+    var calisma_detay_div = $("#calisma_detay_bilgi");
+
+    if (
+      [
+        "ÇİFTÇİ",
+        "EMEKLİ ÇALIŞAN",
+        "KAMU SEKTÖR ÜCRETLİ",
+        "ÖZEL SEKTÖR ÜCRETLİ",
+        "SERBEST MESLEK SAHİBİ",
+      ].includes(selectedValue)
+    ) {
+      calisma_detay_div.show();
+    } else {
+      calisma_detay_div.hide();
+    }
+
+    var vergi_dairesi_div = $("#vergi_dairesi_bilgi");
+
+    if (selectedValue == "SERBEST MESLEK SAHİBİ") {
+      vergi_dairesi_div.show();
+    } else {
+      vergi_dairesi_div.hide();
+    }
+
+    var is_adresi_div = $("#is_adresi_bilgi");
+    if (
+      [
+        "ÇİFTÇİ",
+        "EMEKLİ ÇALIŞAN",
+        "KAMU SEKTÖR ÜCRETLİ",
+        "ÖZEL SEKTÖR ÜCRETLİ",
+        "SERBEST MESLEK SAHİBİ",
+      ].includes(selectedValue)
+    ) {
+      is_adresi_div.show();
+    } else {
+      is_adresi_div.hide();
+    }
   });
 });

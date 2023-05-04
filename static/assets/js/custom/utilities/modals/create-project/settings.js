@@ -43,6 +43,11 @@ var KTModalCreateProjectSettings = (function () {
       regex: "^[A-HJ-NPR-Z0-9]{17}$",
       casing: "upper",
     }).mask("#sasi_no");
+
+    Inputmask({
+      regex: "^(0[1-9]|[1-7][0-9]|8[01])[A-Z]+[0-9]+$",
+      casing: "upper",
+    }).mask("#arac_plakasi");
   };
 
   var initValidation = function () {
