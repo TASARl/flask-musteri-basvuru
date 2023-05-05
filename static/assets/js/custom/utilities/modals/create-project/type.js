@@ -133,6 +133,7 @@ if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
 }
 
 // Kasko kodu degistiginde ajax sorgu yap ve ozet bilgi degistir
+// il bilgilerini target.js icinde digerleriyle hallettim
 $(document).ready(function () {
   $("#galeri_telefonu").on("input", function () {
     var galeri_telefonu = $(this).val().replace(/[\s_]/g, "");
@@ -154,7 +155,7 @@ $(document).ready(function () {
       },
       success: function (response) {
         $("#galeri_adi").val(response.galeri_adi);
-        $("#galeri_ili").val(response.galeri_il);
+        $("#galeri_ili").val(response.galeri_il).trigger("change");
         $("#galeri_adi").prop("disabled", true);
         $("#galeri_ili").prop("disabled", true);
       },

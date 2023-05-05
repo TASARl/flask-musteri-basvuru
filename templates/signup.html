@@ -7,9 +7,12 @@ content %}
   <p style="color: red;">{{ error }}</p>
 {% endif %}
 <form method="POST" action="{{ url_for('signup') }}">
-  <label for="username">Kullanıcı Adı:</label><br>
+  <label for="username">Cep Telefonu:</label><br>
   <input type="text" id="username" name="username" required><br>
 
+  <label for="isim_soyisim">İsim Soyisim:</label><br>
+  <input type="text" id="isim_soyisim" name="isim_soyisim" required><br>
+  
   <label for="password">Şifre:</label><br>
   <input type="password" id="password" name="password" required><br>
 

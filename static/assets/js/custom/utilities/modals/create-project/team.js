@@ -13,13 +13,9 @@ var KTModalCreateProjectTeam = (function () {
   // Private functions
   var initForm = function () {
     // Currency
-    Inputmask("₺ 999.999.999", {
-      numericInput: true,
-    }).mask("#arac_satis_tutari");
-
-    Inputmask("₺ 999.999.999", {
-      numericInput: true,
-    }).mask("#kredi_tutari");
+    // Inputmask("₺ 999.999.999", {
+    //   numericInput: true,
+    // }).mask("#arac_satis_tutari");
 
     // Tags. For more info, please visit the official plugin site: https://yaireo.github.io/tagify/
     var tags = new Tagify(form.querySelector('[name="target_tags"]'), {
@@ -194,3 +190,33 @@ var KTModalCreateProjectTeam = (function () {
 if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
   window.KTModalCreateProjectTeam = module.exports = KTModalCreateProjectTeam;
 }
+
+// kredi tutarı ve araç satış tutarı 3 er hane ayırma
+const input_arac_satis_tutar = document.querySelector("#arac_satis_tutari");
+
+input_arac_satis_tutar.addEventListener("keyup", function (event) {
+  const value = event.target.value.replace(/\D/g, "");
+  const formatedValue = parseInt(value).toLocaleString();
+  event.target.value = formatedValue;
+});
+
+const input_kredi_tutar = document.querySelector("#kredi_tutari");
+
+input_kredi_tutar.addEventListener("keyup", function (event) {
+  const value = event.target.value.replace(/\D/g, "");
+  const formatedValue = parseInt(value).toLocaleString();
+  event.target.value = formatedValue;
+});
+
+// vade ve kredi alanları max degerleri doldurma
+$(document).ready(function () {
+  $("#max_kredi").click(function () {
+    const spanText = $(this).text().replace("₺", "");
+    $("#kredi_tutari").val(spanText);
+  });
+
+  $("#max_vade").click(function () {
+    const spanText = $(this).text();
+    $("#target_tags").val(spanText);
+  });
+});

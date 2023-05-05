@@ -102,6 +102,8 @@ def form():
         # vergi_dairesi_ilce = request.form.get('vergi_dairesi_ilce', '')
         # vergi_no = request.form.get('vergi_no', '')
         
+
+        ## marka ve model bilgisi kasko kodundan alinarak db'ye eklenir
         data = request.json
 
         # form gonderildiginde kasko kodu ve model yili verisiyle arac marka modeli getirilir
@@ -118,6 +120,8 @@ def form():
         if arac_kasko_bedel is not None:
             data["marka_adi"] = arac_kasko_bedel['Marka']
             data["tip_adi"] = arac_kasko_bedel['Model']
+
+        data['created_by'] = current_user.id
             
         # deneme = request.json.get('marka_adi')
         
@@ -196,6 +200,21 @@ def form():
         return render_template('kaydedildi.html', tc=request.json.get('tc'), current_user=current_user.id)
     return jsonify({'message': 'Form gonderilmedi'}), 401
 
+
+# Index sayfasi
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    # index.html adlı template'i döndür
+    
+    data = {
+        "isim_soyisim": current_user.isim_soyisim,
+        "cep_telefonu": current_user.id,
+        "sehir": current_user.city,
+    }
+    
+    # Template'e JSON verisini gönderin
+    return render_template("dashboard.html", data=data)
 
 # GET isteği ile müşterileri pagination ile getirme
 @app.route('/customers', methods=['GET'])
@@ -296,6 +315,7 @@ def last_selected_customer():
     return json_response, 200
 
 
+
 ###### LOGIN BAS ##############
 
 # Flask-Login'in başlatılması
@@ -305,13 +325,14 @@ login_manager.login_view = 'login'
 
 # Kullanıcı model sınıfının oluşturulması
 class User(UserMixin):
-    def __init__(self, username, password, gallery_name, city, district, address):
+    def __init__(self, username, password, gallery_name, city, district, address, isim_soyisim):
         self.id = username
         self.password = password
         self.gallery_name = gallery_name
         self.city = city
         self.district = district
         self.address = address
+        self.isim_soyisim = isim_soyisim
 
     def __repr__(self):
         return f'<User {self.id}>'
@@ -323,7 +344,7 @@ def load_user(user_id):
     user = users_collection.find_one({'username': user_id})
     if not user:
         return None
-    return User(user['username'], user['password'], user['gallery_name'], user['city'], user['district'], user['address'])
+    return User(user['username'], user['password'], user['gallery_name'], user['city'], user['district'], user['address'], user['isim_soyisim'])
 
 
 # Kayıt Olma İşlevi
@@ -337,6 +358,7 @@ def signup():
         city = request.form['city']
         district = request.form['district']
         address = request.form['address']
+        isim_soyisim = request.form['isim_soyisim']
 
         # Kullanıcının mevcut olup olmadığını kontrol edin
         existing_user = users_collection.find_one({'username': username})
@@ -346,8 +368,8 @@ def signup():
 
         # Şifreyi hashleyin, kullanıcıyı veritabanına kaydedin ve otomatik olarak giriş yapın
         hashed_password = generate_password_hash(password)
-        users_collection.insert_one({'username': username, 'password': hashed_password, 'gallery_name': gallery_name, 'city': city, 'district': district, 'address': address})
-        user = User(username, hashed_password, gallery_name, city, district, address)
+        users_collection.insert_one({'username': username, 'password': hashed_password, 'gallery_name': gallery_name, 'city': city, 'district': district, 'address': address, 'isim_soyisim':isim_soyisim})
+        user = User(username, hashed_password, gallery_name, city, district, address, isim_soyisim)
         return render_template('kaydedildi.html', username=username)
 
     # GET isteklerinde kayıt sayfasını göster
@@ -369,7 +391,7 @@ def login():
         user = users_collection.find_one({'username': username})
 
         if user and check_password_hash(user['password'], password):
-            user_obj = User(username, user['password'], user['gallery_name'], user['city'], user['district'], user['address'])
+            user_obj = User(username, user['password'], user['gallery_name'], user['city'], user['district'], user['address'],user['isim_soyisim'])
             login_user(user_obj)
             return jsonify({'message': 'Login successful'}), 200
             # return redirect(url_for('index'))

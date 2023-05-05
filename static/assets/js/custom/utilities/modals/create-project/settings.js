@@ -324,8 +324,9 @@ checkbox.addEventListener("change", function () {
     // Kasko koduna disabled ozelligi ekle
     const modelKasko = document.querySelector("#kaskokodu");
     modelKasko.disabled = true;
-
+    var eskiDeger = $("#model_yili").val();
     $("#model_yili").val(null).trigger("change");
+    $("#model_yili").val(eskiDeger).trigger("change");
   }
 });
 
@@ -387,6 +388,7 @@ const aciklama = function (response) {
       max_kredi +
       ") ve maksimum 48 ay vade ile kredi kullanabilirsiniz.";
     $("#max_kredi").text(max_kredi);
+    $("#max_vade").text("48");
   }
   if (response.kaskobedeli > 400000 && response.kaskobedeli <= 800000) {
     const max_kredi = parseFloat(response.kaskobedeli * 0.5).toLocaleString(
@@ -402,6 +404,7 @@ const aciklama = function (response) {
       max_kredi +
       ") ve maksimum 36 ay vade ile kredi kullanabilirsiniz.";
     $("#max_kredi").text(max_kredi);
+    $("#max_vade").text("36");
   }
   if (response.kaskobedeli > 800000 && response.kaskobedeli <= 1200000) {
     const max_kredi = parseFloat(response.kaskobedeli * 0.3).toLocaleString(
@@ -417,6 +420,7 @@ const aciklama = function (response) {
       max_kredi +
       ") ve maksimum 24 ay vade ile kredi kullanabilirsiniz.";
     $("#max_kredi").text(max_kredi);
+    $("#max_vade").text("24");
   }
   if (response.kaskobedeli > 1200000 && response.kaskobedeli <= 2000000) {
     const max_kredi = parseFloat(response.kaskobedeli * 0.2).toLocaleString(
@@ -432,6 +436,7 @@ const aciklama = function (response) {
       max_kredi +
       ") ve maksimum 12 ay vade ile kredi kullanabilirsiniz.";
     $("#max_kredi").text(max_kredi);
+    $("#max_vade").text("12");
   }
   const detay = `<br/><br/> Araç model yılına göre bankaların uyguladığı faiz ve vade oranları değişkenlik göstermektedir. <br/><br/> ${response.modelyili} model araçlara bankaların uyguladığı vade ve faiz oranları aşağıdadır. Belirtilen faiz tutarları Findeks puanınıza ve araç bilgilerine göre değişkenlik gösterebilir.`;
   $("#kaskobilgi").html(arac_aciklama + bilgiler + detay);

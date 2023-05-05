@@ -43,6 +43,10 @@ var KTModalCreateProjectTargets = (function () {
       mask: "999 999 99 99",
     }).mask("#musteri_cep_telefonu");
 
+    Inputmask({
+      regex: "^[1-9]{1}[0-9]{9}[0,2,4,6,8]{1}$",
+    }).mask("#tc");
+
     // Expiry year. For more info, plase visit the official plugin site: https://select2.org/
     $(form.querySelector('[name="egitim_durumu"]')).on("change", function () {
       // Revalidate the field when an option is chosen
@@ -242,6 +246,12 @@ $(document).ready(function () {
     cityNames.forEach((city) => {
       select.append('<option value="' + city + '">' + city + "</option>");
     });
+
+    var select = $("#galeri_ili");
+
+    cityNames.forEach((city) => {
+      select.append('<option value="' + city + '">' + city + "</option>");
+    });
   });
 
   // Load District Options
@@ -377,5 +387,27 @@ $(document).ready(function () {
     } else {
       is_adresi_div.hide();
     }
+  });
+});
+
+// kredi tutarı ve araç satış tutarı 3 er hane ayırma
+const input_arac_satis_tutari = document.querySelector("#aylik_gelir");
+
+input_arac_satis_tutari.addEventListener("keyup", function (event) {
+  const value = event.target.value.replace(/\D/g, "");
+  const formatedValue = parseInt(value).toLocaleString();
+  event.target.value = formatedValue;
+});
+
+// numerik degerleri sinirlandir
+$(document).ready(function () {
+  $("#ikamet_sure_ev").on("input", function () {
+    this.value = this.value.replace(/[^0-9]/g, "");
+  });
+  $("#calisma_suresi_ay").on("input", function () {
+    this.value = this.value.replace(/[^0-9]/g, "");
+  });
+  $("#calisma_suresi_yil").on("input", function () {
+    this.value = this.value.replace(/[^0-9]/g, "");
   });
 });
