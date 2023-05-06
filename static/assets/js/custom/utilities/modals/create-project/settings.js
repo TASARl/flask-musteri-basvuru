@@ -48,6 +48,14 @@ var KTModalCreateProjectSettings = (function () {
       regex: "^(0[1-9]|[1-7][0-9]|8[01])[A-Z]+[0-9]+$",
       casing: "upper",
     }).mask("#arac_plakasi");
+
+    Inputmask({
+      casing: "upper",
+    }).mask("#motor_no");
+
+    Inputmask({
+      casing: "upper",
+    }).mask("#tescil_belge_no");
   };
 
   var initValidation = function () {
@@ -340,6 +348,11 @@ $(document).ready(function () {
 
     var kasko_kodu = $(this).val();
     var model_yili = $("#model_yili").val();
+
+    if (kasko_kodu.length < 4 || model_yili === "") {
+      return;
+    }
+
     $.ajax({
       url: "/fiyat2", // buradaki URL'yi API URL'inizle değiştirin
       type: "GET",
@@ -442,3 +455,33 @@ const aciklama = function (response) {
   $("#kaskobilgi").html(arac_aciklama + bilgiler + detay);
   $("#krediBilgiEkrani").text(arac_aciklama + bilgiler);
 };
+
+// Sase no tamamen dolduruldugunda gecmis verileri sorgula eger arac daha once kaydedilmisse verileri doldur
+$(document).ready(function () {
+  $("#sasi_no").on("input", function () {
+    var sasi_no = $(this).val().replace(/[\s_]/g, "");
+
+    if (sasi_no.length < 17) {
+      return;
+    }
+
+    $.ajax({
+      url: "/saseden_arac_bilgileri", // buradaki URL'yi API URL'inizle değiştirin
+      type: "GET",
+      data: {
+        sasi_no: sasi_no,
+      },
+      success: function (response) {
+        $("#model_yili").val(response.model_yili).trigger("change");
+        $("#motor_no").val(response.motor_no);
+        $("#tescil_belge_no").val(response.tescil_belge_no);
+        $("#arac_plakasi").val(response.arac_plakasi);
+        $("#kaskokodu").val(response.kaskokodu).trigger("input");
+      },
+      error: function (xhr) {
+        // hata durumunda burası çalışır
+        // console.log(xhr.responseText);
+      },
+    });
+  });
+});

@@ -40,6 +40,13 @@ var KTModalCreateProjectType = (function () {
             },
           },
         },
+        galeri_ili: {
+          validators: {
+            notEmpty: {
+              message: "Galeri ili seçilmelidir",
+            },
+          },
+        },
       },
 
       plugins: {
@@ -132,14 +139,14 @@ if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
   window.KTModalCreateProjectType = module.exports = KTModalCreateProjectType;
 }
 
-// Kasko kodu degistiginde ajax sorgu yap ve ozet bilgi degistir
+// Galeri telefonu degistiginde sorgu yap ve kaytiliysa galeriyi getir
 // il bilgilerini target.js icinde digerleriyle hallettim
 $(document).ready(function () {
   $("#galeri_telefonu").on("input", function () {
     var galeri_telefonu = $(this).val().replace(/[\s_]/g, "");
 
     $("#galeri_adi").val("");
-    $("#galeri_ili").val("");
+    $("#galeri_ili").val("").trigger("change");
     $("#galeri_adi").prop("disabled", false);
     $("#galeri_ili").prop("disabled", false);
 

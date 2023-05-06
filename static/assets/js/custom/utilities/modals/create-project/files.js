@@ -106,10 +106,17 @@ var KTModalCreateProjectFiles = (function () {
             // Simulate form submission
             setTimeout(function () {
               const data = {
+                dosya_numarasi: "",
+                created_by: "",
                 basvuruTuru: $('input[name="basvuruTuru"]').val(),
-                galeri_telefonu: $('input[name="galeri_telefonu"]').val(),
+                galeri_telefonu: $('input[name="galeri_telefonu"]')
+                  .val()
+                  .replace(/\s/g, ""),
                 galeri_adi: $('input[name="galeri_adi"]').val(),
+                galeri_ili: $('select[name="galeri_ili"]').val(),
                 model_yili: $('select[name="model_yili"]').val(),
+                marka_adi: "",
+                tip_adi: "",
                 kaskokodu: $('input[name="kaskokodu"]').val(),
                 kasko_bedeli: $('input[name="kasko_bedeli"]').val(),
                 sasi_no: $('input[name="sasi_no"]').val(),

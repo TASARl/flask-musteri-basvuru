@@ -1,0 +1,231 @@
+<!--begin::Aside-->
+<div id="kt_aside" class="aside py-9" data-kt-drawer="true" data-kt-drawer-name="aside" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'200px', '300px': '250px'}" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_aside_toggle">
+    <!--begin::Aside menu-->
+    <div class="aside-menu flex-column-fluid ps-5 pe-3 mb-7" id="kt_aside_menu">
+        <!--begin::Aside Menu-->
+        <div class="w-100 hover-scroll-overlay-y d-flex pe-2" id="kt_aside_menu_wrapper" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_aside_footer, #kt_header" data-kt-scroll-wrappers="#kt_aside, #kt_aside_menu, #kt_aside_menu_wrapper" data-kt-scroll-offset="102">
+            <!--begin::Menu-->
+            <div class="menu menu-column menu-rounded menu-sub-indention menu-active-bg fw-semibold my-auto" id="#kt_aside_menu" data-kt-menu="true">
+                <!--begin:Menu item-->
+                <div data-kt-menu-trigger="click" class="menu-item here menu-accordion {% if request.path == '/dashboard' %}show{% endif %}{% if request.path == '/basvurular' %}show{% endif %}">
+                    <!--begin:Menu link-->
+                    <span class="menu-link">
+                        <span class="menu-icon">
+                            <i class="ki-duotone ki-element-11 fs-2">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                                <span class="path3"></span>
+                                <span class="path4"></span>
+                            </i>
+                        </span>
+                        <span class="menu-title">Kredi Yönetimi</span>
+                        <span class="menu-arrow"></span>
+                    </span>
+                    <!--end:Menu link-->
+                    <!--begin:Menu sub-->
+                    <div class="menu-sub menu-sub-accordion">
+                        <!--begin:Menu item-->
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link {% if request.path == '/dashboard' %}active{% endif %}" href="{{ url_for('dashboard') }}">
+
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                <span class="menu-title">Pano</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
+                        <!--begin:Menu item-->
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link {% if request.path == '/basvurular' %}active{% endif %}" href="{{ url_for('get_basvurular') }}">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                <span class="menu-title">Kredi Başvuruları</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
+                        
+                        
+                        <!--begin:Menu item-->
+                        <div class="menu-item d-none">
+                            <!--begin:Menu link-->
+                            <a class="menu-link" href="../../demo10/dist/dashboard.html">
+                                <span class="menu-title">Launcher</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
+                    </div>
+                    <!--end:Menu sub-->
+                </div>
+                <!--end:Menu item-->
+                <!--begin:Menu item-->
+                <div class="menu-item pt-5">
+                    <!--begin:Menu content-->
+                    <div class="menu-content">
+                        <span class="menu-heading fw-bold text-uppercase fs-7">Yönetim Paneli</span>
+                    </div>
+                    <!--end:Menu content-->
+                </div>
+                <!--end:Menu item-->
+                <!--begin:Menu item-->
+                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                    <!--begin:Menu link-->
+                    <span class="menu-link">
+                        <span class="menu-icon">
+                            <i class="ki-duotone ki-address-book fs-2">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                                <span class="path3"></span>
+                            </i>
+                        </span>
+                        <span class="menu-title">Kullanıcılar</span>
+                        <span class="menu-arrow"></span>
+                    </span>
+                    <!--end:Menu link-->
+                    <!--begin:Menu sub-->
+                    <div class="menu-sub menu-sub-accordion">
+                        <!--begin:Menu item-->
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link" href="../../demo10/dist/pages/user-profile/overview.html">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                <span class="menu-title">Tüm Kullanıcılar</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
+                        <!--begin:Menu item-->
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link" href="../../demo10/dist/pages/user-profile/projects.html">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                <span class="menu-title">Yeni Kullanıcı Ekle</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
+                        
+                        
+                    </div>
+                    <!--end:Menu sub-->
+                </div>
+                <!--end:Menu item-->
+                
+                
+                <!--begin:Menu item-->
+                <div class="menu-item">
+                    <!--begin:Menu link-->
+                    <a class="menu-link" href="../../demo10/dist/apps/calendar.html">
+                        <span class="menu-icon">
+                            <i class="ki-duotone ki-element-plus fs-2">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                                <span class="path3"></span>
+                                <span class="path4"></span>
+                                <span class="path5"></span>
+                                <span class="path6"></span>
+                            </i>
+                        </span>
+                        <span class="menu-title">Hesabım</span>
+                    </a>
+                    <!--end:Menu link-->
+                </div>
+                <!--end:Menu item-->
+
+                
+                <!--begin:Menu item-->
+                <div class="menu-item pt-5">
+                    <!--begin:Menu content-->
+                    <div class="menu-content">
+                        <span class="menu-heading fw-bold text-uppercase fs-7">Yardım</span>
+                    </div>
+                    <!--end:Menu content-->
+                </div>
+                <!--end:Menu item-->
+                
+                <!--begin:Menu item-->
+                <div class="menu-item">
+                    <!--begin:Menu link-->
+                    <a class="menu-link" href="../../demo10/dist/apps/calendar.html">
+                        <span class="menu-icon">
+                            <i class="ki-duotone ki-abstract-41 fs-2">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                                <span class="path3"></span>
+                                <span class="path4"></span>
+                                <span class="path5"></span>
+                                <span class="path6"></span>
+                            </i>
+                        </span>
+                        <span class="menu-title">Dökümanlar</span>
+                    </a>
+                    <!--end:Menu link-->
+                </div>
+                <!--end:Menu item-->
+                <!--begin:Menu item-->
+                <div class="menu-item">
+                    <!--begin:Menu link-->
+                    <a class="menu-link" href="../../demo10/dist/apps/calendar.html">
+                        <span class="menu-icon">
+                            <i class="ki-duotone ki-chart fs-2">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                                <span class="path3"></span>
+                                <span class="path4"></span>
+                                <span class="path5"></span>
+                                <span class="path6"></span>
+                            </i>
+                        </span>
+                        <span class="menu-title">İletişim</span>
+                    </a>
+                    <!--end:Menu link-->
+                </div>
+                <!--end:Menu item-->
+
+                <!--end:Menu item-->
+            </div>
+            <!--end::Menu-->
+        </div>
+        <!--end::Aside Menu-->
+    </div>
+    <!--end::Aside menu-->
+    <!--begin::Footer-->
+    <div class="aside-footer flex-column-auto px-9" id="kt_aside_menu">
+        <!--begin::User panel-->
+        <div class="d-flex flex-stack">
+            <!--begin::Wrapper-->
+            <div class="d-flex align-items-center">
+                <!--begin::Avatar-->
+                <div class="symbol symbol-circle symbol-40px">
+                    <img src="assets/media/avatars/blank.png" alt="photo" />
+                </div>
+                <!--end::Avatar-->
+                <!--begin::User info-->
+                <div class="ms-2">
+                    <!--begin::Name-->
+                    <a href="#" class="text-gray-800 text-hover-primary fs-6 fw-bold lh-1">{{ data.isim_soyisim }}</a>
+                    <!--end::Name-->
+                    <!--begin::Major-->
+                    <span class="text-muted fw-semibold d-block fs-7 lh-1">{{ data.cep_telefonu }}</span> 
+                    <!--end::Major-->
+                </div>
+                <!--end::User info-->
+            </div>
+            <!--end::Wrapper-->
+            
+        </div>
+        <!--end::User panel-->
+    </div>
+    <!--end::Footer-->
+</div>
+<!--end::Aside-->

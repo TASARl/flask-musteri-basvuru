@@ -14,7 +14,14 @@ from flask_login import LoginManager, UserMixin, login_user, logout_user, login_
 
 import json
 
+import string
+import random
+
 import os
+
+# Türkiye Saati'ni belirtmek için timezone objesi oluşturulur
+import pytz # turkiye saatiyle kayitlari eklemek icin
+turkey_tz = pytz.timezone('Europe/Istanbul')
 
 # .env dosyasının varlığını kontrol edin ve yükleyin
 if os.path.isfile(".env"):
@@ -65,47 +72,31 @@ def basvuru():
     # index.html adlı template'i döndür
     return render_template('basvuru.html', current_user=current_user.id)
 
+# Yeni Kredi Dosyası Ekle
 @app.route('/form', methods=['GET', 'POST'])
 @login_required
 def form():
     if request.method == 'POST':
-        # basvuruTuru = request.form.get('basvuruTuru', '')
-        # galeri_telefonu = request.form.get('galeri_telefonu', '')
-        # galeri_adi = request.form.get('galeri_adi', '')
-        # model_yili = request.form.get('model_yili', '')
-        # marka_adi = request.form.get('marka_adi', '')
-        # tip_adi = request.form.get('tip_adi', '')
-        # kaskokodu = request.form.get('kaskokodu', '')
-        # kasko_bedeli = request.form.get('kasko_bedeli', '')
-        # sasi_no = request.form.get('sasi_no', '')
-        # motor_no = request.form.get('motor_no', '')
-        # tescil_belge_no = request.form.get('tescil_belge_no', '')
-        # arac_plakasi = request.form.get('arac_plakasi', '')
-        # arac_satis_tutari = request.form.get('arac_satis_tutari', '')
-        # kredi_tutari = request.form.get('kredi_tutari', '')
-        # target_tags = request.form.get('target_tags', '')
-        # musteri_cep_telefonu = request.form.get('musteri_cep_telefonu', '')
-        # tc = request.form.get('tc', '')
-        # adi = request.form.get('adi', '')
-        # soyadi = request.form.get('soyadi', '')
-        # kimlik_seri = request.form.get('kimlik_seri', '')
-        # dogum_tarihi = request.form.get('dogum_tarihi', '')
-        # egitim_durumu = request.form.get('egitim_durumu', '')
-        # meslek_gurubu = request.form.get('meslek_gurubu', '')
-        # meslek = request.form.get('meslek', '')
-        # aylik_gelir = request.form.get('aylik_gelir', '')
-        # sosyal_guvenlik = request.form.get('sosyal_guvenlik', '')
-        # sektor = request.form.get('sektor', '')
-        # calisma_suresi_yil = request.form.get('calisma_suresi_yil', '')
-        # calisma_suresi_ay = request.form.get('calisma_suresi_ay', '')
-        # vergi_dairesi_il = request.form.get('vergi_dairesi_il', '')
-        # vergi_dairesi_ilce = request.form.get('vergi_dairesi_ilce', '')
-        # vergi_no = request.form.get('vergi_no', '')
         
-
-        ## marka ve model bilgisi kasko kodundan alinarak db'ye eklenir
         data = request.json
 
+        # galeri kontrolu yap. eğer yoksa yeni kullanıcı ekle
+        galeri_telefonu = request.json.get('galeri_telefonu')
+        existing_user = users_collection.find_one({'username': galeri_telefonu})
+        if existing_user:
+            print('Bu galeri adı zaten kullanılıyor. ')
+        else:
+            username = galeri_telefonu
+            password = str(random.randint(100000, 999999))
+            gallery_name = request.json.get('galeri_adi')
+            city = request.json.get('galeri_ili')
+            
+            # Şifreyi hashleyin, kullanıcıyı veritabanına kaydedin ve otomatik olarak giriş yapın
+            hashed_password = generate_password_hash(password)
+            users_collection.insert_one({'username': username, 'password': hashed_password, 'gallery_name': gallery_name, 'city': city, 'district': '', 'address': '', 'isim_soyisim':''})
+
+
+        ## marka ve model bilgisi kasko kodundan alinarak db'ye eklenir
         # form gonderildiginde kasko kodu ve model yili verisiyle arac marka modeli getirilir
         kasko_kodu = str(request.json.get('kaskokodu'))
         model_yili = int(request.json.get('model_yili'))
@@ -121,74 +112,23 @@ def form():
             data["marka_adi"] = arac_kasko_bedel['Marka']
             data["tip_adi"] = arac_kasko_bedel['Model']
 
+        # musteriyi ekleyen kullanıcının cep telefonu. unique dir
         data['created_by'] = current_user.id
-            
-        # deneme = request.json.get('marka_adi')
         
-        
-        # Burada formdan gelen verileri kullanarak bir şeyler yapabilirsiniz
-        # Örneğin, verileri bir veritabanına kaydedebilirsiniz
-        
-        
-        # Formdan gönderilen verileri al
-        # basvuruTuru = request.form.get('basvuruTuru')
-        # tc = request.form['tc']
-        # ad_soyad = request.form['ad_soyad']
-        # dogum_tarihi = request.form['dogum_tarihi']
-        # telefon = request.form['telefon']
-        # email = request.form['email']
-        # aylik_net_gelir = request.form['aylik_net_gelir']
-        # kredi_miktar = request.form['kredi_miktar']
-        # kredi_vadesi = request.form['kredi_vadesi']
-        # calisma_sekli = request.form['calisma_sekli']
-        # il_secimi = request.form['il_secimi']
-        # model_yili = request.form['model_yili']
-        # marka_adi = request.form['marka_adi']
-        # tip_adi = request.form['tip_adi']
-        # kasko_bedeli = request.form.get('kasko_bedeli', 0)
-        # kaskokodu = request.form.get('kaskokodu', 0)
+        data['created_time'] = datetime.now(turkey_tz)
 
-        # tc = request.form.get('tc', 'boş')
-        # ad_soyad = request.form.get('ad_soyad', 'boş')
-        # dogum_tarihi = request.form.get('dogum_tarihi')
-        # telefon = request.form.get('telefon', 'boş')
-        # email = request.form.get('email', 'boş')
-        # calisma_durumu = request.form.get('calisma_durumu', 'boş')
-        # aylik_net_gelir = request.form.get('aylik_net_gelir', 'boş')
-        # kredi_miktar = request.form.get('kredi_miktar', 'boş')
-        # kredi_vadesi = request.form.get('kredi_vadesi', 'boş')
-        # calisma_sekli = request.form.get('calisma_sekli', 'boş')
+        # Rastgele 5 haneli büyük harf, rakam ve tirelerden oluşan benzersiz bir dizi oluşturuyoruz.
+        dosya_numarasi = ''.join(random.choices(string.ascii_uppercase + string.digits + '-', k=5))
 
-        # Dogum tarihi donustur
-        # if (dogum_tarihi):
-        #     dogum_tarihi_str = dogum_tarihi 
-        #     dogum_tarihi_obj = datetime.strptime(dogum_tarihi_str, '%Y-%m-%d')
-        #     dogum_tarihi_formatted = dogum_tarihi_obj.strftime('%d.%m.%Y')
-        # else:
-        #     dogum_tarihi_formatted= 0
+        # Benzersiz dosya numarasi daha önce kullanılmış mı diye kontrol ediyoruz.
+        while customers.find_one({"dosya_numarasi": dosya_numarasi}) is not None:
+            dosya_numarasi = ''.join(random.choices(string.ascii_uppercase + string.digits + '-', k=5))
 
-        # data = {
-        #     'basvuruTuru': basvuruTuru,
-        #     'tc': tc,
-        #     'ad_soyad': ad_soyad,
-        #     'dogum_tarihi': dogum_tarihi_formatted,
-        #     'telefon': telefon,
-        #     'email': email,
-        #     'aylik_net_gelir': aylik_net_gelir,
-        #     'calisma_sekli': calisma_sekli,
-        #     'kredi_miktar': kredi_miktar,
-        #     'kredi_vadesi': kredi_vadesi,
-        #     'il_secimi': il_secimi,
-        #     'arac':{'model_yili': model_yili,
-        #     'marka_adi' : marka_adi,
-        #     'tip_adi' : tip_adi,
-        #     'kasko_bedeli': kasko_bedeli,
-        #     'kaskokodu':kaskokodu},
-        #     'timestamp': datetime.now()
-        # }
+        # benzersiz dosya numarasi eklenir
+        data['dosya_numarasi'] = dosya_numarasi
 
         
-
+        # Database kayıt işlemi
         result = customers.insert_one(data)
 
         document_id = result.inserted_id
@@ -197,16 +137,14 @@ def form():
         # Başarılı bir şekilde kaydedildi sayfasını göster
         return jsonify({'message': 'Form kaydedildi'}), 200
         
-        return render_template('kaydedildi.html', tc=request.json.get('tc'), current_user=current_user.id)
     return jsonify({'message': 'Form gonderilmedi'}), 401
 
 
-# Index sayfasi
+# Pano sayfası
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    # index.html adlı template'i döndür
-    
+   
     data = {
         "isim_soyisim": current_user.isim_soyisim,
         "cep_telefonu": current_user.id,
@@ -256,6 +194,45 @@ def get_customers():
     
     return render_template('customer.html', data=customer_list , metadata=metadata, lstest_customer_id=lstest_customer_id)
 
+# GET isteği ile müşterileri pagination ile getirme
+@app.route('/basvurular', methods=['GET'])
+@login_required
+def get_basvurular():
+    
+    customers = db.musteriler
+
+    # Sayfa numarasını al
+    page = int(request.args.get('page', 1))
+    # Her sayfada kaç müşteri gösterileceğini belirle
+    per_page = int(request.args.get('per_page', 10))
+
+    # Toplam müşteri sayısını al
+    total_customers = customers.count_documents({})
+
+    # Pagination hesaplamaları
+    start_index = (page - 1) * per_page
+    end_index = min(start_index + per_page, total_customers)
+
+    # Müşterileri veritabanından getir
+    customer_list = list(customers.find({}, {'_id':1, 'adi':1, 'soyadi':1, 'dosya_numarasi':1, 'telefon':1, 'email':1, 'calisma_durumu':1, 'aylik_net_gelir':1, 'calisma_sekli':1, 'kredi_miktar':1, 'kredi_vadesi':1, 'il_secimi':1}).sort("_id", -1).skip(start_index).limit(per_page))
+
+    print(customer_list)
+    print(type(customer_list))
+    # Pagination metadatasını oluştur
+    metadata = {
+        'page': page,
+        'per_page': per_page,
+        'total_customers': total_customers,
+        'total_pages': int(total_customers / per_page) + 1
+    }
+
+    # Son seçilen müşterinin bilgilerini al
+    latest_customer = selected_customers.find().sort([('selection_date', DESCENDING)]).limit(1)
+    lstest_customer_id = latest_customer[0]['customer_id']
+    
+    return render_template('basvurular.html', data=customer_list , metadata=metadata, lstest_customer_id=lstest_customer_id)
+
+#kullanici secimi ekle
 @app.route('/add_customer_selection', methods=['POST'])
 def add_customer_selection():
     
@@ -264,7 +241,7 @@ def add_customer_selection():
     # İstekten gelen JSON verilerini al
     data = request.get_json()
     customer_id = data['customer_id']
-    selection_date = datetime.now()
+    selection_date = datetime.now(turkey_tz)
 
     # Seçilen müşteriyi selected_customers koleksiyonuna ekle
     result = selected_customers.insert_one({
@@ -274,7 +251,7 @@ def add_customer_selection():
 
     return jsonify(str(result.inserted_id))
 
-
+# secili musteri getir. masa ustu uygulamasi icin
 @app.route('/secili_musteri', methods=['GET'])
 def last_selected_customer():
     
@@ -515,6 +492,7 @@ hazir_veriler = client["form_hazir_verileri"]
 il_ilce_tb = hazir_veriler["il_ilce"]
 
 @app.route('/il_secimi', methods=['GET'])
+@login_required
 def il_secimi():
     # Veritabanından tüm model yıllarını çek
     iller = il_ilce_tb.distinct('il')
@@ -527,6 +505,7 @@ def il_secimi():
     
 
 @app.route('/ilce_secimi', methods=['GET'])
+@login_required
 def ilce_secimi():
     # İstemciden model yılını al
     il = request.args.get('il_secimi')
@@ -570,6 +549,7 @@ def vergi_ilce_secimi():
 ####### Telefondan Oto Galeri bul baslangic  ####
 
 @app.route('/galeri_sorgu', methods=['GET'])
+@login_required
 def galeri_sorgu():
     # İstemciden ili al
     galeri_telefonu = request.args.get('galeri_telefonu')
@@ -588,6 +568,33 @@ def galeri_sorgu():
     return jsonify({'message': 'Galeri kayıtlı değil'}), 401
 
 ####### Telefondan Oto Galeri bul son  ####
+
+
+####### Sase no dan arac bilgilerini getir bul baslangic  ####
+
+@app.route('/saseden_arac_bilgileri', methods=['GET'])
+@login_required
+def saseden_arac_bilgileri():
+    # İstemciden ili al
+    sasi_no = request.args.get('sasi_no')
+    
+    # Veritabanından model yılına ait markai çek
+    kayitli_arac_bilgisi = customers.find_one({'sasi_no': sasi_no})
+    
+    # JSON formatında modelleri döndür
+    if kayitli_arac_bilgisi:
+        json_response = {
+            'model_yili': kayitli_arac_bilgisi['model_yili'],
+            'kaskokodu': kayitli_arac_bilgisi['kaskokodu'],
+            'motor_no': kayitli_arac_bilgisi['motor_no'],
+            'tescil_belge_no': kayitli_arac_bilgisi['tescil_belge_no'],
+            'arac_plakasi': kayitli_arac_bilgisi['arac_plakasi'],
+        }
+        return json_response, 200
+    
+    return jsonify({'message': 'Arac kayıtlı değil'}), 401
+
+####### Sase no dan arac bilgilerini getir bul son  ####
 
 
 if __name__ == '__main__':
