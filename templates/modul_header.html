@@ -1232,9 +1232,9 @@
                             <!--end::Avatar-->
                             <!--begin::Username-->
                             <div class="d-flex flex-column">
-                                <div class="fw-bold d-flex align-items-center fs-5">{{ data.isim_soyisim }}
+                                <div class="fw-bold d-flex align-items-center fs-5">{{ user_data.isim_soyisim }}
                                 <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">Yönetici</span></div>
-                                <a href="#" class="fw-semibold text-muted text-hover-primary fs-7">{{ data.cep_telefonu }}</a>
+                                <a href="#" class="fw-semibold text-muted text-hover-primary fs-7">{{ user_data.cep_telefonu }}</a>
                             </div>
                             <!--end::Username-->
                         </div>
@@ -1464,7 +1464,7 @@
             <!--end::Theme mode-->
             <!--begin::Item-->
             <div class="d-flex align-items-center me-2 me-lg-4">
-                <a href="#" class="btn btn-success border-0 px-3 px-lg-6" data-bs-toggle="modal" data-bs-target="#kt_modal_create_project">Kredi Başvurusu</a>
+                <a href="#" class="btn btn-success border-0 px-3 px-lg-6 yeniBasvuru" data-bs-toggle="modal" data-bs-target="#kt_modal_create_project" data-customerid="yeni">Kredi Başvurusu</a>
             </div>
             <!--end::Item-->
             <!--begin::Item-->
@@ -1482,3 +1482,78 @@
     </div>
     <!--end::Container-->
 </div>
+
+<script>
+    // Modal yeni basvuru
+    const button = document.querySelector('.yeniBasvuru');
+    
+button.addEventListener('click', function() {
+  dosya_id = 'yeni';
+
+  $('#dosya_id').val(dosya_id);
+  $('select[name="il_secimi_is"]').val('').trigger("change");
+  $('select[name="vergi_dairesi_il"]').val('').trigger("change");
+  $('select[name="il_secimi_ev"]').val('').trigger("change");
+  $('select[name="model_yili"]').val('').trigger("change");
+
+  $('input[name="galeri_telefonu"]').val('').trigger("input");
+                
+  $('input[name="sasi_no"]').val('');
+  $('input[name="motor_no"]').val('');
+  $('input[name="tescil_belge_no"]').val('');
+  $('input[name="arac_plakasi"]').val('');
+  $('input[name="arac_satis_tutari"]').val('');
+  $('input[name="kredi_tutari"]').val('');
+  $('input[name="kredi_vadesi"]').val('');
+  $('input[name="musteri_cep_telefonu"]').val('');
+  $('input[name="tc"]').val('');
+  $('input[name="adi"]').val('');
+  $('input[name="soyadi"]').val('');
+  $('input[name="kimlik_seri"]').val('');
+  $('input[name="dogum_tarihi"]').val('');
+  $('select[name="egitim_durumu"]').val('').trigger("change");
+  $('select[name="meslek_gurubu"]').val('').trigger("change");
+  $('select[name="meslek"]').val('').trigger("change");
+  $('input[name="aylik_gelir"]').val('');
+  $('select[name="sosyal_guvenlik"]').val('').trigger("change");
+  $('select[name="sektor"]').val('').trigger("change");
+  $('input[name="calisma_suresi_yil"]').val('');
+  $('input[name="calisma_suresi_ay"]').val('');
+
+  $('input[name="vergi_no"]').val('');
+  $('select[name="ikamet_tipi"]').val('').trigger("change");
+
+  $('input[name="mahalle_ev"]').val('');
+  $('input[name="ikamet_sure_ev"]').val('');
+  $('input[name="acik_adres_ev"]').val('');
+  $('input[name="ikamet_sure_ev"]').val('');
+  $('input[name="isyeri_telefonu"]').val('');
+
+  $('input[name="mahalle_is"]').val('');
+  $('input[name="acik_adres_is"]').val('');
+  // digerlerinin degisimi ile ortayacikanlar
+  $('input[name="kaskokodu"]').val('').trigger("input");
+  $('select[name="vergi_dairesi_ilce"]').val('').trigger("change");
+  $('select[name="ilce_secimi_ev"]').val('').trigger("change");
+  $('select[name="ilce_secimi_is"]').val('').trigger("change");
+
+   // content classına sahip tüm divleri seçin
+   const contentDivs = document.querySelectorAll('[data-kt-stepper-element="content"]');
+
+    // Her bir div için döngü ile geçin
+    for (let i = 0; i < contentDivs.length; i++) {
+        if (i === 0) {
+            contentDivs[i].className = "current";
+        } else {
+            contentDivs[i].className = "pending";
+        }
+    }
+
+    const elements = document.querySelectorAll('.edit_bolumu_icin_gizle');
+                elements.forEach(element => {
+                    element.style.setProperty('display', '', 'important');
+                });
+})
+    
+
+</script>

@@ -106,6 +106,7 @@ var KTModalCreateProjectFiles = (function () {
             // Simulate form submission
             setTimeout(function () {
               const data = {
+                dosya_id: $("#dosya_id").val(),
                 dosya_numarasi: "",
                 created_by: "",
                 basvuruTuru: $('input[name="basvuruTuru"]').val(),
@@ -125,10 +126,10 @@ var KTModalCreateProjectFiles = (function () {
                 arac_plakasi: $('input[name="arac_plakasi"]').val(),
                 arac_satis_tutari: $('input[name="arac_satis_tutari"]').val(),
                 kredi_tutari: $('input[name="kredi_tutari"]').val(),
-                kredi_vadesi: $('input[name="target_tags"]').val(),
-                musteri_cep_telefonu: $(
-                  'input[name="musteri_cep_telefonu"]'
-                ).val(),
+                kredi_vadesi: $('input[name="kredi_vadesi"]').val(),
+                musteri_cep_telefonu: $('input[name="musteri_cep_telefonu"]')
+                  .val()
+                  .replace(/\s/g, ""),
                 tc: $('input[name="tc"]').val(),
                 adi: $('input[name="adi"]').val(),
                 soyadi: $('input[name="soyadi"]').val(),
@@ -166,8 +167,6 @@ var KTModalCreateProjectFiles = (function () {
                 .post("/form", data)
                 .then(function (response) {
                   if (response) {
-                    form.querySelector('[name="galeri_telefonu"]').value = "";
-
                     // Simulate form submission
                     nextButton.removeAttribute("data-kt-indicator");
 
@@ -175,7 +174,16 @@ var KTModalCreateProjectFiles = (function () {
                     nextButton.disabled = false;
 
                     // Go to next step
-                    stepper.goNext();
+                    // stepper.goNext();
+                    stepper.goTo(7);
+
+                    // edit ederken gizlenmis alanlari gozter
+                    const elements = document.querySelectorAll(
+                      ".edit_bolumu_icin_gizle"
+                    );
+                    elements.forEach((element) => {
+                      element.style.setProperty("display", "", "important");
+                    });
 
                     // modal yukari kaydir
                     $("#kt_modal_create_project .modal-body").animate(

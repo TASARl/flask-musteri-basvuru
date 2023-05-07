@@ -111,55 +111,7 @@
                 <!--end::Table head-->
                 <!--begin::Table body-->
                 <tbody>
-                    <tr>
-                        <td>
-                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                <input class="form-check-input widget-13-check" type="checkbox" value="1" />
-                            </div>
-                        </td>
-                        <td>
-                            <a href="#" class="text-dark fw-bold text-hover-primary fs-6">56037-XDER</a>
-                        </td>
-                        <td>
-                            <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">Brasil</a>
-                            <span class="text-muted fw-semibold text-muted d-block fs-7">Code: PH</span>
-                        </td>
-                        <td>
-                            <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">05/28/2020</a>
-                            <span class="text-muted fw-semibold text-muted d-block fs-7">Code: Paid</span>
-                        </td>
-                        <td>
-                            <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">Intertico</a>
-                            <span class="text-muted fw-semibold text-muted d-block fs-7">Web, UI/UX Design</span>
-                        </td>
-                        <td class="text-dark fw-bold text-hover-primary fs-6">$3560</td>
-                        <td>
-                            <span class="badge badge-light-success">Approved</span>
-                        </td>
-                        <td class="text-end">
-                            <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
-                                <i class="ki-duotone ki-switch fs-2">
-                                    <span class="path1"></span>
-                                    <span class="path2"></span>
-                                </i>
-                            </a>
-                            <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
-                                <i class="ki-duotone ki-pencil fs-2">
-                                    <span class="path1"></span>
-                                    <span class="path2"></span>
-                                </i>
-                            </a>
-                            <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
-                                <i class="ki-duotone ki-trash fs-2">
-                                    <span class="path1"></span>
-                                    <span class="path2"></span>
-                                    <span class="path3"></span>
-                                    <span class="path4"></span>
-                                    <span class="path5"></span>
-                                </i>
-                            </a>
-                        </td>
-                    </tr>
+                    
                     {% for customer in data %} 
 
                     {% if lstest_customer_id|string == customer._id|string %}
@@ -177,8 +129,8 @@
                             <a href="#" class="text-dark fw-bold text-hover-primary fs-6">{{ customer.dosya_numarasi }}</a>
                         </td>
                         <td>
-                            <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">Brasil</a>
-                            <span class="text-muted fw-semibold text-muted d-block fs-7">Code: PH</span>
+                            <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ customer.galeri_ili }}</a>
+                            <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.galeri_adi }}</span>
                         </td>
                         <td>
                             <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">05/28/2020</a>
@@ -188,23 +140,25 @@
                             <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ customer.adi }} {{ customer.soyadi }} </a>
                             <span class="text-muted fw-semibold text-muted d-block fs-7">Web, UI/UX Design</span>
                         </td>
-                        <td class="text-dark fw-bold text-hover-primary fs-6">$3560</td>
+                        <td class="text-dark fw-bold text-hover-primary fs-6">{{ customer.kredi_tutari }} TL
+                            <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.kredi_vadesi }} Ay</span>
+                        </td>
                         <td>
                             <span class="badge badge-light-success">Approved</span>
                         </td>
-                        <td class="text-end">
-                            <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
+                        <td class="text-end" style=" width: 130px;">
+                            <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1" onclick="addSelectedCustomer(event, '{{ customer._id }}'); return false;">
                                 <i class="ki-duotone ki-switch fs-2">
                                     <span class="path1"></span>
                                     <span class="path2"></span>
                                 </i>
                             </a>
-                            <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
+                            <button type="button" class="btn btn-light btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 dosyaButonu" data-bs-toggle="modal" data-bs-target="#kt_modal_create_project" data-customerid="{{ customer._id }}" >
                                 <i class="ki-duotone ki-pencil fs-2">
                                     <span class="path1"></span>
                                     <span class="path2"></span>
                                 </i>
-                            </a>
+                            </button>
                             <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
                                 <i class="ki-duotone ki-trash fs-2">
                                     <span class="path1"></span>
@@ -240,3 +194,120 @@
     </div>
     <!--begin::Body-->
 </div>
+
+
+
+
+
+<script type="text/javascript">
+    //secili dosyayı degıstırme
+    function addSelectedCustomer(event, customerId) {
+  event.preventDefault();
+  $.ajax({
+    url: "/add_customer_selection",
+    type: "POST",
+    contentType: "application/json",
+    data: JSON.stringify({ customer_id: customerId }),
+    success: function (response) {
+      //alert("Müşteri seçimi kaydedildi!");
+      window.location.reload();
+    },
+    error: function (error) {
+      alert("Hata oluştu!");
+      console.log(error);
+    },
+  });
+}
+</script>
+
+<script>
+    // Modal içine dosya id si gönderme
+	const buttons = document.querySelectorAll('.dosyaButonu');
+    buttons.forEach(function(button) {
+        button.addEventListener('click', function() {
+        dosya_id = button.dataset.customerid;
+
+        $.ajax({
+            url: "/id_ile_dosya_bilgisi_getir", // buradaki URL'yi API URL'inizle değiştirin
+            type: "GET",
+            data: {
+                dosya_id: dosya_id,
+            },
+            success: function (response) {
+                var data = JSON.parse(response)
+                $('#dosya_id').val(dosya_id)
+                $('select[name="il_secimi_is"]').val(data.il_secimi_is).trigger("change");
+                $('select[name="vergi_dairesi_il"]').val(data.vergi_dairesi_il).trigger("change");
+                $('select[name="il_secimi_ev"]').val(data.il_secimi_ev).trigger("change");
+                $('select[name="model_yili"]').val(data.model_yili).trigger("change");
+
+                $('input[name="galeri_telefonu"]').val(data.galeri_telefonu).trigger("input");
+                
+                $('input[name="sasi_no"]').val(data.sasi_no)
+                $('input[name="motor_no"]').val(data.motor_no)
+                $('input[name="tescil_belge_no"]').val(data.tescil_belge_no)
+                $('input[name="arac_plakasi"]').val(data.arac_plakasi)
+                $('input[name="arac_satis_tutari"]').val(data.arac_satis_tutari)
+                $('input[name="kredi_tutari"]').val(data.kredi_tutari)
+                $('input[name="kredi_vadesi"]').val(data.kredi_vadesi)
+                $('input[name="musteri_cep_telefonu"]').val(data.musteri_cep_telefonu)
+                $('input[name="tc"]').val(data.tc)
+                $('input[name="adi"]').val(data.adi)
+                $('input[name="soyadi"]').val(data.soyadi)
+                $('input[name="kimlik_seri"]').val(data.kimlik_seri)
+                $('input[name="dogum_tarihi"]').val(data.dogum_tarihi)
+                $('select[name="egitim_durumu"]').val(data.egitim_durumu).trigger("change");
+                $('select[name="meslek_gurubu"]').val(data.meslek_gurubu).trigger("change");
+                $('select[name="meslek"]').val(data.meslek).trigger("change");
+                $('input[name="aylik_gelir"]').val(data.aylik_gelir)
+                $('select[name="sosyal_guvenlik"]').val(data.sosyal_guvenlik).trigger("change");
+                $('select[name="sektor"]').val(data.sektor).trigger("change");
+                $('input[name="calisma_suresi_yil"]').val(data.calisma_suresi_yil)
+                $('input[name="calisma_suresi_ay"]').val(data.calisma_suresi_ay)
+                
+                
+                $('input[name="vergi_no"]').val(data.vergi_no)
+                $('select[name="ikamet_tipi"]').val(data.ikamet_tipi).trigger("change");
+                
+                
+                $('input[name="mahalle_ev"]').val(data.mahalle_ev)
+                $('input[name="ikamet_sure_ev"]').val(data.ikamet_sure_ev)
+                $('input[name="acik_adres_ev"]').val(data.acik_adres_ev)
+                $('input[name="ikamet_sure_ev"]').val(data.ikamet_sure_ev)
+                $('input[name="isyeri_telefonu"]').val(data.isyeri_telefonu)
+                
+                
+                $('input[name="mahalle_is"]').val(data.mahalle_is)
+                $('input[name="acik_adres_is"]').val(data.acik_adres_is)
+                // digerlerinin degisimi ile ortayacikanlar
+                $('input[name="kaskokodu"]').val(data.kaskokodu).trigger("input");
+                $('select[name="vergi_dairesi_ilce"]').val(data.vergi_dairesi_ilce).trigger("change");
+                $('select[name="ilce_secimi_ev"]').val(data.ilce_secimi_ev).trigger("change");
+                $('select[name="ilce_secimi_is"]').val(data.ilce_secimi_is).trigger("change");
+
+                  // content classına sahip tüm divleri seçin
+                const contentDivs = document.querySelectorAll('[data-kt-stepper-element="content"]');
+
+                // Her bir div için döngü ile geçin
+                for (let i = 0; i < contentDivs.length; i++) {
+                // İlk div current sınıfına sahip olarak ayarlanır, diğerleri ise pending sınıfına sahip
+
+                contentDivs[i].className = "current";
+                }
+
+
+                const elements = document.querySelectorAll('.edit_bolumu_icin_gizle');
+                elements.forEach(element => {
+                    element.style.setProperty('display', 'none', 'important');
+                });
+                
+            },
+            error: function (xhr) {
+                // hata durumunda burası çalışır
+                // console.log(xhr.responseText);
+            },
+            });
+        });
+    });
+
+</script>

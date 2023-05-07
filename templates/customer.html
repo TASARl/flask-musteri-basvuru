@@ -20,7 +20,9 @@ content %}
     </tr>
   </thead>
   <tbody>
-    {% for customer in data %} {% if lstest_customer_id|string == customer._id|string %}
+    {% for customer in data %} 
+    
+    {% if lstest_customer_id|string == customer._id|string %}
         <tr style="background-color: #83d092">
     {% else %}
         <tr>

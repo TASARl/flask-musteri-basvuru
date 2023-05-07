@@ -174,7 +174,7 @@ var KTModalCreateProjectTargets = (function () {
                 500
               );
               ////
-            }, 1500);
+            }, 500);
           } else {
             // Enable button
             nextButton.disabled = false;

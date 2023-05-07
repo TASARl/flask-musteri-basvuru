@@ -79,7 +79,7 @@ def form():
     if request.method == 'POST':
         
         data = request.json
-
+        
         # galeri kontrolu yap. eğer yoksa yeni kullanıcı ekle
         galeri_telefonu = request.json.get('galeri_telefonu')
         existing_user = users_collection.find_one({'username': galeri_telefonu})
@@ -117,6 +117,25 @@ def form():
         
         data['created_time'] = datetime.now(turkey_tz)
 
+        # eger dokuman id baska bir dokumanda varsa bilgileri gunceller
+        dosya_id=request.json.get('dosya_id')
+        if not (dosya_id=='' or dosya_id == "yeni"):
+            # Veritabanından model yılına ait markai çek
+            kayitli_dosya_bilgisi = customers.find_one({'_id': ObjectId(dosya_id)})
+            
+            # JSON formatında modelleri döndür
+            if kayitli_dosya_bilgisi:
+                #alttaki degerler bosluk ve gereksiz degerler guncellenmemesi icin jsondan kaldir
+                del data["dosya_id"]
+                del data["dosya_numarasi"]
+                new_data = {
+                    "$set": data
+                }
+                
+                result = customers.update_one({"_id": ObjectId(dosya_id)}, new_data)
+                return jsonify({'message': 'Form kaydedildi'}), 200
+
+
         # Rastgele 5 haneli büyük harf, rakam ve tirelerden oluşan benzersiz bir dizi oluşturuyoruz.
         dosya_numarasi = ''.join(random.choices(string.ascii_uppercase + string.digits + '-', k=5))
 
@@ -145,14 +164,14 @@ def form():
 @login_required
 def dashboard():
    
-    data = {
+    user_data = {
         "isim_soyisim": current_user.isim_soyisim,
         "cep_telefonu": current_user.id,
         "sehir": current_user.city,
     }
     
     # Template'e JSON verisini gönderin
-    return render_template("dashboard.html", data=data)
+    return render_template("dashboard.html", user_data=user_data)
 
 # GET isteği ile müşterileri pagination ile getirme
 @app.route('/customers', methods=['GET'])
@@ -214,10 +233,9 @@ def get_basvurular():
     end_index = min(start_index + per_page, total_customers)
 
     # Müşterileri veritabanından getir
-    customer_list = list(customers.find({}, {'_id':1, 'adi':1, 'soyadi':1, 'dosya_numarasi':1, 'telefon':1, 'email':1, 'calisma_durumu':1, 'aylik_net_gelir':1, 'calisma_sekli':1, 'kredi_miktar':1, 'kredi_vadesi':1, 'il_secimi':1}).sort("_id", -1).skip(start_index).limit(per_page))
+    customer_list = list(customers.find({}, {'_id':1, 'adi':1, 'soyadi':1, 'dosya_numarasi':1, 'galeri_ili':1, 'galeri_adi':1, 'kredi_tutari':1, 'kredi_vadesi':1, 'calisma_sekli':1, 'kredi_miktar':1, 'kredi_vadesi':1, 'il_secimi':1}).sort("_id", -1).skip(start_index).limit(per_page))
 
-    print(customer_list)
-    print(type(customer_list))
+    
     # Pagination metadatasını oluştur
     metadata = {
         'page': page,
@@ -227,29 +245,59 @@ def get_basvurular():
     }
 
     # Son seçilen müşterinin bilgilerini al
-    latest_customer = selected_customers.find().sort([('selection_date', DESCENDING)]).limit(1)
-    lstest_customer_id = latest_customer[0]['customer_id']
+    # latest_customer = selected_customers.find().sort([('selection_date', DESCENDING)]).limit(1)
+    # lstest_customer_id = latest_customer[0]['customer_id']
+
+    # secim yapilmis musteri dokumanini kullaniclara gore getirir. bu secim masaustu uygulamasi icin referanstir
+    # eger bu kullanici icin secim yapima collectionunda bir dokuman varsa bul getir
+    query = {"current_user": current_user.id }
+    existing_doc = selected_customers.find_one(query)
+
+    if existing_doc:
+        # Doküman mevcut, secili musteri dosya bilgisini getirir
+        lstest_customer_id = existing_doc["customer_id"]
+    else:
+        lstest_customer_id = '0'
+        
+    user_data = {
+        "isim_soyisim": current_user.isim_soyisim,
+        "cep_telefonu": current_user.id,
+        "sehir": current_user.city,
+    }
     
-    return render_template('basvurular.html', data=customer_list , metadata=metadata, lstest_customer_id=lstest_customer_id)
+    return render_template('basvurular.html', data=customer_list , metadata=metadata, lstest_customer_id=lstest_customer_id, user_data=user_data)
 
 #kullanici secimi ekle
 @app.route('/add_customer_selection', methods=['POST'])
+@login_required
 def add_customer_selection():
-    
-    selected_customers = db.selected_customers
 
     # İstekten gelen JSON verilerini al
     data = request.get_json()
-    customer_id = data['customer_id']
+    customer_id = data['customer_id']    # secilen musterinin id'si
     selection_date = datetime.now(turkey_tz)
 
-    # Seçilen müşteriyi selected_customers koleksiyonuna ekle
-    result = selected_customers.insert_one({
-        'customer_id': customer_id,
-        'selection_date': selection_date
-    })
+    current_user_id = current_user.id       # secimi yapan kullanicinin cep telefonu. idsi
 
-    return jsonify(str(result.inserted_id))
+    # dokumanda mevcut kullanicinin baska bir kaydi varsa al
+    query = {'current_user': current_user_id}
+    existing_doc = selected_customers.find_one(query)
+
+    if existing_doc:
+        # Doküman mevcut, güncelleme yapılabilir
+        existing_doc["customer_id"] = customer_id
+        existing_doc["selection_date"] = selection_date
+        result = selected_customers.replace_one(query, existing_doc)
+    else:
+        # Doküman yok, yeni bir öge oluşturulabilir
+        # Seçilen müşteriyi selected_customers koleksiyonuna ekle
+        result = selected_customers.insert_one({
+            'current_user': current_user_id,
+            'customer_id': customer_id,
+            'selection_date': selection_date
+        })
+
+    return jsonify(str(result))
 
 # secili musteri getir. masa ustu uygulamasi icin
 @app.route('/secili_musteri', methods=['GET'])
@@ -579,7 +627,7 @@ def saseden_arac_bilgileri():
     sasi_no = request.args.get('sasi_no')
     
     # Veritabanından model yılına ait markai çek
-    kayitli_arac_bilgisi = customers.find_one({'sasi_no': sasi_no})
+    kayitli_arac_bilgisi = customers.find_one({'sasi_no': sasi_no}, sort=[('created_time', -1)])
     
     # JSON formatında modelleri döndür
     if kayitli_arac_bilgisi:
@@ -596,6 +644,28 @@ def saseden_arac_bilgileri():
 
 ####### Sase no dan arac bilgilerini getir bul son  ####
 
+####### Dosya_id ile dosya icerigini tamemen getir. edit icin baslangic  ####
+
+@app.route('/id_ile_dosya_bilgisi_getir', methods=['GET'])
+@login_required
+def id_ile_dosya_bilgisi_getir():
+    # İstemciden ili al
+    dosya_id = request.args.get('dosya_id')
+    
+    
+    # Veritabanından model yılına ait markai çek
+    kayitli_dosya_bilgisi = customers.find_one({'_id': ObjectId(dosya_id)})
+    
+    # JSON formatında modelleri döndür
+    if kayitli_dosya_bilgisi:
+
+        json_response = json_util.dumps(kayitli_dosya_bilgisi)
+
+        return json_response, 200
+    
+    return jsonify({'message': 'Dosya kayıtlı değil'}), 401
+
+####### Dosya_id ile dosya icerigini tamemen getir. edit icin son  ####
 
 if __name__ == '__main__':
     app.run(debug=True)

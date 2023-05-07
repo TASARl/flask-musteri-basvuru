@@ -82,7 +82,7 @@ var KTModalCreateProjectTeam = (function () {
                 500
               );
               ////
-            }, 1500);
+            }, 500);
           } else {
             // Enable button
             nextButton.disabled = false;
@@ -217,6 +217,6 @@ $(document).ready(function () {
 
   $("#max_vade").click(function () {
     const spanText = $(this).text();
-    $("#target_tags").val(spanText);
+    $("#kredi_vadesi").val(spanText);
   });
 });
