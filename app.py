@@ -233,7 +233,7 @@ def get_basvurular():
     end_index = min(start_index + per_page, total_customers)
 
     # Müşterileri veritabanından getir
-    customer_list = list(customers.find({}, {'_id':1, 'adi':1, 'soyadi':1, 'dosya_numarasi':1, 'galeri_ili':1, 'galeri_adi':1, 'kredi_tutari':1, 'kredi_vadesi':1, 'calisma_sekli':1, 'kredi_miktar':1, 'kredi_vadesi':1, 'il_secimi':1}).sort("_id", -1).skip(start_index).limit(per_page))
+    customer_list = list(customers.find({}, {'_id':1, 'adi':1, 'soyadi':1, 'dosya_numarasi':1, 'galeri_ili':1, 'galeri_adi':1, 'kredi_tutari':1, 'kredi_vadesi':1, 'calisma_sekli':1, 'kredi_miktar':1, 'kredi_vadesi':1, 'created_time':1, 'musteri_cep_telefonu':1, 'arac_plakasi':1 }).sort("_id", -1).skip(start_index).limit(per_page))
 
     
     # Pagination metadatasını oluştur

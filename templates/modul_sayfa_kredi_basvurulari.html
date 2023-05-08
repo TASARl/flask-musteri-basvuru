@@ -3,7 +3,7 @@
     <div class="card-header border-0 pt-5">
         <h3 class="card-title align-items-start flex-column">
             <span class="card-label fw-bold fs-3 mb-1">Kredi Bşavuruları</span>
-            <span class="text-muted mt-1 fw-semibold fs-7">Over 500 orders</span>
+            <span class="text-muted mt-1 fw-semibold fs-7">Toplam {{ metadata.total_customers }} adet</span>
         </h3>
         <div class="card-toolbar">
             <!--begin::Menu-->
@@ -100,10 +100,10 @@
                             </div>
                         </th>
                         <th class="min-w-150px">Dosya Numarası</th>
-                        <th class="min-w-140px">Şehir</th>
+                        <th class="min-w-140px">Galeri</th>
                         <th class="min-w-120px">Tarih</th>
                         <th class="min-w-120px">Müşteri</th>
-                        <th class="min-w-120px">Miktar</th>
+                        <th class="min-w-120px">Tutar</th>
                         <th class="min-w-120px">Durum</th>
                         <th class="min-w-100px text-end">Uygulamalar</th>
                     </tr>
@@ -126,19 +126,19 @@
                             </div>
                         </td>
                         <td>
-                            <a href="#" class="text-dark fw-bold text-hover-primary fs-6">{{ customer.dosya_numarasi }}</a>
+                            <span class="text-dark fw-bold text-hover-primary fs-6">{{ customer.dosya_numarasi }}</span>
                         </td>
                         <td>
-                            <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ customer.galeri_ili }}</a>
+                            <span class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ customer.galeri_ili }}</span>
                             <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.galeri_adi }}</span>
                         </td>
                         <td>
-                            <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">05/28/2020</a>
-                            <span class="text-muted fw-semibold text-muted d-block fs-7">Code: Paid</span>
+                            <span class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6 createdTime">{{ customer.created_time }}</span> 
+                            <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.arac_plakasi }}</span>
                         </td>
                         <td>
-                            <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ customer.adi }} {{ customer.soyadi }} </a>
-                            <span class="text-muted fw-semibold text-muted d-block fs-7">Web, UI/UX Design</span>
+                            <span class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ customer.adi }} {{ customer.soyadi }} </span>
+                            <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.musteri_cep_telefonu }}</span>
                         </td>
                         <td class="text-dark fw-bold text-hover-primary fs-6">{{ customer.kredi_tutari }} TL
                             <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.kredi_vadesi }} Ay</span>
@@ -146,7 +146,7 @@
                         <td>
                             <span class="badge badge-light-success">Approved</span>
                         </td>
-                        <td class="text-end" style=" width: 130px;">
+                        <td class="text-end" style=" min-width: 130px;">
                             <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1" onclick="addSelectedCustomer(event, '{{ customer._id }}'); return false;">
                                 <i class="ki-duotone ki-switch fs-2">
                                     <span class="path1"></span>
@@ -176,19 +176,32 @@
             </table>
             <!--end::Table-->
             <div>
-                <!-- Pagination linkleri -->
-                {% if metadata.page > 1 %}
-                <a
-                  href="{{ url_for('get_basvurular', page=metadata.page-1, per_page=metadata.per_page) }}"
-                  >Onceki</a
-                >
-                {% endif %} {% if metadata.page < metadata.total_pages %}
-                <a
-                  href="{{ url_for('get_basvurular', page=metadata.page+1, per_page=metadata.per_page) }}"
-                  >Sonraki</a
-                >
+                <!-- Sayfa numaraları -->
+                {% if metadata.total_pages > 1 %}
+                  <ul class="pagination">
+                    {% if metadata.page > 1 %}
+                      <li class="page-item">
+                        <a href="{{ url_for('get_basvurular', page=metadata.page-1, per_page=metadata.per_page) }}" class="page-link">&laquo;</a>
+                      </li>
+                    {% endif %}
+              
+                    {% for num in range(1, metadata.total_pages + 1) %}
+                      {% if num == metadata.page %}
+                        <li class="page-item active"><span class="page-link">{{ num }} <span class="sr-only">(guncel)</span></span></li>
+                      {% else %}
+                        <li class="page-item"><a href="{{ url_for('get_basvurular', page=num, per_page=metadata.per_page) }}" class="page-link">{{ num }}</a></li>
+                      {% endif %}
+                    {% endfor %}
+              
+                    {% if metadata.page < metadata.total_pages %}
+                      <li class="page-item">
+                        <a href="{{ url_for('get_basvurular', page=metadata.page+1, per_page=metadata.per_page) }}" class="page-link">&raquo;</a>
+                      </li>
+                    {% endif %}
+                  </ul>
                 {% endif %}
               </div>
+              
         </div>
         <!--end::Table container-->
     </div>
@@ -196,8 +209,16 @@
 </div>
 
 
+<script type="text/javascript">
+    // tarihi kisa goster
+    const createdTimeElements = document.querySelectorAll('.createdTime');
+    for (let i = 0; i < createdTimeElements.length; i++) {
+        const date = new Date(createdTimeElements[i].textContent);
+        const formattedDate = `${date.getDate().toString().padStart(2, "0")}/${(date.getMonth() + 1).toString().padStart(2, "0")}/${date.getFullYear().toString()}`;
+        createdTimeElements[i].textContent = formattedDate;
+    }
 
-
+</script>
 
 <script type="text/javascript">
     //secili dosyayı degıstırme
@@ -226,6 +247,8 @@
     buttons.forEach(function(button) {
         button.addEventListener('click', function() {
         dosya_id = button.dataset.customerid;
+
+        document.querySelector('[data-kt-element="files-next"]').querySelector('.indicator-label').textContent= 'Kaydet';
 
         $.ajax({
             url: "/id_ile_dosya_bilgisi_getir", // buradaki URL'yi API URL'inizle değiştirin
@@ -272,13 +295,13 @@
                 
                 $('input[name="mahalle_ev"]').val(data.mahalle_ev)
                 $('input[name="ikamet_sure_ev"]').val(data.ikamet_sure_ev)
-                $('input[name="acik_adres_ev"]').val(data.acik_adres_ev)
+                $('textarea[name="acik_adres_ev"]').val(data.acik_adres_ev)
                 $('input[name="ikamet_sure_ev"]').val(data.ikamet_sure_ev)
                 $('input[name="isyeri_telefonu"]').val(data.isyeri_telefonu)
                 
                 
                 $('input[name="mahalle_is"]').val(data.mahalle_is)
-                $('input[name="acik_adres_is"]').val(data.acik_adres_is)
+                $('textarea[name="acik_adres_is"]').val(data.acik_adres_is)
                 // digerlerinin degisimi ile ortayacikanlar
                 $('input[name="kaskokodu"]').val(data.kaskokodu).trigger("input");
                 $('select[name="vergi_dairesi_ilce"]').val(data.vergi_dairesi_ilce).trigger("change");

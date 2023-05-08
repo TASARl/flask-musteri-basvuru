@@ -90,6 +90,9 @@ var KTModalCreateProjectFiles = (function () {
     nextButton.addEventListener("click", function (e) {
       // Prevent default button action
       e.preventDefault();
+      const dugme_label =
+        nextButton.querySelector(".indicator-label").textContent;
+      console.log(dugme_label);
 
       // Disable button to avoid multiple click
       nextButton.disabled = true;
@@ -153,13 +156,13 @@ var KTModalCreateProjectFiles = (function () {
                 ilce_secimi_ev: $('select[name="ilce_secimi_ev"]').val(),
                 mahalle_ev: $('input[name="mahalle_ev"]').val(),
                 ikamet_sure_ev: $('input[name="ikamet_sure_ev"]').val(),
-                acik_adres_ev: $('input[name="acik_adres_ev"]').val(),
+                acik_adres_ev: $('textarea[name="acik_adres_ev"]').val(),
                 isyeri_adi: $('input[name="ikamet_sure_ev"]').val(),
                 isyeri_telefonu: $('input[name="isyeri_telefonu"]').val(),
                 il_secimi_is: $('select[name="il_secimi_is"]').val(),
                 ilce_secimi_is: $('select[name="ilce_secimi_is"]').val(),
                 mahalle_is: $('input[name="mahalle_is"]').val(),
-                acik_adres_is: $('input[name="acik_adres_is"]').val(),
+                acik_adres_is: $('textarea[name="acik_adres_is"]').val(),
               };
 
               // Check axios library docs: https://axios-http.com/docs/intro
@@ -173,25 +176,33 @@ var KTModalCreateProjectFiles = (function () {
                     // Enable button
                     nextButton.disabled = false;
 
-                    // Go to next step
-                    // stepper.goNext();
-                    stepper.goTo(7);
+                    if (dugme_label === "Kaydet") {
+                      const modal = new bootstrap.Modal(
+                        document.getElementById("kt_modal_kaydedildi")
+                      );
+                      modal.show();
+                    } else {
+                      // Go to next step
+                      // stepper.goNext();
+                      stepper.goTo(7);
 
-                    // edit ederken gizlenmis alanlari gozter
-                    const elements = document.querySelectorAll(
-                      ".edit_bolumu_icin_gizle"
-                    );
-                    elements.forEach((element) => {
-                      element.style.setProperty("display", "", "important");
-                    });
+                      // edit ederken gizlenmis alanlari gozter
+                      const elements = document.querySelectorAll(
+                        ".edit_bolumu_icin_gizle"
+                      );
+                      elements.forEach((element) => {
+                        element.style.setProperty("display", "", "important");
+                      });
 
-                    // modal yukari kaydir
-                    $("#kt_modal_create_project .modal-body").animate(
-                      {
-                        scrollTop: 0,
-                      },
-                      500
-                    );
+                      // modal yukari kaydir
+                      $("#kt_modal_create_project .modal-body").animate(
+                        {
+                          scrollTop: 0,
+                        },
+                        500
+                      );
+                    }
+
                     ////
                   } else {
                     // Show error popup. For more info check the plugin's official documentation: https://sweetalert2.github.io/

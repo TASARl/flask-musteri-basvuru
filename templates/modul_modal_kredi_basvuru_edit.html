@@ -78,12 +78,10 @@
                                                         <!--begin::Title-->
                                                         <h1 class="fw-bold text-dark">Galeri Bilgileri</h1>
                                                         <!--end::Title-->
-                                                        <!--begin::Description-->
-                                                        <div class="text-muted fw-semibold fs-4">Süreç devam ederken işlem bildirimleri WhatsApp ile galeri telefonuna gönderilecektir.</div>
-                                                        <!--end::Description-->
+                                                        
                                                     </div>
                                                     <!--end::Heading-->
-                                                    <input type="text" class="form-control form-control-solid" name="dosya_id" id="dosya_id"/>
+                                                    <input type="text" class="form-control form-control-solid" name="dosya_id" id="dosya_id" style=" display: none; "/>
                                                     <!--begin::Input group-->
                                                     <div class="row g-9 mb-8">
                                                         <!--begin::Col-->
@@ -123,7 +121,9 @@
                                                         <!--end::Col-->
                                                     </div>
                                                     <!--end::Input group-->
-                
+                                                    <!--begin::Description-->
+                                                    <div class="text-muted fw-semibold fs-5 edit_bolumu_icin_gizle">Süreç devam ederken işlem bildirimleri WhatsApp ile galeri telefonuna gönderilecektir.<br /> <br /> Devam et butonuna bastığınızda galeriye dosyanın oluşturulduğuna dair mesaj gönderilecektir. <br/><br />  Gönderilecek mesaj: ... numaralı Hızlı Kredi Başvuru Dosyası oluşturulmuştur. Yetkili kuruluştan aracın geçmişi ve kasko kodu sorgulandıktan sonra müşteri ile iletişime geçilecektir.</div>
+                                                    <!--end::Description-->
                                                     <!--begin::Actions-->
                                                     <div class="d-flex justify-content-end edit_bolumu_icin_gizle">
                                                         <button type="button" class="btn btn-lg btn-primary" data-kt-element="type-next">
@@ -362,11 +362,11 @@
                                                     <!--begin::Heading-->
                                                     <div class="pb-10 pb-lg-12">
                                                         <!--begin::Title-->
-                                                        <h1 class="fw-bold text-dark">Bilgilendirme</h1>
+                                                        <h1 class="fw-bold text-dark edit_bolumu_icin_gizle">Bilgilendirme</h1>
                                                         <!--end::Title-->
                                                         <!--begin::Description-->
-                                                        <div class="text-muted fw-semibold fs-4">
-                                                            Kredi işlemlerinin sorunsuz bir şekilde tamamlanabilmesi için doğru Kasko Kodu'nun belirlenmesi gerekmektedir. <br/> <br/>  Bu nedenle, başvuru işlemine başlamadan önce Tramer ve Kasko Kodu sorgulaması tarafımızca gerçekleştirilecek olup, güncel bilgiler ışığında kredi miktarı belirlenecektir. <br/>  <br/> Kasko Kodu'nda olacak herhangi bir değişiklik, kredi miktarına ve vadesine doğrudan etki edebileceğinden dolayı, Kasko Kodu'nda değişiklik yaşandığı takdirde, derhal müşterilerimizle iletişime geçerek durumu detaylı şekilde paylaşacağız.
+                                                        <div class="text-muted fw-semibold fs-4 edit_bolumu_icin_gizle">
+                                                            Devam et butonuna bastığınızda müşteri ile iletişime geçtiğiniz bildirimi galeriye ve bölge sorumlusuna WhatsApp ile gönderilecektir. <br/>  <br/> Gönderilecek mesaj: .... dosya numaralı kredi başvurusu kapsamında müşteri telefon ile aranmış olup görüşme devam etmektedir.
                                                         </div>
                                                         <!--end::Description-->
                                                     </div>
@@ -1014,9 +1014,9 @@
                                                     <!--end::Input group-->
                                                     <!--begin::Actions-->
                                                     <div class="d-flex flex-stack">
-                                                        <button type="button" class="btn btn-lg btn-light me-3" data-kt-element="files-previous">Önceki Sayfa</button>
+                                                        <button type="button" class="btn btn-lg btn-light me-3 edit_bolumu_icin_gizle" data-kt-element="files-previous">Önceki Sayfa</button>
                                                         <button type="button" class="btn btn-lg btn-primary" data-kt-element="files-next">
-                                                            <span class="indicator-label">Başvuruyu Tamamla</span>
+                                                            <span class="indicator-label">Kaydet</span>
                                                             <span class="indicator-progress">Lütfen bekleyin...
                                                             <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                                                         </button>
@@ -1063,4 +1063,26 @@
                         <!--end::Modal content-->
                     </div>
                     <!--end::Modal dialog-->
+                </div>
+
+                <div class="modal fade" tabindex="-1" id="kt_modal_kaydedildi">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title">Değişiklikler başarıyla kaydedildi</h3>
+                
+                                <!--begin::Close-->
+                                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                </div>
+                                <!--end::Close-->
+                            </div>
+                
+                            <div class="modal-body">
+                                <p></p>
+                            </div>
+                
+                            
+                        </div>
+                    </div>
                 </div>

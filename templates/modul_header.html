@@ -15,8 +15,8 @@
             <!--end::Aside toggle-->
             <!--begin::Logo-->
             <a href="../../demo10/dist/index.html">
-                <img alt="Logo" src="assets/media/logos/default-dark.svg" class="h-25px h-lg-30px d-none d-md-block" />
-                <img alt="Logo" src="assets/media/logos/default-small.svg" class="h-25px d-block d-md-none" />
+                <img alt="Logo" src="assets/media/logos/default-dark.png" class="h-25px h-lg-30px d-none d-md-block" />
+                <img alt="Logo" src="assets/media/logos/default-small.png" class="h-25px d-block d-md-none" />
             </a>
             <!--end::Logo-->
         </div>
@@ -1484,11 +1484,12 @@
 </div>
 
 <script>
-    // Modal yeni basvuru
+    // Modal yeni basvuru ac. Kaydet dugmesının adını degıstır
     const button = document.querySelector('.yeniBasvuru');
     
 button.addEventListener('click', function() {
   dosya_id = 'yeni';
+  document.querySelector('[data-kt-element="files-next"]').querySelector('.indicator-label').textContent= 'Yeni Dosya Kaydet';
 
   $('#dosya_id').val(dosya_id);
   $('select[name="il_secimi_is"]').val('').trigger("change");
@@ -1525,12 +1526,12 @@ button.addEventListener('click', function() {
 
   $('input[name="mahalle_ev"]').val('');
   $('input[name="ikamet_sure_ev"]').val('');
-  $('input[name="acik_adres_ev"]').val('');
+  $('textarea[name="acik_adres_ev"]').val('');
   $('input[name="ikamet_sure_ev"]').val('');
   $('input[name="isyeri_telefonu"]').val('');
 
   $('input[name="mahalle_is"]').val('');
-  $('input[name="acik_adres_is"]').val('');
+  $('textarea[name="acik_adres_is"]').val('');
   // digerlerinin degisimi ile ortayacikanlar
   $('input[name="kaskokodu"]').val('').trigger("input");
   $('select[name="vergi_dairesi_ilce"]').val('').trigger("change");
