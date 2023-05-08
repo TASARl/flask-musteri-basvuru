@@ -94,15 +94,11 @@
                 <!--begin::Table head-->
                 <thead>
                     <tr class="fw-bold text-muted">
-                        <th class="w-25px">
-                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                <input class="form-check-input" type="checkbox" value="1" data-kt-check="true" data-kt-check-target=".widget-13-check" />
-                            </div>
-                        </th>
-                        <th class="min-w-150px">Dosya Numarası</th>
-                        <th class="min-w-140px">Galeri</th>
+                        
+                        <th class="min-w-110px">Dosya Numarası</th>
+                        <th class="min-w-110px">Galeri</th>
                         <th class="min-w-120px">Tarih</th>
-                        <th class="min-w-120px">Müşteri</th>
+                        <th class="min-w-140px">Müşteri</th>
                         <th class="min-w-120px">Tutar</th>
                         <th class="min-w-120px">Durum</th>
                         <th class="min-w-100px text-end">Uygulamalar</th>
@@ -115,16 +111,12 @@
                     {% for customer in data %} 
 
                     {% if lstest_customer_id|string == customer._id|string %}
-                    <tr style="background-color: #b8dcee">
+                    <tr style="background-color: #daf3ff">
                     {% else %}
                     <tr>
                     {% endif %}
 
-                        <td>
-                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                <input class="form-check-input widget-13-check" type="checkbox" value="1" />
-                            </div>
-                        </td>
+                        
                         <td>
                             <span class="text-dark fw-bold text-hover-primary fs-6">{{ customer.dosya_numarasi }}</span>
                         </td>
@@ -143,8 +135,10 @@
                         <td class="text-dark fw-bold text-hover-primary fs-6">{{ customer.kredi_tutari }} TL
                             <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.kredi_vadesi }} Ay</span>
                         </td>
-                        <td>
-                            <span class="badge badge-light-success">Approved</span>
+                        <td>    
+                            <button type="button" class="btn btn-light btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 dosyaDurumButonu" data-bs-toggle="modal" data-bs-target="#kt_modal_durum_guncelle" data-customerid="{{ customer._id }}" style="background-color: transparent;">
+                                <span class="badge badge-warning">Devam</span>
+                            </button> 
                         </td>
                         <td class="text-end" style=" min-width: 130px;">
                             <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1" onclick="addSelectedCustomer(event, '{{ customer._id }}'); return false;">
@@ -209,6 +203,9 @@
 </div>
 
 
+{% include 'modul_modal_durum_guncelle.html' %}
+
+
 <script type="text/javascript">
     // tarihi kisa goster
     const createdTimeElements = document.querySelectorAll('.createdTime');
@@ -222,7 +219,7 @@
 
 <script type="text/javascript">
     //secili dosyayı degıstırme
-    function addSelectedCustomer(event, customerId) {
+function addSelectedCustomer(event, customerId) {
   event.preventDefault();
   $.ajax({
     url: "/add_customer_selection",
@@ -242,7 +239,7 @@
 </script>
 
 <script>
-    // Modal içine dosya id si gönderme
+    // Edit Modal içine dosya id si gönderme
 	const buttons = document.querySelectorAll('.dosyaButonu');
     buttons.forEach(function(button) {
         button.addEventListener('click', function() {
@@ -296,7 +293,7 @@
                 $('input[name="mahalle_ev"]').val(data.mahalle_ev)
                 $('input[name="ikamet_sure_ev"]').val(data.ikamet_sure_ev)
                 $('textarea[name="acik_adres_ev"]').val(data.acik_adres_ev)
-                $('input[name="ikamet_sure_ev"]').val(data.ikamet_sure_ev)
+                $('input[name="isyeri_adi"]').val(data.isyeri_adi)
                 $('input[name="isyeri_telefonu"]').val(data.isyeri_telefonu)
                 
                 

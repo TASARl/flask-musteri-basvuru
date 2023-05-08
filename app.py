@@ -115,7 +115,7 @@ def form():
         # musteriyi ekleyen kullanıcının cep telefonu. unique dir
         data['created_by'] = current_user.id
         
-        data['created_time'] = datetime.now(turkey_tz)
+        
 
         # eger dokuman id baska bir dokumanda varsa bilgileri gunceller
         dosya_id=request.json.get('dosya_id')
@@ -135,6 +135,7 @@ def form():
                 result = customers.update_one({"_id": ObjectId(dosya_id)}, new_data)
                 return jsonify({'message': 'Form kaydedildi'}), 200
 
+        data['created_time'] = datetime.now(turkey_tz)
 
         # Rastgele 5 haneli büyük harf, rakam ve tirelerden oluşan benzersiz bir dizi oluşturuyoruz.
         dosya_numarasi = ''.join(random.choices(string.ascii_uppercase + string.digits + '-', k=5))

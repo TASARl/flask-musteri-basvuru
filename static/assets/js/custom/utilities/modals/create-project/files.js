@@ -157,7 +157,7 @@ var KTModalCreateProjectFiles = (function () {
                 mahalle_ev: $('input[name="mahalle_ev"]').val(),
                 ikamet_sure_ev: $('input[name="ikamet_sure_ev"]').val(),
                 acik_adres_ev: $('textarea[name="acik_adres_ev"]').val(),
-                isyeri_adi: $('input[name="ikamet_sure_ev"]').val(),
+                isyeri_adi: $('input[name="isyeri_adi"]').val(),
                 isyeri_telefonu: $('input[name="isyeri_telefonu"]').val(),
                 il_secimi_is: $('select[name="il_secimi_is"]').val(),
                 ilce_secimi_is: $('select[name="ilce_secimi_is"]').val(),
@@ -177,10 +177,20 @@ var KTModalCreateProjectFiles = (function () {
                     nextButton.disabled = false;
 
                     if (dugme_label === "Kaydet") {
-                      const modal = new bootstrap.Modal(
-                        document.getElementById("kt_modal_kaydedildi")
-                      );
-                      modal.show();
+                      //   const modal = new bootstrap.Modal(
+                      //     document.getElementById("kt_modal_kaydedildi")
+                      //   );
+                      //   modal.show();
+                      // Show popup confirmation
+                      Swal.fire({
+                        text: "Değişiklikler kaydedildi!",
+                        icon: "success",
+                        buttonsStyling: false,
+                        confirmButtonText: "Tamam",
+                        customClass: {
+                          confirmButton: "btn btn-primary",
+                        },
+                      });
                     } else {
                       // Go to next step
                       // stepper.goNext();
