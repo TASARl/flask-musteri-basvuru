@@ -1550,6 +1550,20 @@ button.addEventListener('click', function() {
         }
     }
 
+    
+    // content classına sahip tüm divleri seçin
+   const baslikDivs = document.querySelectorAll('[data-kt-stepper-element="nav"]');
+ 
+    // Her bir div için döngü ile geçin
+    for (let i = 0; i < baslikDivs.length; i++) {
+        if (i === 0) {
+            baslikDivs[i].className = "stepper-item me-5 me-md-15 current";
+        } else {
+            baslikDivs[i].className = "stepper-item me-5 me-md-15 pending";
+        }
+    }
+
+
     const elements = document.querySelectorAll('.edit_bolumu_icin_gizle');
                 elements.forEach(element => {
                     element.style.setProperty('display', '', 'important');

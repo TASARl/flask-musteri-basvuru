@@ -87,6 +87,7 @@ var KTModalCreateProjectType = (function () {
               nextButton.disabled = false;
 
               // Go to next step
+              stepper.goTo(1);
               stepper.goTo(2);
 
               // modal yukari kaydir

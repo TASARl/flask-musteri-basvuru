@@ -92,7 +92,6 @@ var KTModalCreateProjectFiles = (function () {
       e.preventDefault();
       const dugme_label =
         nextButton.querySelector(".indicator-label").textContent;
-      console.log(dugme_label);
 
       // Disable button to avoid multiple click
       nextButton.disabled = true;
