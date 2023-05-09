@@ -19,6 +19,8 @@ import random
 
 import os
 
+from bson.json_util import dumps
+
 # Türkiye Saati'ni belirtmek için timezone objesi oluşturulur
 import pytz # turkiye saatiyle kayitlari eklemek icin
 turkey_tz = pytz.timezone('Europe/Istanbul')
@@ -48,8 +50,10 @@ except Exception as e:
 
 db = client.otovitrin
 customers = db.musteriler
+dosya_notlari = db.dosya_notlari
 users_collection = db['users']
 selected_customers = db.selected_customers
+
 hazir_veriler = client["form_hazir_verileri"]
 modellerDb = hazir_veriler["modeller"]
 
@@ -667,6 +671,52 @@ def id_ile_dosya_bilgisi_getir():
     return jsonify({'message': 'Dosya kayıtlı değil'}), 401
 
 ####### Dosya_id ile dosya icerigini tamemen getir. edit icin son  ####
+
+
+######## Dosya Guncellemeleri Servisi get ve post  baslangic #########
+
+# Kredi dosyasi guncellemelri ekliyoruz ve getiriyoruz
+@app.route('/dosya_guncellemeleri', methods=['GET', 'POST'])
+@login_required
+def dosya_guncellemeleri():
+    if request.method == 'POST':
+        try:
+            data = request.json
+            
+            # musteriyi ekleyen kullanıcının cep telefonu. unique dir
+            data['created_by'] = current_user.id
+            data['isim_soyisim'] = current_user.isim_soyisim
+            data['status'] = 'pending'   # success  pending  failed
+            
+            # olusturulma zamani
+            data['created_time'] = datetime.now()
+            
+            # Database kayıt işlemi
+            result = dosya_notlari.insert_one(data)
+            
+            document_id = result.inserted_id
+            print(f"_id of inserted document {document_id}")
+            
+            # Başarılı bir şekilde kaydedildi sayfasını göster
+            return jsonify({'message': 'Form kaydedildi'}), 200
+        
+        except Exception as e:
+            print(e)
+            return jsonify({'message': 'Bir hata oluştu'}), 500
+    
+    
+
+    dosya_id = request.args.get('dosya_id')
+    documents = dosya_notlari.find({'dosya_id': dosya_id})
+
+    # BSON'den JSON'a dönüştürmek için "dumps()" fonksiyonunu kullanın
+    json_documents = dumps(documents)
+
+    # JSON yanıtını gönderin
+    return jsonify(json_documents), 200
+
+######## Dosya Guncellemeleri Servisi get ve post  Son #########
+
 
 if __name__ == '__main__':
     app.run(debug=True)

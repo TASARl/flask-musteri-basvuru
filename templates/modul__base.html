@@ -44,7 +44,7 @@
 					{% include 'modul_header.html' %}
 					<!--end::Header-->
 					<!--begin::Content-->
-					{% block content %} {% endblock %} {% block scripts %} {% endblock %}
+					{% block content %} {% endblock %} 
 					<!--end::Content-->
 					<!--begin::Footer-->
 					{% include 'modul_footer.html' %}
@@ -4023,6 +4023,9 @@
 		<script src="{{ url_for('static', filename='assets/js/custom/utilities/modals/create-project/main.js') }}"></script>
 		<script src="{{ url_for('static', filename='assets/js/custom/utilities/modals/create-account.js') }}"></script>
 		<!--end::Custom Javascript-->
+
+		{% block scripts %} {% endblock %}
+
 		<!--end::Javascript-->
 	</body>
 	<!--end::Body-->

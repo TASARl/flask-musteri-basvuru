@@ -15,5 +15,84 @@
 
 
 {% block scripts %} 
+<script>
+$(document).ready(function() {
+    $('#submitButtonGuncelle').on('click', function(event) {
+        event.preventDefault(); // Prevent default form submission behavior
 
+        // Get the input value
+        const inputValue = $('#myInputGuncelle').val();
+        const dosya_id_durum = $('#dosya_id_durum').val();
+
+        // Check if input value is empty
+        if (inputValue === '') {
+            return; // Exit the function if input is empty
+        }
+
+        // Make an AJAX request with the input value
+        $.ajax({
+            url: '/dosya_guncellemeleri',
+            method: 'POST',
+            contentType: 'application/json', // Set content type header
+            data: JSON.stringify({ dosya_id: dosya_id_durum, inputValue }), // Convert data to JSON string
+            success: function(response) {
+                $('#myInputGuncelle').val(''); // Clear the input field after successful submission
+                getDosyaGuncellemeleri(dosya_id_durum);
+            },
+            error: function(xhr, status, error) {
+                console.log('hata var');
+            }
+        });
+    });
+});
+
+
+function getDosyaGuncellemeleri(dosya_id) {
+    $.ajax({
+        url: '/dosya_guncellemeleri',
+        method: 'GET',
+        data: { dosya_id: dosya_id },
+        success: function(data){
+            // Veriyi parse et
+            var json_data = JSON.parse(data);
+
+            // HTML kodunu oluştur
+            var html = '<div class="timeline">';
+            for (var i=0; i<json_data.length; i++) {
+                 // Tarihten sadece saat kısmını al
+
+                var date = new Date(json_data[i].created_time.$date);
+                // Saat, dakika ve saniyeyi al
+                var hours = date.getUTCHours() + 3; // UTC saat diliminden Türkiye saat dilimine geçiş yap
+                hours = ('0' + hours).slice(-2);
+                var minutes = ('0' + date.getMinutes()).slice(-2);
+                var seconds = date.getSeconds();
+
+                html += '<div class="timeline-item">';
+                html += '<div class="timeline-label fw-bold text-gray-800 fs-6">' + hours + ':' + minutes  + '</div>';
+                if (json_data[i].status == 'pending') {
+                    html += '<div class="timeline-badge"><i class="fa fa-genderless text-warning fs-1"></i></div>';
+                }
+                else {
+                    html += '<div class="timeline-badge"><i class="fa fa-genderless text-success fs-1"></i></div>';
+                }
+                html += '<div class="timeline-content fw-mormal text-muted ps-3">';
+                html += '<span>' + json_data[i].inputValue + '</span>';
+                html += '<br><small class="text-muted">Ekleyen: ' + json_data[i].isim_soyisim + '</small>';
+                html += '</div>';
+                html += '</div>';
+            }
+            html += '</div>';
+
+            // HTML kodunu sayfaya ekle
+            $('#eklenecekGuncellemeler').html(html);
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
+
+
+</script>
 {% endblock %}
