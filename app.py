@@ -68,6 +68,90 @@ def index():
     # index.html adlı template'i döndür
     return render_template('index.html')
 
+# Index sayfasi
+@app.route('/destek')
+@login_required
+def destek():
+
+    user_data = {
+        "isim_soyisim": current_user.isim_soyisim,
+        "cep_telefonu": current_user.id,
+        "sehir": current_user.city,
+    }
+    
+    
+    return render_template('destek.html', user_data=user_data)
+
+# Index sayfasi
+@app.route('/iletisim')
+@login_required
+def iletisim():
+
+    user_data = {
+        "isim_soyisim": current_user.isim_soyisim,
+        "cep_telefonu": current_user.id,
+        "sehir": current_user.city,
+    }
+    
+    
+    return render_template('iletisim.html', user_data=user_data)
+
+# Index sayfasi
+@app.route('/hesabim')
+@login_required
+def hesabim():
+
+    user_data = {
+        "isim_soyisim": current_user.isim_soyisim,
+        "cep_telefonu": current_user.id,
+        "sehir": current_user.city,
+    }
+    
+    
+    return render_template('hesabim.html', user_data=user_data)
+
+# Index sayfasi
+@app.route('/userlist')
+@login_required
+def userlist():
+
+    customers = db.users
+
+    # Sayfa numarasını al
+    page = int(request.args.get('page', 1))
+    # Her sayfada kaç müşteri gösterileceğini belirle
+    per_page = int(request.args.get('per_page', 10))
+
+    # Toplam müşteri sayısını al
+    total_customers = customers.count_documents({})
+
+    # Pagination hesaplamaları
+    start_index = (page - 1) * per_page
+    end_index = min(start_index + per_page, total_customers)
+
+    # Müşterileri veritabanından getir
+    customer_list = list(customers.find({}, {'_id':1, 'isim_soyisim':1, 'gallery_name':1, 'city':1, 'district':1, 'username':1}).sort("_id", -1).skip(start_index).limit(per_page))
+
+    
+    # Pagination metadatasını oluştur
+    metadata = {
+        'page': page,
+        'per_page': per_page,
+        'total_customers': total_customers,
+        'total_pages': int(total_customers / per_page) + 1
+    }
+
+    user_data = {
+        "isim_soyisim": current_user.isim_soyisim,
+        "cep_telefonu": current_user.id,
+        "sehir": current_user.city,
+    }
+
+
+    
+    return render_template('userlist.html', data=customer_list , metadata=metadata, user_data=user_data)
+
+
 # Basvuru Sayfasi
 @app.route('/basvuru')
 @login_required
@@ -256,6 +340,7 @@ def get_customers():
     customer_json = json_util.dumps({'metadata': metadata, 'customers': customer_list})
     
     return render_template('customer.html', data=customer_list , metadata=metadata, lstest_customer_id=lstest_customer_id)
+
 
 # GET isteği ile müşterileri pagination ile getirme
 @app.route('/basvurular', methods=['GET'])

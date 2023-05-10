@@ -74,7 +74,7 @@
                 </div>
                 <!--end:Menu item-->
                 <!--begin:Menu item-->
-                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                <div data-kt-menu-trigger="click" class="menu-item menu-accordion {% if request.path == '/userlist' %}show{% endif %}">
                     <!--begin:Menu link-->
                     <span class="menu-link">
                         <span class="menu-icon">
@@ -93,7 +93,7 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link" href="https://hizlikredi.net.tr/signup">
+                            <a class="menu-link {% if request.path == '/userlist' %}active{% endif %}" href="{{ url_for('userlist') }}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
@@ -125,7 +125,7 @@
                 <!--begin:Menu item-->
                 <div class="menu-item">
                     <!--begin:Menu link-->
-                    <a class="menu-link" href="https://hizlikredi.net.tr/signup">
+                    <a class="menu-link {% if request.path == '/hesabim' %}active{% endif %}" href="{{ url_for('hesabim') }}">
                         <span class="menu-icon">
                             <i class="ki-duotone ki-element-plus fs-2">
                                 <span class="path1"></span>
@@ -156,7 +156,7 @@
                 <!--begin:Menu item-->
                 <div class="menu-item">
                     <!--begin:Menu link-->
-                    <a class="menu-link" href="https://hizlikredi.net.tr/signup">
+                    <a class="menu-link {% if request.path == '/destek' %}active{% endif %}" href="{{ url_for('destek') }}">
                         <span class="menu-icon">
                             <i class="ki-duotone ki-abstract-41 fs-2">
                                 <span class="path1"></span>
@@ -175,7 +175,7 @@
                 <!--begin:Menu item-->
                 <div class="menu-item">
                     <!--begin:Menu link-->
-                    <a class="menu-link" href="https://hizlikredi.net.tr/signup">
+                    <a class="menu-link {% if request.path == '/iletisim' %}active{% endif %}" href="{{ url_for('iletisim') }}">
                         <span class="menu-icon">
                             <i class="ki-duotone ki-chart fs-2">
                                 <span class="path1"></span>
