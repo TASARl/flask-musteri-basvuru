@@ -50,7 +50,6 @@ except Exception as e:
 
 db = client.otovitrin
 customers = db.musteriler
-dosya_notlari = db.dosya_notlari
 users_collection = db['users']
 selected_customers = db.selected_customers
 
@@ -105,7 +104,7 @@ def form():
         kasko_kodu = str(request.json.get('kaskokodu'))
         model_yili = int(request.json.get('model_yili'))
 
-        if model_yili is not None:
+        if model_yili and kasko_kodu is not None:
             # Veritabanından model yılına ait araci çek
             arac_kasko_bedel = modellerDb.find_one({
                                             "Model yılı": model_yili,
@@ -116,12 +115,12 @@ def form():
             data["marka_adi"] = arac_kasko_bedel['Marka']
             data["tip_adi"] = arac_kasko_bedel['Model']
 
-        # musteriyi ekleyen kullanıcının cep telefonu. unique dir
+        # musteriyi ekleyen kullanıcının cep telefonu. unique dir ekle
         data['created_by'] = current_user.id
-        
+        data['created_by_isim'] = current_user.isim_soyisim
         
 
-        # eger dokuman id baska bir dokumanda varsa bilgileri gunceller
+        # eger dokuman id baska bir dokumanda varsa bilgileri gunceller. not kelimesi dikkat
         dosya_id=request.json.get('dosya_id')
         if not (dosya_id=='' or dosya_id == "yeni"):
             # Veritabanından model yılına ait markai çek
@@ -132,14 +131,41 @@ def form():
                 #alttaki degerler bosluk ve gereksiz degerler guncellenmemesi icin jsondan kaldir
                 del data["dosya_id"]
                 del data["dosya_numarasi"]
+
+                # guncellemelere ekle
+                dataGuncelle = {}
+                    
+                # musteriyi ekleyen kullanıcının cep telefonu. unique dir
+                dataGuncelle['inputValue'] = 'Dosya guncellendi'
+                dataGuncelle['created_by'] = current_user.id
+                dataGuncelle['isim_soyisim'] = current_user.isim_soyisim
+                dataGuncelle['status'] = 'otomatik'   # success  pending  failed
+                dataGuncelle['created_time'] = datetime.now()
+
+                # initialize an empty list for 'guncellemeler'
+                if 'guncellemeler' not in kayitli_dosya_bilgisi:
+                    data['guncellemeler'] = []
+                else:
+                    data['guncellemeler'] = kayitli_dosya_bilgisi['guncellemeler']
+
+                data["guncellemeler"].append(dataGuncelle)
+
                 new_data = {
                     "$set": data
                 }
                 
                 result = customers.update_one({"_id": ObjectId(dosya_id)}, new_data)
+
+                # DataGuncellebase kayıt işlemi
+                # resultGuncelle = dosya_notlari.insert_one(dataGuncelle)
+                
+                
                 return jsonify({'message': 'Form kaydedildi'}), 200
 
+        # eger dosya daha onceden yoksa ve İLK DEFA BİR DOSYA OLUŞTURULUyorsa
         data['created_time'] = datetime.now(turkey_tz)
+
+        data['status'] = 'Devam'   # surec sayfasindaki renkli butonlar
 
         # Rastgele 5 haneli büyük harf, rakam ve tirelerden oluşan benzersiz bir dizi oluşturuyoruz.
         dosya_numarasi = ''.join(random.choices(string.ascii_uppercase + string.digits + '-', k=5))
@@ -151,7 +177,20 @@ def form():
         # benzersiz dosya numarasi eklenir
         data['dosya_numarasi'] = dosya_numarasi
 
+        # guncellemelere ekle
+        dataGuncelle = {}
+                    
+        # musteriyi ekleyen kullanıcının cep telefonu. unique dir
+        dataGuncelle['inputValue'] = 'Dosya oluşturuldu.'
+        dataGuncelle['created_by'] = current_user.id
+        dataGuncelle['isim_soyisim'] = current_user.isim_soyisim
+        dataGuncelle['status'] = 'otomatik'   # success  pending  failed
+        dataGuncelle['created_time'] = datetime.now()
+
+        data['guncellemeler'] = []
         
+        data["guncellemeler"].append(dataGuncelle)
+
         # Database kayıt işlemi
         result = customers.insert_one(data)
 
@@ -159,7 +198,7 @@ def form():
         print(f"_id of inserted document {document_id}")
 
         # Başarılı bir şekilde kaydedildi sayfasını göster
-        return jsonify({'message': 'Form kaydedildi'}), 200
+        return jsonify({'message': 'Form kaydedildi','dosya_id': str(document_id)}), 200
         
     return jsonify({'message': 'Form gonderilmedi'}), 401
 
@@ -238,7 +277,7 @@ def get_basvurular():
     end_index = min(start_index + per_page, total_customers)
 
     # Müşterileri veritabanından getir
-    customer_list = list(customers.find({}, {'_id':1, 'adi':1, 'soyadi':1, 'dosya_numarasi':1, 'galeri_ili':1, 'galeri_adi':1, 'kredi_tutari':1, 'kredi_vadesi':1, 'calisma_sekli':1, 'kredi_miktar':1, 'kredi_vadesi':1, 'created_time':1, 'musteri_cep_telefonu':1, 'arac_plakasi':1 }).sort("_id", -1).skip(start_index).limit(per_page))
+    customer_list = list(customers.find({}, {'_id':1, 'adi':1, 'soyadi':1, 'dosya_numarasi':1, 'galeri_ili':1, 'galeri_adi':1, 'kredi_tutari':1, 'kredi_vadesi':1, 'calisma_sekli':1, 'kredi_miktar':1, 'kredi_vadesi':1, 'created_time':1, 'musteri_cep_telefonu':1, 'arac_plakasi':1 , 'created_by_isim':1, 'status': 1}).sort("_id", -1).skip(start_index).limit(per_page))
 
     
     # Pagination metadatasını oluştur
@@ -506,7 +545,7 @@ def fiyat():
                 'model':arac_kasko_bedel['Model'],}
     else:
         print("arac_kasko_bedel is None")
-
+        
 # kasko kodu ve model yılı ıle arac sorgula
 @app.route('/fiyat2', methods=['GET'])
 def fiyat2():
@@ -679,35 +718,51 @@ def id_ile_dosya_bilgisi_getir():
 @app.route('/dosya_guncellemeleri', methods=['GET', 'POST'])
 @login_required
 def dosya_guncellemeleri():
+    
     if request.method == 'POST':
+        dosya_id = request.json['dosya_id']
+        
         try:
-            data = request.json
-            
+            # Veritabanından id ye ait kisibilgisini cek
+            kayitli_dosya_bilgisi = customers.find_one({'_id': ObjectId(dosya_id)})
+
+            if (request.json['inputValue'] == 'Devam') or (request.json['inputValue'] == 'Kullandırıldı') or (request.json['inputValue'] == 'Sonlandı'):
+                ekleyen = 'standart'
+            else:
+                ekleyen = 'kullanici'
+
+
+            # guncellemelere ekle
+            dataGuncelle = {}
+                    
             # musteriyi ekleyen kullanıcının cep telefonu. unique dir
-            data['created_by'] = current_user.id
-            data['isim_soyisim'] = current_user.isim_soyisim
-            data['status'] = 'pending'   # success  pending  failed
+            dataGuncelle['inputValue'] = request.json['inputValue']
+            dataGuncelle['created_by'] = current_user.id
+            dataGuncelle['isim_soyisim'] = current_user.isim_soyisim
+            dataGuncelle['status'] = ekleyen   # otomatik kullanici
+            dataGuncelle['created_time'] = datetime.now()
+
+            # Eğer güncellemeler listesi henüz tanımlanmadıysa, boş bir liste olarak başlatın
+            if 'guncellemeler' not in kayitli_dosya_bilgisi:
+                kayitli_dosya_bilgisi['guncellemeler'] = []
             
-            # olusturulma zamani
-            data['created_time'] = datetime.now()
+            # Güncellemeler listesine yeni güncelleme verisini ekleyin
+            kayitli_dosya_bilgisi["guncellemeler"].append(dataGuncelle)
+
+            # MongoDB'deki belgeyi güncelleyin
+            result = customers.update_one({"_id": ObjectId(dosya_id)}, {"$set": kayitli_dosya_bilgisi})
             
-            # Database kayıt işlemi
-            result = dosya_notlari.insert_one(data)
-            
-            document_id = result.inserted_id
-            print(f"_id of inserted document {document_id}")
-            
+
             # Başarılı bir şekilde kaydedildi sayfasını göster
             return jsonify({'message': 'Form kaydedildi'}), 200
         
         except Exception as e:
             print(e)
             return jsonify({'message': 'Bir hata oluştu'}), 500
-    
-    
-
+        
     dosya_id = request.args.get('dosya_id')
-    documents = dosya_notlari.find({'dosya_id': dosya_id})
+    
+    documents = customers.find_one({'_id': ObjectId(dosya_id)})['guncellemeler']
 
     # BSON'den JSON'a dönüştürmek için "dumps()" fonksiyonunu kullanın
     json_documents = dumps(documents)
@@ -716,6 +771,22 @@ def dosya_guncellemeleri():
     return jsonify(json_documents), 200
 
 ######## Dosya Guncellemeleri Servisi get ve post  Son #########
+
+####### Dosya durumu devam kullanildi sonlandi felan baslangic #######
+# Dökümanı güncelleme işlemi
+@app.route('/update_document/<document_id>', methods=['POST'])
+def update_document(document_id):
+    # İstek verilerini alın
+    data = request.json
+    status = data.get('status')
+    print(status)
+    print(document_id)
+    # Durum alanını güncelle
+    customers.update_one({'_id': ObjectId(document_id)}, {'$set': {'status': status}})
+
+    # Başarılı yanıt döndür
+    return jsonify({'success': True})
+####### Dosya durumu devam kullanildi sonlandi felan son #######
 
 
 if __name__ == '__main__':

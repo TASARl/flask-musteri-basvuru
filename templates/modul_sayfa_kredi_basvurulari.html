@@ -2,7 +2,7 @@
     <!--begin::Header-->
     <div class="card-header border-0 pt-5">
         <h3 class="card-title align-items-start flex-column">
-            <span class="card-label fw-bold fs-3 mb-1">Kredi Bşavuruları</span>
+            <span class="card-label fw-bold fs-3 mb-1">Kredi Başvuru Dosyaları</span>
             <span class="text-muted mt-1 fw-semibold fs-7">Toplam {{ metadata.total_customers }} adet</span>
         </h3>
         <div class="card-toolbar">
@@ -119,6 +119,7 @@
                         
                         <td>
                             <span class="text-dark fw-bold text-hover-primary fs-6">{{ customer.dosya_numarasi }}</span>
+                            <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.created_by_isim }}</span>
                         </td>
                         <td>
                             <span class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ customer.galeri_ili }}</span>
@@ -136,8 +137,18 @@
                             <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.kredi_vadesi }} Ay</span>
                         </td>
                         <td>    
-                            <button type="button" class="btn btn-light btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 dosyaDurumButonu" data-bs-toggle="modal" data-bs-target="#kt_modal_durum_guncelle" data-customerid="{{ customer._id }}" style="background-color: transparent;">
-                                <span class="badge badge-warning">Devam</span>
+                            <button type="button" class="btn btn-light btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 dosyaDurumButonu" data-bs-toggle="modal" data-bs-target="#kt_modal_durum_guncelle" data-customerid="{{ customer._id }}" data-dosya_numarasi = "{{ customer.dosya_numarasi }}" style="width: 50px; height: 20px;">
+                                
+                                <span class="badge 
+                                    {% if customer.status == 'Sonlandı' %}
+                                        badge-danger
+                                    {% elif customer.status == 'Devam' %}
+                                        badge-warning
+                                    {% elif customer.status == 'Kullandırıldı' %}
+                                        badge-success
+                                    {% endif %}
+                                ">{{ customer.status }}</span>
+
                             </button> 
                         </td>
                         <td class="text-end" style=" min-width: 130px;">

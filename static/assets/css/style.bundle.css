@@ -47753,11 +47753,14 @@ code:not([class*="language-"]) {
 
 .timeline-label {
   position: relative;
+  width: 50px;
 }
 .timeline-label:before {
   content: "";
   position: absolute;
-  left: 51px;
+  left: 50px;
+  margin-top: 20px;
+  height: 42px;
   width: 3px;
   top: 0;
   bottom: 0;

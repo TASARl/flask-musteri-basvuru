@@ -78,6 +78,12 @@ var KTModalCreateProjectType = (function () {
             // Show loading indication
             nextButton.setAttribute("data-kt-indicator", "on");
 
+            // eğer dosya ıd 'yeni' ise bunu kaydet ve dosya numarasını olustur dosya_ıd sını ılgılı yere ekle
+            var dosya_id_degeri = $("#dosya_id").val();
+            if (dosya_id_degeri === "yeni") {
+              console.log("dosya id yeni");
+            }
+
             // Simulate form submission
             setTimeout(function () {
               // Simulate form submission

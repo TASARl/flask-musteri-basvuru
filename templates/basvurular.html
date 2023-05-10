@@ -23,6 +23,7 @@ $(document).ready(function() {
         // Get the input value
         const inputValue = $('#myInputGuncelle').val();
         const dosya_id_durum = $('#dosya_id_durum').val();
+        console.log(dosya_id_durum)
 
         // Check if input value is empty
         if (inputValue === '') {
@@ -70,11 +71,13 @@ function getDosyaGuncellemeleri(dosya_id) {
 
                 html += '<div class="timeline-item">';
                 html += '<div class="timeline-label fw-bold text-gray-800 fs-6">' + hours + ':' + minutes  + '</div>';
-                if (json_data[i].status == 'pending') {
+                if (json_data[i].status == 'kullanici') {
                     html += '<div class="timeline-badge"><i class="fa fa-genderless text-warning fs-1"></i></div>';
+                } else if (json_data[i].status == 'otomatik'){
+                    html += '<div class="timeline-badge"><i class="fa fa-genderless text-primary fs-1"></i></div>';
                 }
                 else {
-                    html += '<div class="timeline-badge"><i class="fa fa-genderless text-success fs-1"></i></div>';
+                    html += '<div class="timeline-badge"><i class="fa fa-genderless text-info fs-1"></i></div>';
                 }
                 html += '<div class="timeline-content fw-mormal text-muted ps-3">';
                 html += '<span>' + json_data[i].inputValue + '</span>';
@@ -95,4 +98,46 @@ function getDosyaGuncellemeleri(dosya_id) {
 
 
 </script>
+
+<script>
+// durumu degistirmek icin butonlara 3 tane buton. buton ıcındekı datayı secer. aksiyon ajax
+$(document).ready(function() {
+    $('.durum').click(function() {
+        var button = $(this);
+        var document_id = $('#dosya_id_durum').val(); // Değiştirilecek belgenin ID'si
+
+        // Butonun durumunu diğer butonlardan ayırın
+        $('.durum').removeClass('active');
+        button.addClass('active');
+
+        // Durumu alın ve AJAX isteği gönderin
+        var status = button.text();
+        $.ajax({
+            url: '/update_document/' + document_id,
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({status: status}),
+            success: function(response) {
+                console.log(response);
+            }
+        });
+
+        // guncellemeler ıcıne durumu ajax ele ekle ve akranda goster
+        $.ajax({
+            url: '/dosya_guncellemeleri',
+            method: 'POST',
+            contentType: 'application/json', // Set content type header
+            data: JSON.stringify({ dosya_id: document_id, inputValue: status }), // Convert data to JSON string
+            success: function(response) {
+                $('#myInputGuncelle').val(''); // Clear the input field after successful submission
+                getDosyaGuncellemeleri(document_id);
+            },
+            error: function(xhr, status, error) {
+                console.log('hata var');
+            }
+        });
+    });
+});
+</script>
+
 {% endblock %}

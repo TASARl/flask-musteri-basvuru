@@ -176,6 +176,7 @@ var KTModalCreateProjectFiles = (function () {
                     nextButton.disabled = false;
 
                     if (dugme_label === "Kaydet") {
+                      // edıt dosya bolumunde Dugmenın uzerinde Kaydet yazarç Kaydet e basıldıgında stepper aktıf olmasın bir swal pencede mesaj verılsın. stepper aktıf olunca yenı basıvuru formu hata verdı
                       //   const modal = new bootstrap.Modal(
                       //     document.getElementById("kt_modal_kaydedildi")
                       //   );
