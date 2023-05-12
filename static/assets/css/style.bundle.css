@@ -40677,6 +40677,7 @@ code:not([class*="language-"]) {
   align-items: center;
   padding-left: 0;
   margin: 0;
+  justify-content: center;
 }
 .form-check-custom .form-check-input {
   margin: 0;
