@@ -246,6 +246,8 @@ def form():
                 
                 return jsonify({'message': 'Form kaydedildi'}), 200
 
+        del data["dosya_id"]
+
         # eger dosya daha onceden yoksa ve İLK DEFA BİR DOSYA OLUŞTURULUyorsa
         data['created_time'] = datetime.now(turkey_tz)
 
@@ -429,44 +431,33 @@ def add_customer_selection():
     return jsonify(str(result))
 
 # secili musteri getir. masa ustu uygulamasi icin
-@app.route('/secili_musteri', methods=['GET'])
-def last_selected_customer():
+@app.route('/secili_musteri/<string:parametre>', methods=['GET'])
+def last_selected_customer(parametre):
     
     # Son seçilen müşterinin bilgilerini al
-    latest_customer = selected_customers.find().sort([('selection_date', DESCENDING)]).limit(1)
-    customer_id = latest_customer[0]['customer_id']
+    secili_dosya = selected_customers.find_one({'current_user': parametre})
+    if secili_dosya:
+        customer_id = str(secili_dosya['customer_id'])  # ObjectId to str
 
-    # Müşteri bilgilerini veritabanından al
-    customers = db.musteriler
-    customer = customers.find_one({'_id': ObjectId(customer_id)})
+        # Müşteri bilgilerini veritabanından al
+        customers = db.musteriler
+        customer = customers.find_one({'_id': ObjectId(customer_id)})
+        
+        if customer is None:
+            return jsonify({'message': 'Müşteri bulunamadı.', 'id': customer_id}), 404
+
+        # Convert ObjectId to string
+        customer['_id'] = str(customer['_id'])
+        del customer['guncellemeler']
+        del customer['status']
+        del customer['_id']
+
+        return jsonify(customer), 200
     
-    if customer is None:
-        return jsonify({'message': 'Müşteri bulunamadı.', 'id': customer_id}, 404)
-
+    return {'Hata':'hatali paralo'}, 200
+    
 
     
-    # JSON formatında HTTP yanıtı oluştur
-    response = {
-        'tc': customer['tc'],
-        'ad_soyad': customer['ad_soyad'],
-        'dogum_tarihi': customer['dogum_tarihi'],
-        'telefon': customer['telefon'],
-        'email': customer['email'],
-        'aylik_net_gelir': customer['aylik_net_gelir'],
-        'calisma_sekli': customer['calisma_sekli'],
-        'kredi_miktar': customer['kredi_miktar'],
-        'kredi_vadesi': customer['kredi_vadesi'],
-        'arac': {
-        'model_yili': customer['arac']['model_yili'],
-        'marka_adi': customer['arac']['marka_adi'],
-        'tip_adi': customer['arac']['tip_adi'],
-        'kasko_bedeli': customer['arac']['kasko_bedeli'],
-        'kaskokodu': customer['arac']['kaskokodu']}
-    }
-
-    json_response = json.dumps(response, ensure_ascii=False)
-
-    return json_response, 200
 
 
 
