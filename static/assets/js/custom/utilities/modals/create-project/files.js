@@ -182,15 +182,28 @@ var KTModalCreateProjectFiles = (function () {
                       //   );
                       //   modal.show();
                       // Show popup confirmation
-                      Swal.fire({
-                        text: "Değişiklikler kaydedildi!",
-                        icon: "success",
-                        buttonsStyling: false,
-                        confirmButtonText: "Tamam",
-                        customClass: {
-                          confirmButton: "btn btn-primary",
-                        },
-                      });
+                      toastr.options = {
+                        closeButton: true,
+                        debug: false,
+                        newestOnTop: false,
+                        progressBar: true,
+                        positionClass: "toastr-bottom-left",
+                        preventDuplicates: false,
+                        onclick: null,
+                        showDuration: "300",
+                        hideDuration: "1000",
+                        timeOut: "5000",
+                        extendedTimeOut: "1000",
+                        showEasing: "swing",
+                        hideEasing: "linear",
+                        showMethod: "fadeIn",
+                        hideMethod: "fadeOut",
+                      };
+
+                      toastr.success(
+                        "Dosyada yapılan değişiklikler kayıt edildi.",
+                        "Kayıt edildi"
+                      );
                     } else {
                       // Go to next step
                       // stepper.goNext();

@@ -16,9 +16,28 @@
 
 {% block scripts %} 
 <script>
+toastr.options = {
+  "closeButton": true,
+  "debug": false,
+  "newestOnTop": false,
+  "progressBar": true,
+  "positionClass": "toastr-bottom-left",
+  "preventDuplicates": false,
+  "onclick": null,
+  "showDuration": "300",
+  "hideDuration": "1000",
+  "timeOut": "5000",
+  "extendedTimeOut": "1000",
+  "showEasing": "swing",
+  "hideEasing": "linear",
+  "showMethod": "fadeIn",
+  "hideMethod": "fadeOut"
+};
+
 $(document).ready(function() {
     $('#submitButtonGuncelle').on('click', function(event) {
         event.preventDefault(); // Prevent default form submission behavior
+        $(this).attr("data-kt-indicator", "on");
 
         // Get the input value
         const inputValue = $('#myInputGuncelle').val();
@@ -38,6 +57,10 @@ $(document).ready(function() {
             data: JSON.stringify({ dosya_id: dosya_id_durum, inputValue }), // Convert data to JSON string
             success: function(response) {
                 $('#myInputGuncelle').val(''); // Clear the input field after successful submission
+                $("#submitButtonGuncelle").removeAttr("data-kt-indicator");
+
+                toastr.success("Açıklama eklendi.", "Kayıt edildi");
+
                 getDosyaGuncellemeleri(dosya_id_durum);
             },
             error: function(xhr, status, error) {
@@ -47,7 +70,7 @@ $(document).ready(function() {
     });
 });
 
-
+// gunnelemeler sayfasindaki timeline yenilemek ve getirmek icin
 function getDosyaGuncellemeleri(dosya_id) {
     $.ajax({
         url: '/dosya_guncellemeleri',
@@ -77,7 +100,7 @@ function getDosyaGuncellemeleri(dosya_id) {
                     html += '<div class="timeline-badge"><i class="fa fa-genderless text-primary fs-1"></i></div>';
                 }
                 else {
-                    html += '<div class="timeline-badge"><i class="fa fa-genderless text-info fs-1"></i></div>';
+                    html += '<div class="timeline-badge"><i class="fa fa-genderless text-success fs-1"></i></div>';
                 }
                 html += '<div class="timeline-content fw-mormal text-muted ps-3">';
                 html += '<span>' + json_data[i].inputValue + '</span>';
@@ -94,50 +117,281 @@ function getDosyaGuncellemeleri(dosya_id) {
             console.error(error);
         }
     });
+
+    // "secim-yok" olan tüm radio butonlarını seçmek için
+    $('input[value="secim-yok"]:radio').prop('checked', true);
+
+    // AJAX isteği ile databseden seçili olan  Bankalar radio butonlarını getirip işaretlemek için banka yanlari
+    $.ajax({
+        url: `/radio-data`,
+        method: 'GET',
+        data: { dosya_id: dosya_id },
+        success: function(data) {
+            // Dönen verileri kullanarak radyo düğmelerini işaretleyin
+            for (let name in data) {
+                const value = data[name];
+                const radioBtn = $(`input[name=${name}][value=${value}]`);
+                if(radioBtn.length > 0) {
+                    radioBtn.prop('checked', true);
+                }
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+        }
+    });
+
+    // ajax ile kullandirim bilgilerini cekip ilgili yerlere yaz bu bolum kredi kullandirim sonrasi doldurulan bilgiler
+    $.ajax({
+        url: `/kredi-kullandir`,
+        method: 'GET',
+        data: { dosya_id: dosya_id },
+        success: function(data) {
+            $("#kredi").val(data.kredi);
+            $("#bayi-odemesi").val(data.bayi_odemesi);
+            $("#noter").val(data.noter);
+            $("#saha-ekibi").val(data.saha_ekibi);
+            $("#bayi").val(data.bayi);
+            $("#kredi-primi").val(data.kredi_primi);
+            $("#kullandirim").val(data.kullandirim);
+            $("#banka_kullandirim").val(data.banka_kullandirim).trigger("change");
+            $("#net-gelir").val(data.net_gelir);
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+        }
+    });
+
+    // ajax ile dosyadurumu radyo butonlari secimi: kullandırıldı devam sonlandi
+    $.ajax({
+        url: `/dosya-durum-data`,
+        method: 'GET',
+        data: { dosya_id: dosya_id },
+        success: function(data) {
+            // Tüm radyo butonlarını seçin
+            var radyoButonlari = document.querySelectorAll('input[name="dosya_durumu"]');
+
+            // Her bir radyo butonu için döngü oluşturun
+            radyoButonlari.forEach(function(radyoButonu) {
+
+            // Radyo butonunun parent label elementini alın
+            var parentLabel = radyoButonu.parentNode;
+
+            // Parent label elementinde "active" sınıfı varsa kaldırın
+            if (parentLabel.classList.contains("active")) {
+                parentLabel.classList.remove("active");
+            }
+
+            });
+
+            // Seçili olan radyo butonunun parent label elementini bulun
+            var seciliRadioParentLabel = document.querySelector('input[name="dosya_durumu"][value="' + data + '"]').parentNode;
+
+            // Parent label elementine "active" sınıfını ekleyin
+            seciliRadioParentLabel.classList.add("active");
+
+            // kullandıırldı seçili ise gizli olan ödemeler bölümünü göster gizle
+            if ($('input[name="dosya_durumu"][value="Kullandırıldı"]').parent().hasClass('active')) {
+                $('#hiddenDiv').show();
+            } else {
+                $('#hiddenDiv').hide();
+            }
+
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+        }
+    });
+
+   
+
 }
 
 
 </script>
 
 <script>
-// durumu degistirmek icin butonlara 3 tane buton. buton ıcındekı datayı secer. aksiyon ajax
-$(document).ready(function() {
-    $('.durum').click(function() {
-        var button = $(this);
-        var document_id = $('#dosya_id_durum').val(); // Değiştirilecek belgenin ID'si
+// bankalarin yanindaki radi butonlarinin secip arka plana ajax ıle gondermek ıcın
+// Get all radio buttons with class 'form-check-input'
+const radioButtons = document.querySelectorAll('.form-check-input');
 
-        // Butonun durumunu diğer butonlardan ayırın
-        $('.durum').removeClass('active');
-        button.addClass('active');
+// Loop through all radio buttons
+radioButtons.forEach(button => {
+  // Add a click event listener to each radio button
+  button.addEventListener('click', () => {
+    // Get the name and value of the clicked radio button
+    const name = button.getAttribute('name');
+    const value = button.getAttribute('value');
+    var document_id = $('#dosya_id_durum').val(); // Değiştirilecek belgenin ID'si
 
-        // Durumu alın ve AJAX isteği gönderin
-        var status = button.text();
-        $.ajax({
-            url: '/update_document/' + document_id,
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({status: status}),
-            success: function(response) {
-                console.log(response);
-            }
-        });
-
-        // guncellemeler ıcıne durumu ajax ele ekle ve akranda goster
-        $.ajax({
-            url: '/dosya_guncellemeleri',
+    $.ajax({
+            url: '/radio-data',
             method: 'POST',
             contentType: 'application/json', // Set content type header
-            data: JSON.stringify({ dosya_id: document_id, inputValue: status }), // Convert data to JSON string
+            data: JSON.stringify({ dosya_id: document_id, name: name, value:value }), // Convert data to JSON string
             success: function(response) {
-                $('#myInputGuncelle').val(''); // Clear the input field after successful submission
+
+                toastr.success("Banka dosya bilgi güncellemesi kayıt edildi.", "Kayıt edildi");
+                
                 getDosyaGuncellemeleri(document_id);
             },
             error: function(xhr, status, error) {
                 console.log('hata var');
             }
         });
-    });
+
+  });
 });
+
 </script>
 
+
+
+
+<script>
+    // kullandırım sonrası kar hesaplama
+    const krediInput = document.querySelector('#kredi');
+    const bayiOdemesiInput = document.querySelector('#bayi-odemesi');
+    const noterInput = document.querySelector('#noter');
+    const sahaEkibiInput = document.querySelector('#saha-ekibi');
+    const bayiInput = document.querySelector('#bayi');
+    const krediPrimiInput = document.querySelector('#kredi-primi');
+    const kullandirimInput = document.querySelector('#kullandirim');
+    const netGelirInput = document.querySelector('#net-gelir');
+
+    function hesaplaNetGelir() {
+      const kredi = parseFloat(krediInput.value) || 0;
+      const bayiOdemesi = parseFloat(bayiOdemesiInput.value) || 0;
+      const noter = parseFloat(noterInput.value) || 0;
+      const sahaEkibi = parseFloat(sahaEkibiInput.value) || 0;
+      const bayi = parseFloat(bayiInput.value) || 0;
+      const krediPrimi = parseFloat(krediPrimiInput.value) || 0;
+      const kullandirim = parseFloat(kullandirimInput.value) || 0;
+
+      const netGelir = kredi - bayiOdemesi - noter - sahaEkibi - bayi - krediPrimi - kullandirim;
+
+      netGelirInput.value = netGelir.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    krediInput.addEventListener('input', hesaplaNetGelir);
+    bayiOdemesiInput.addEventListener('input', hesaplaNetGelir);
+    noterInput.addEventListener('input', hesaplaNetGelir);
+    sahaEkibiInput.addEventListener('input', hesaplaNetGelir);
+    bayiInput.addEventListener('input', hesaplaNetGelir);
+    krediPrimiInput.addEventListener('input', hesaplaNetGelir);
+    kullandirimInput.addEventListener('input', hesaplaNetGelir);
+</script>
+
+<script>
+// dosya durumu 3 adet yanyana buton. beklemede, sonuçlandı, kullandırıldı. js ile seçim. secim ile etrafinin cizikli olmasi ve ajax ile veri arkaplana gonder
+const radioButtonsKullandirim = document.querySelectorAll('input[name="dosya_durumu"]');
+
+radioButtonsKullandirim.forEach((button) => {
+  button.addEventListener('click', () => {
+    // Remove active class from all buttons
+    radioButtonsKullandirim.forEach((btn) => {
+      btn.parentElement.classList.remove('active');
+    });
+    
+    if (button.checked) {
+        var document_id = $('#dosya_id_durum').val();
+      // Add the active class
+      button.parentElement.classList.add('active');
+      // Log the value to console
+      console.log(button.value)
+      var dosya_durum_bilgisi= button.value;
+
+      $.ajax({
+            url: "/dosya-durum-data",
+            method: "POST",
+            contentType: 'application/json', // Set content type header
+            data: JSON.stringify({
+                dosya_id: document_id,
+                status: dosya_durum_bilgisi
+            }),
+            success: function(response) {
+
+                toastr.success("Dosya durumu güncellendi.", "Kayıt edildi");
+
+                getDosyaGuncellemeleri(document_id);
+            },
+            error: function(error) {
+                console.error(error);
+            }
+        });
+
+    } else {
+      // Remove the active class
+      button.parentElement.classList.remove('active');
+    }
+  });
+});
+
+</script>
+
+<script>
+    // kredi kullandirim sonrasi detaylarin kayit edilmesi
+    $("#kredi_kullandirildi_butonu").click(function() {
+        // Activate indicator
+        $(this).attr("data-kt-indicator", "on");
+
+        var document_id = $('#dosya_id_durum').val(); // Değiştirilecek belgenin ID'si
+
+        var kredi = $("#kredi").val();
+        var bayiOdemesi = $("#bayi-odemesi").val();
+        var noter = $("#noter").val();
+        var sahaEkibi = $("#saha-ekibi").val();
+        var bayi = $("#bayi").val();
+        var krediPrimi = $("#kredi-primi").val();
+        var kullandirim = $("#kullandirim").val();
+        var bankaKullandirim = $("#banka_kullandirim").val();
+        var netGelir = $("#net-gelir").val();
+
+        $.ajax({
+            url: "/kredi-kullandir",
+            method: "POST",
+            contentType: 'application/json', // Set content type header
+            data: JSON.stringify({
+                document_id: document_id,
+                kredi: kredi,
+                bayi_odemesi: bayiOdemesi,
+                noter: noter,
+                saha_ekibi: sahaEkibi,
+                bayi: bayi,
+                kredi_primi: krediPrimi,
+                kullandirim: kullandirim,
+                banka_kullandirim: bankaKullandirim,
+                net_gelir: netGelir
+            }),
+            success: function(response) {
+                console.log(response);
+
+                toastr.success("Kredi kullandırım bilgileri kayıt edildi.", "Kayıt edildi");
+
+                $("#kredi_kullandirildi_butonu").removeAttr("data-kt-indicator");
+            },
+            error: function(error) {
+                $("#kredi_kullandirildi_butonu").removeAttr("data-kt-indicator");
+                console.error(error);
+            }
+        });
+});
+
+
+// gizli olan kullandırıldı bolumunu butona tıklandıgında gosterip gizler
+$(document).ready(function() {
+  $('input[name="dosya_durumu"]').change(function() {
+    if ($(this).val() == 'Kullandırıldı') {
+      $('#hiddenDiv').show();
+      $("#kt_wrapper .modal-body").animate({
+        scrollTop: $("#kt_wrapper .modal-body").scrollTop() + 400
+        }, 500);
+    } else {
+      $('#hiddenDiv').hide();
+    }
+  });
+});
+
+
+</script>
 {% endblock %}

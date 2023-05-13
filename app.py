@@ -216,21 +216,15 @@ def form():
                 del data["dosya_id"]
                 del data["dosya_numarasi"]
 
-                # guncellemelere ekle
-                dataGuncelle = {}
-                    
-                # musteriyi ekleyen kullanıcının cep telefonu. unique dir
-                dataGuncelle['inputValue'] = 'Dosya guncellendi'
-                dataGuncelle['created_by'] = current_user.id
-                dataGuncelle['isim_soyisim'] = current_user.isim_soyisim
-                dataGuncelle['status'] = 'otomatik'   # success  pending  failed
-                dataGuncelle['created_time'] = datetime.now()
+                dataGuncelle = {
+                    'inputValue': 'Dosya guncellendi',
+                    'created_by': current_user.id,
+                    'isim_soyisim': current_user.isim_soyisim,
+                    'status': 'otomatik',   # success  pending  failed
+                    'created_time': datetime.now(),
+                }
 
-                # initialize an empty list for 'guncellemeler'
-                if 'guncellemeler' not in kayitli_dosya_bilgisi:
-                    data['guncellemeler'] = []
-                else:
-                    data['guncellemeler'] = kayitli_dosya_bilgisi['guncellemeler']
+                data['guncellemeler'] = kayitli_dosya_bilgisi['guncellemeler']
 
                 data["guncellemeler"].append(dataGuncelle)
 
@@ -239,10 +233,6 @@ def form():
                 }
                 
                 result = customers.update_one({"_id": ObjectId(dosya_id)}, new_data)
-
-                # DataGuncellebase kayıt işlemi
-                # resultGuncelle = dosya_notlari.insert_one(dataGuncelle)
-                
                 
                 return jsonify({'message': 'Form kaydedildi'}), 200
 
@@ -263,16 +253,15 @@ def form():
         # benzersiz dosya numarasi eklenir
         data['dosya_numarasi'] = dosya_numarasi
 
-        # guncellemelere ekle
-        dataGuncelle = {}
-                    
-        # musteriyi ekleyen kullanıcının cep telefonu. unique dir
-        dataGuncelle['inputValue'] = 'Dosya oluşturuldu.'
-        dataGuncelle['created_by'] = current_user.id
-        dataGuncelle['isim_soyisim'] = current_user.isim_soyisim
-        dataGuncelle['status'] = 'otomatik'   # success  pending  failed
-        dataGuncelle['created_time'] = datetime.now()
+        dataGuncelle = {
+            'inputValue': 'Dosya oluşturuldu.',
+            'created_by': current_user.id,
+            'isim_soyisim': current_user.isim_soyisim,
+            'status': 'otomatik',   # success  pending  failed
+            'created_time': datetime.now(),
+        }
 
+        # yeni yaratildigi icin
         data['guncellemeler'] = []
         
         data["guncellemeler"].append(dataGuncelle)
@@ -790,6 +779,24 @@ def id_ile_dosya_bilgisi_getir():
 
 ######## Dosya Guncellemeleri Servisi get ve post  baslangic #########
 
+# dosya guncellemeleri genel fonlsiyon/ sadece edit ve create icin bu fonksiyon kullanilmadi/ eger yeni alan eklenirse oralarida guncelle
+def dosya_guncelleme_ekle(dosya_id, inputValue, status):
+    # ilgili_galeri = customers.find_one({'_id': ObjectId(dosya_id)})['galeri_telefonu'] #bunu daha sonra galeri guncellemlerini eklerken kullanacagim
+    dataGuncelle = {
+                    'inputValue': inputValue,
+                    'created_by': current_user.id,
+                    'isim_soyisim': current_user.isim_soyisim,
+                    'status': status,   # otomatik(kendiliginden) kullanici(kullanici aciklama ekler) standart(dugmeler ile)
+                    'created_time': datetime.now(),
+                }
+
+    result = customers.update_one(
+        {"_id": ObjectId(dosya_id)},
+        {"$push": {"guncellemeler": dataGuncelle}}
+    )
+
+    return result
+
 # Kredi dosyasi guncellemelri ekliyoruz ve getiriyoruz
 @app.route('/dosya_guncellemeleri', methods=['GET', 'POST'])
 @login_required
@@ -807,28 +814,27 @@ def dosya_guncellemeleri():
             else:
                 ekleyen = 'kullanici'
 
-
-            # guncellemelere ekle
-            dataGuncelle = {}
+            result = dosya_guncelleme_ekle(dosya_id, request.json['inputValue'], ekleyen)
+            # # guncellemelere ekle
+            # dataGuncelle = {}
                     
-            # musteriyi ekleyen kullanıcının cep telefonu. unique dir
-            dataGuncelle['inputValue'] = request.json['inputValue']
-            dataGuncelle['created_by'] = current_user.id
-            dataGuncelle['isim_soyisim'] = current_user.isim_soyisim
-            dataGuncelle['status'] = ekleyen   # otomatik kullanici
-            dataGuncelle['created_time'] = datetime.now()
+            # # musteriyi ekleyen kullanıcının cep telefonu. unique dir
+            # dataGuncelle['inputValue'] = request.json['inputValue']
+            # dataGuncelle['created_by'] = current_user.id
+            # dataGuncelle['isim_soyisim'] = current_user.isim_soyisim
+            # dataGuncelle['status'] = ekleyen   # otomatik(kendiliginden) kullanici(kullanici aciklama ekler) standart(dugmeler ile) 
+            # dataGuncelle['created_time'] = datetime.now()
 
-            # Eğer güncellemeler listesi henüz tanımlanmadıysa, boş bir liste olarak başlatın
-            if 'guncellemeler' not in kayitli_dosya_bilgisi:
-                kayitli_dosya_bilgisi['guncellemeler'] = []
+            # # Eğer güncellemeler listesi henüz tanımlanmadıysa, boş bir liste olarak başlatın
+            # if 'guncellemeler' not in kayitli_dosya_bilgisi:
+            #     kayitli_dosya_bilgisi['guncellemeler'] = []
             
-            # Güncellemeler listesine yeni güncelleme verisini ekleyin
-            kayitli_dosya_bilgisi["guncellemeler"].append(dataGuncelle)
+            # # Güncellemeler listesine yeni güncelleme verisini ekleyin
+            # kayitli_dosya_bilgisi["guncellemeler"].append(dataGuncelle)
 
-            # MongoDB'deki belgeyi güncelleyin
-            result = customers.update_one({"_id": ObjectId(dosya_id)}, {"$set": kayitli_dosya_bilgisi})
+            # # MongoDB'deki belgeyi güncelleyin
+            # result = customers.update_one({"_id": ObjectId(dosya_id)}, {"$set": kayitli_dosya_bilgisi})
             
-
             # Başarılı bir şekilde kaydedildi sayfasını göster
             return jsonify({'message': 'Form kaydedildi'}), 200
         
@@ -848,8 +854,37 @@ def dosya_guncellemeleri():
 
 ######## Dosya Guncellemeleri Servisi get ve post  Son #########
 
-####### Dosya durumu devam kullanildi sonlandi felan baslangic #######
+####### Dosya durumu devam kullanildi sonlandi felan baslangic #######   Devam , Sonlandı , Kullandırıldı
 # Dökümanı güncelleme işlemi
+@app.route('/dosya-durum-data', methods=['GET', 'POST'])
+@login_required
+def get_dosya_durum_data():
+
+    if request.method == 'POST':
+        dosya_id = request.json['dosya_id']
+
+        try:
+          
+            status = request.json['status']
+
+            customers.update_one({'_id': ObjectId(dosya_id)}, {'$set': {'status': status}})
+            mesaj = 'Dosya durumu güncellendi -> ' + status
+            dosya_guncelleme_ekle(dosya_id, mesaj, 'standart')
+
+            return jsonify({'success': True})
+        
+        except Exception as e:
+            print(e)
+            return jsonify({'message': 'Bir hata oluştu'}), 500
+        
+    dosya_id = request.args.get('dosya_id')
+    
+    # Veritabanından son durumu çekin
+    dosya_status = customers.find_one({'_id': ObjectId(dosya_id)})['status']
+        
+    # JSON olarak verileri döndürün
+    return jsonify(dosya_status)
+
 @app.route('/update_document/<document_id>', methods=['POST'])
 def update_document(document_id):
     # İstek verilerini alın
@@ -862,8 +897,100 @@ def update_document(document_id):
 
     # Başarılı yanıt döndür
     return jsonify({'success': True})
+
 ####### Dosya durumu devam kullanildi sonlandi felan son #######
 
+######## Banka yanlarındakı radıo butonlar ıle surec takibı için servis başlangıç #########
+
+@app.route('/radio-data', methods=['GET', 'POST'])
+@login_required
+def get_radio_data():
+
+    if request.method == 'POST':
+        dosya_id = request.json['dosya_id']
+
+        try:
+            # Veritabanından id ye ait kisibilgisini cek
+            kayitli_dosya_bilgisi = customers.find_one({'_id': ObjectId(dosya_id)})
+
+            name = request.json['name']
+            value = request.json['value']
+
+            # Eğer güncellemeler listesi henüz tanımlanmadıysa, boş bir dokuman olarak başlatın
+            if 'durum' not in kayitli_dosya_bilgisi:
+                kayitli_dosya_bilgisi['durum'] = {}
+            
+            # durum dokumanina yeni güncelleme verisini ekleyin
+            kayitli_dosya_bilgisi["durum"][name] = value
+
+            # MongoDB'deki belgeyi güncelleyin
+            result = customers.update_one({"_id": ObjectId(dosya_id)}, {"$set": {"durum": kayitli_dosya_bilgisi['durum']}})
+
+            mesaj = name + ' -> <strong> ' + value + '</strong>'
+            dosya_guncelleme_ekle(dosya_id, mesaj, 'standart')
+            
+            # Başarılı bir şekilde kaydedildi sayfasını göster
+            return jsonify({'message': 'Form kaydedildi'}), 200
+        
+        except Exception as e:
+            print(e)
+            return jsonify({'message': 'Bir hata oluştu'}), 500
+    
+    data = {}
+
+    dosya_id = request.args.get('dosya_id')
+    
+    # Veritabanından son durumu çekin
+    kayitli_dosya_bilgisi = customers.find_one({'_id': ObjectId(dosya_id)})
+    if 'durum' in kayitli_dosya_bilgisi:
+        data = kayitli_dosya_bilgisi['durum']
+        
+    # JSON olarak verileri döndürün
+    return jsonify(data)
+
+######## Banka yanlarındakı radıo butonlar ıle surec takibı için servis son #########
+
+######## Kullandirim sonrasi verileri ve hesaplamalar baslangic #######
+
+@app.route('/kredi-kullandir', methods=['GET', 'POST'])
+def kredi_kullandir():
+    if request.method == 'POST':
+        dosya_id = request.json['document_id']
+
+        kullanım_bilgileri = {
+            'kredi': request.json['kredi'],
+            'bayi_odemesi': request.json['bayi_odemesi'],
+            'noter': request.json['noter'],
+            'saha_ekibi': request.json['saha_ekibi'],
+            'bayi': request.json['bayi'],
+            'kredi_primi': request.json['kredi_primi'],
+            'kullandirim': request.json['kullandirim'],
+            'banka_kullandirim': request.json.get('banka_kullandirim', ''),
+            'net_gelir': request.json['net_gelir']
+        }
+
+       
+        result = customers.update_one(
+            {"_id": ObjectId(dosya_id)},
+            {'$set': {'kullandirim_bilgileri': kullanım_bilgileri}}
+        )
+        # Başarılı bir şekilde kaydedildi sayfasını göster
+        return jsonify({'message': 'Form kaydedildi'}), 200
+
+    data = {}
+
+    dosya_id = request.args.get('dosya_id')
+    
+    # Veritabanından son durumu çekin
+    kayitli_dosya_bilgisi = customers.find_one({'_id': ObjectId(dosya_id)})
+    if 'kullandirim_bilgileri' in kayitli_dosya_bilgisi:
+        data = kayitli_dosya_bilgisi['kullandirim_bilgileri']
+        
+    # JSON olarak verileri döndürün
+    return jsonify(data)
+    
+
+######## Kullandirim sonrasi verileri ve hesaplamalar sonuc #######
 
 if __name__ == '__main__':
     app.run(debug=True)
