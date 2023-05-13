@@ -236,7 +236,8 @@ def form():
                 
                 return jsonify({'message': 'Form kaydedildi'}), 200
 
-        del data["dosya_id"]
+        if "dosya_id" in data:
+            del data["dosya_id"]
 
         # eger dosya daha onceden yoksa ve İLK DEFA BİR DOSYA OLUŞTURULUyorsa
         data['created_time'] = datetime.now(turkey_tz)
