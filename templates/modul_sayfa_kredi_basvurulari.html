@@ -63,7 +63,7 @@
                         
                         <th class="min-w-110px">Dosya Numarası</th>
                         <th class="min-w-110px">Galeri</th>
-                        <th class="min-w-120px">Tarih</th>
+                        <th class="min-w-120px">Taşıt</th>
                         <th class="min-w-140px">Müşteri</th>
                         <th class="min-w-120px">Tutar</th>
                         <th class="min-w-120px">Durum</th>
@@ -84,7 +84,8 @@
 
                         
                         <td>
-                            <span class="text-dark fw-bold text-hover-primary fs-6">{{ customer.dosya_numarasi }}</span>
+                            <span class="text-dark fw-bold text-hover-primary fs-6 createdTime">{{ customer.created_time }}</span>
+                            <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.dosya_numarasi }}</span>
                             <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.created_by_isim }}</span>
                         </td>
                         <td>
@@ -92,8 +93,9 @@
                             <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.galeri_adi }}</span>
                         </td>
                         <td>
-                            <span class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6 createdTime">{{ customer.created_time }}</span> 
-                            <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.arac_plakasi }}</span>
+                            <span class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6 ">{{ customer.model_yili }}</span> 
+                            <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.marka_adi }}</span>
+                            <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.tip_adi }}</span>
                         </td>
                         <td>
                             <span class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ customer.adi }} {{ customer.soyadi }} </span>
@@ -102,20 +104,8 @@
                         <td class="text-dark fw-bold text-hover-primary fs-6">{{ customer.kredi_tutari }} TL
                             <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.kredi_vadesi }} Ay</span>
                         </td>
-                        <td>    
-                            <button type="button" class="btn btn-light btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 dosyaDurumButonu" data-bs-toggle="modal" data-bs-target="#kt_modal_durum_guncelle" data-customerid="{{ customer._id }}" data-dosya_numarasi = "{{ customer.dosya_numarasi }}" style="width: 50px; height: 20px;">
-                                
-                                <span class="badge 
-                                    {% if customer.status == 'Sonlandı' %}
-                                        badge-danger
-                                    {% elif customer.status == 'Devam' %}
-                                        badge-warning
-                                    {% elif customer.status == 'Kullandırıldı' %}
-                                        badge-success
-                                    {% endif %}
-                                ">{{ customer.status }}</span>
-
-                            </button> 
+                        <td data-customer-id="{{ customer._id }}">    
+                            
                         </td>
                         <td class="text-end" style=" min-width: 130px;">
                             <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1" onclick="addSelectedCustomer(event, '{{ customer._id }}'); return false;">
@@ -130,8 +120,8 @@
                                     <span class="path2"></span>
                                 </i>
                             </button>
-                            <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm" >
-                                <i class="ki-duotone ki-trash fs-2">
+                            <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm dosyaDurumButonu" data-bs-toggle="modal" data-bs-target="#kt_modal_durum_guncelle" data-customerid="{{ customer._id }}" data-dosya_numarasi = "{{ customer.dosya_numarasi }}">
+                                <i class="ki-duotone ki-gear fs-2">
                                     <span class="path1"></span>
                                     <span class="path2"></span>
                                     <span class="path3"></span>
@@ -195,7 +185,7 @@
 </script>
 
 <script type="text/javascript">
-    //secili dosyayı degıstırme
+    //secili dosyayı degıstırme masaustu uygulamasi icin
 function addSelectedCustomer(event, customerId) {
   event.preventDefault();
   $.ajax({
@@ -216,7 +206,7 @@ function addSelectedCustomer(event, customerId) {
 </script>
 
 <script>
-    // Edit Modal içine dosya id si gönderme
+    // Edit Modal içine dosya id si ve verileri gonderme
 	const buttons = document.querySelectorAll('.dosyaButonu');
     buttons.forEach(function(button) {
         button.addEventListener('click', function() {
@@ -306,5 +296,7 @@ function addSelectedCustomer(event, customerId) {
             });
         });
     });
+
+
 
 </script>

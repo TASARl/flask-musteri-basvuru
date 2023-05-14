@@ -21,7 +21,7 @@ toastr.options = {
   "debug": false,
   "newestOnTop": false,
   "progressBar": true,
-  "positionClass": "toastr-bottom-left",
+  "positionClass": "toastr-top-center",
   "preventDuplicates": false,
   "onclick": null,
   "showDuration": "300",
@@ -37,8 +37,7 @@ toastr.options = {
 $(document).ready(function() {
     $('#submitButtonGuncelle').on('click', function(event) {
         event.preventDefault(); // Prevent default form submission behavior
-        $(this).attr("data-kt-indicator", "on");
-
+        
         // Get the input value
         const inputValue = $('#myInputGuncelle').val();
         const dosya_id_durum = $('#dosya_id_durum').val();
@@ -46,8 +45,10 @@ $(document).ready(function() {
 
         // Check if input value is empty
         if (inputValue === '') {
+            toastr.error("Açıklama boş olamaz.", "Hata");
             return; // Exit the function if input is empty
         }
+        $(this).attr("data-kt-indicator", "on");
 
         // Make an AJAX request with the input value
         $.ajax({
@@ -392,6 +393,57 @@ $(document).ready(function() {
   });
 });
 
+
+// durum guncellemeleri icin durum iclerindeki tum idleri ajax ile gonder yeni verileri al ekrana ekle
+var customerIds = [];
+    $('td[data-customer-id]').each(function() {
+        var customerId = $(this).data('customer-id');
+        if (customerId) {
+            customerIds.push(customerId);
+        }
+    });
+
+    $.ajax({
+        url: '/process_customer_ids',
+        method: 'POST',
+        contentType: 'application/json', // Set content type header
+        data: JSON.stringify({customerIds: customerIds}),
+        success: function(data) {
+        // Verileri işleyin
+        for (var i = 0; i < data.results.length; i++) {
+            var dosya_id = data.results[i].dosya_id;
+            var aciklama = data.results[i].aciklama['inputValue'];
+            var bankalar = data.results[i].bankalar;
+            var durum = data.results[i].durum;
+            
+            // td öğesini bulun ve içeriğini güncelleyin
+            var td = $('td[data-customer-id="' + dosya_id + '"]');
+            td.html(durum);
+            td.append(aciklama)
+            // Bankaları gösteren yeni bir liste oluşturun
+            var banka_listesi = $('<ul>');
+            if (bankalar !== null) {
+                for (var banka in bankalar) {
+                    if (bankalar.hasOwnProperty(banka)) {
+                        var durum = bankalar[banka];
+                        var banka_adi = banka.replace('-', ' ').toUpperCase();
+                        var banka_li = $('<li>').html(banka_adi + ': ' + durum);
+                        banka_listesi.append(banka_li);
+                    }
+                }
+            } else {
+                var banka_li = $('<li>').html('Banka bilgisi yok');
+                banka_listesi.append(banka_li);
+            }
+            
+            // td öğesinin altına bankaları gösteren liste öğesini ekleyin
+            td.append(banka_listesi);
+        }
+    },
+    error: function(xhr, status, error) {
+        console.log('Hata:', error);
+    }
+    });
 
 </script>
 {% endblock %}

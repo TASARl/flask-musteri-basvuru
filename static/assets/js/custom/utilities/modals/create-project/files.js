@@ -187,7 +187,7 @@ var KTModalCreateProjectFiles = (function () {
                         debug: false,
                         newestOnTop: false,
                         progressBar: true,
-                        positionClass: "toastr-bottom-left",
+                        positionClass: "toastr-top-center",
                         preventDuplicates: false,
                         onclick: null,
                         showDuration: "300",

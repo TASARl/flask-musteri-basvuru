@@ -354,7 +354,7 @@ def get_basvurular():
     end_index = min(start_index + per_page, total_customers)
 
     # Müşterileri veritabanından getir
-    customer_list = list(customers.find({}, {'_id':1, 'adi':1, 'soyadi':1, 'dosya_numarasi':1, 'galeri_ili':1, 'galeri_adi':1, 'kredi_tutari':1, 'kredi_vadesi':1, 'calisma_sekli':1, 'kredi_miktar':1, 'kredi_vadesi':1, 'created_time':1, 'musteri_cep_telefonu':1, 'arac_plakasi':1 , 'created_by_isim':1, 'status': 1}).sort("_id", -1).skip(start_index).limit(per_page))
+    customer_list = list(customers.find({}, {'_id':1, 'adi':1, 'soyadi':1, 'dosya_numarasi':1, 'galeri_ili':1, 'galeri_adi':1, 'kredi_tutari':1, 'kredi_vadesi':1, 'calisma_sekli':1, 'kredi_miktar':1, 'kredi_vadesi':1, 'created_time':1, 'musteri_cep_telefonu':1, 'model_yili':1 ,'marka_adi':1 ,'tip_adi':1 , 'created_by_isim':1, 'status': 1}).sort("_id", -1).skip(start_index).limit(per_page))
 
     
     # Pagination metadatasını oluştur
@@ -992,6 +992,51 @@ def kredi_kullandir():
     
 
 ######## Kullandirim sonrasi verileri ve hesaplamalar sonuc #######
+
+##### Dosyalar sayfasindak'10 adet dosyanin yada daha fazla 15 saniyede bir g]ncellenmes icin servis baslangici ######
+@app.route('/process_customer_ids', methods=[ 'POST'])
+def process_customer_ids():
+   
+    customerIds = request.json['customerIds']
+
+
+    # for dosya_id in customerIds: # her bir müşteri kimliği için
+    #     print( customers.find_one({'_id': ObjectId(dosya_id)})['durum'] )       # kimliği ekrana yazdır     customers.find_one({'_id': ObjectId(dosya_id)})
+    # results = [{'dosya_id': dosya_id, 'data': customers.find_one({'_id': ObjectId(dosya_id)})['durum'] } for dosya_id in customerIds]
+    results = []
+    for dosya_id in customerIds:
+        document = customers.find_one({'_id': ObjectId(dosya_id)})
+        
+        # 'durum' alanı var mı diye kontrol edin
+        status = document.get('durum')
+        if status is None:
+            # 'durum' alanı yok veya boş
+            # results.append({'dosya_id': dosya_id, 'data': None})
+            tekilDurum = None
+        else:
+            # results.append({'dosya_id': dosya_id, 'data': status})
+            # Sözlüğü dolaşın ve secim-yok olanları çıkarın
+            for anahtar, deger in status.copy().items():
+                if deger == 'secim-yok':
+                    del status[anahtar]
+            tekilDurum = status
+
+        # 'guncellemeler' alanındaki objectleri kontrol edin
+        updates = document.get('guncellemeler', [])
+        latest_update = None  # en son güncelleme yok varsayalım
+        for update in updates:
+            if update.get('status') == 'kullanici':
+                if latest_update is None or update.get('created_time') > latest_update.get('created_time'):
+                    latest_update = update
+        
+        sonDurum = document.get('status')
+        
+        results.append({'dosya_id': dosya_id, 'bankalar': tekilDurum, 'aciklama':latest_update, 'durum': sonDurum})
+
+    response = {'success': True, 'results': results}
+    return jsonify(response)
+
+##### Dosyalar sayfasindak'10 adet dosyanin yada daha fazla 15 saniyede bir g]ncellenmes icin servis sonu ############# 
 
 if __name__ == '__main__':
     app.run(debug=True)
