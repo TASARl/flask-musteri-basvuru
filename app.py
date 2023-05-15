@@ -584,7 +584,7 @@ def login():
         user = users_collection.find_one({'username': username})
 
         if user and check_password_hash(user['password'], password):
-            user_obj = User(username, user['password'], user['gallery_name'], user['city'], user['district'], user['address'],user['isim_soyisim'])
+            user_obj = User(user['username'], user['password'], user['gallery_name'], user['city'], user['district'], user['address'], user['isim_soyisim'], user['yetki'])
             login_user(user_obj)
             return jsonify({'message': 'Login successful'}), 200
             # return redirect(url_for('index'))
