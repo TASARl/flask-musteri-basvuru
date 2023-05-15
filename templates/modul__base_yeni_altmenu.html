@@ -1,0 +1,90 @@
+<div id="kt_app_toolbar" class="app-toolbar d-flex flex-column py-6">
+    <!--begin::Content menu-->
+    <div class="app-content-menu menu menu-rounded bg-gray-200 menu-state-bg flex-wrap fs-5 fw-bold mt-n15 pt-5 pb-0 mb-7 gap-1">
+        <!--begin::Menu item-->
+        <div class="menu-item m-0 p-0">
+            <a class="menu-link py-3 px-4 {% if request.path == '/dashboard' %}active{% endif %}" href="{{ url_for('dashboard') }}">
+                <span class="menu-title">Özet</span>
+            </a>
+        </div>
+        <!--end::Menu item-->
+        <!--begin::Menu item-->
+        <div class="menu-item m-0 p-0">
+            <a class="menu-link py-3 px-4 {% if request.path == '/basvurular' %}active{% endif %}" href="{{ url_for('get_basvurular') }}">
+                <span class="menu-title">Kredi Dosyaları</span>
+            </a>
+        </div>
+        <!--end::Menu item-->
+        <!--begin::Menu item-->
+        <div class="menu-item m-0 p-0">
+            <a class="menu-link py-3 px-4 {% if request.path == '/userlist' %}active{% endif %}" href="{{ url_for('userlist') }}">
+                <span class="menu-title">Kullanıcılar</span>
+            </a>
+        </div>
+        <!--end::Menu item-->
+        <!--begin::Menu item-->
+        <div class="menu-item m-0 p-0">
+            <a class="menu-link py-3 px-4 {% if request.path == '/istatistik' %}active{% endif %}" href="{{ url_for('istatistik') }}">
+                <span class="menu-title">İstatistik</span>
+            </a>
+        </div>
+        <!--end::Menu item-->
+        <!--begin::Menu item-->
+        <div class="menu-item m-0 p-0">
+            <a class="menu-link py-3 px-4 {% if request.path == '/harcamalar' %}active{% endif %}" href="{{ url_for('harcamalar') }}">
+                <span class="menu-title">Harcamalar</span>
+            </a>
+        </div>
+        <!--end::Menu item-->
+        <!--begin::Menu item-->
+        <div class="menu-item m-0 p-0">
+            <a class="menu-link py-3 px-4 {% if request.path == '/destek' %}active{% endif %}" href="{{ url_for('destek') }}">
+                <span class="menu-title">Yardım</span>
+            </a>
+        </div>
+        <!--end::Menu item-->
+    </div>
+    <!--begin::Content menu-->
+    <!--begin::Toolbar wrapper-->
+    <div class="app-toolbar-wrapper d-flex align-items-center flex-stack flex-wrap gap-2 py-4 w-100">
+        <!--begin::Page title-->
+        <div class="page-title d-flex flex-column justify-content-center gap-2 me-3">
+            <!--begin::Title-->
+            <h1 class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-1 m-0">{{ metadata.sayfa_baslik }}
+            <!--begin::Description-->
+            <span class="page-desc text-muted fs-7 fw-semibold"></span>
+            <!--end::Description--></h1>
+            <!--end::Title-->
+            <!--begin::Breadcrumb-->
+            <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7">
+                <!--begin::Item-->
+                <li class="breadcrumb-item text-gray-700 fw-bold lh-1">
+                    <a href="../../demo45/dist/index.html" class="text-gray-500">
+                        <i class="ki-duotone ki-home fs-6 text-gray-400 me-n1"></i>
+                    </a>
+                </li>
+                <!--end::Item-->
+                <!--begin::Item-->
+                <li class="breadcrumb-item">
+                    <i class="ki-duotone ki-right fs-7 text-gray-700 mx-n1"></i>
+                </li>
+                <!--end::Item-->
+                <!--begin::Item-->
+                <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Yönetim Paneli</li>
+                <!--end::Item-->
+                <!--begin::Item-->
+                <li class="breadcrumb-item">
+                    <i class="ki-duotone ki-right fs-7 text-gray-700 mx-n1"></i>
+                </li>
+                <!--end::Item-->
+                <!--begin::Item-->
+                <li class="breadcrumb-item text-gray-700">....</li>
+                <!--end::Item-->
+            </ul>
+            <!--end::Breadcrumb-->
+        </div>
+        <!--end::Page title-->
+        
+    </div>
+    <!--end::Toolbar wrapper-->
+</div>

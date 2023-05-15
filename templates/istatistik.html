@@ -1,0 +1,127 @@
+{% extends "modul__base_yeni.html" %}
+
+
+
+{% block title %}HızlıKredi | En Hızlı Taşıt Kredisi{% endblock %}
+
+
+
+{% block content %}
+<select id="city_selector">
+    <option value="Tüm">Tüm Şehirler</option>
+    
+</select>
+
+    <div id="chart_div"></div>
+    <div id="table_div"></div>
+
+
+{% endblock %}
+
+
+
+{% block scripts %} 
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        google.charts.load('current', {packages: ['corechart', 'table']});
+        google.charts.setOnLoadCallback(drawCharts);
+
+        let isFunctionExecuted = false;
+        
+        function drawCharts(selectedCity) {
+            $.ajax({
+                url: "/veriler",
+                type: "GET",
+                success: function(data){
+
+                    if (!isFunctionExecuted) {
+                        var uniqueCities = [];
+      
+                        for(var key in data){
+                            if(uniqueCities.indexOf(data[key].sehir) === -1){
+                            uniqueCities.push(data[key].sehir);
+                            }
+                        }
+                        
+                        for(var i=0; i<uniqueCities.length; i++) {
+                            $('#city_selector').append($('<option>').text(uniqueCities[i]).attr('value', uniqueCities[i]));
+                        }
+                        
+                        // Değişkeni true olarak ayarlayın.
+                        isFunctionExecuted = true;
+                    }
+                    
+
+                    var filteredData = {};
+                    console.log(selectedCity)
+                    if (selectedCity === undefined || selectedCity==='Tüm') {
+                        filteredData = data;
+                    } else {
+                        for(var key in data){
+                            if(data[key].sehir === selectedCity){
+                                filteredData[key] = data[key];
+                            }
+                        }
+                    }
+                    
+                    var tarihler = Object.keys(filteredData); // ["01", "03"]
+                    var veriler = tarihler.map(function(tarih){ return filteredData[tarih]; });
+
+                    // Google Charts için veri hazırlama.
+                    var artan_paralar = veriler.map(function(veri){ return [veri.tarih, veri.artan_para]; });
+                    var tableData = veriler.map(function(veri){
+                        return [veri.tarih, 
+                                veri.sehir,
+                                veri.kredi_adedi.toLocaleString(), 
+                                veri.komisyon_geliri.toLocaleString() + ' TL', 
+                                veri.harcama.toLocaleString() + ' TL', 
+                                veri.artan_para.toLocaleString() + ' TL'];
+                    });
+                    
+                    // Çizgi grafiği oluşturun.
+                    var chartData = new google.visualization.DataTable();
+                    chartData.addColumn('string', 'Tarih');
+                    chartData.addColumn('number', 'Artan Para');
+                    
+
+                    if (selectedCity === undefined || selectedCity==='Tüm') {
+                        var artan_paralar = veriler.reduce(function(acc, veri) {
+                            var index = acc.findIndex(function(item) {
+                                return item[0] === veri.tarih;
+                            });
+                            if(index === -1) {
+                                acc.push([veri.tarih, veri.artan_para]);
+                            } else {
+                                acc[index][1] += veri.artan_para;
+                            }
+                            return acc;
+                            }, []);
+                    } 
+                    
+                    chartData.addRows(artan_paralar);
+                    
+                    var chartOptions = {
+                        title: 'Artan Para',
+                        hAxis: { title: 'Tarih' },
+                        vAxis: { format: 'currency' }
+                    };
+                    
+                    var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+                    chart.draw(chartData, chartOptions);
+                    
+                    // Tabloyu oluşturma.
+                    var table = new google.visualization.Table(document.getElementById('table_div'));
+                    table.draw(google.visualization.arrayToDataTable([['Tarih','Şehir','Kredi Adedi', 'Komisyon Geliri', 'Harcama', 'Artan Para']].concat(tableData)), {showRowNumber: false, width: '100%', height: '100%'});
+                }
+            });
+        }
+    </script>
+
+<script>
+    // şehir seçimi sonrası fonksiyonu tekrar çağır
+    $('#city_selector').change(function(){
+        var selectedCity = $(this).val();
+        drawCharts(selectedCity);
+    });
+</script>
+{% endblock %}

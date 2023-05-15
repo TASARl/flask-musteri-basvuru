@@ -73,14 +73,40 @@ def index():
 @login_required
 def destek():
 
+    metadata = {
+      
+        'sayfa_baslik': 'Yardım Sayfası'
+    }
+
     user_data = {
         "isim_soyisim": current_user.isim_soyisim,
         "cep_telefonu": current_user.id,
         "sehir": current_user.city,
+        "yetki": current_user.yetki,
+        "gallery_name": current_user.gallery_name,
     }
     
+    return render_template('destek.html', metadata=metadata, user_data=user_data)
+
+# Index sayfasi
+@app.route('/harcamalar')
+@login_required
+def harcamalar():
+
+    metadata = {
+      
+        'sayfa_baslik': 'Harcamalar Sayfası'
+    }
+
+    user_data = {
+        "isim_soyisim": current_user.isim_soyisim,
+        "cep_telefonu": current_user.id,
+        "sehir": current_user.city,
+        "yetki": current_user.yetki,
+        "gallery_name": current_user.gallery_name,
+    }
     
-    return render_template('destek.html', user_data=user_data)
+    return render_template('harcamalar.html', metadata=metadata, user_data=user_data)
 
 # Index sayfasi
 @app.route('/iletisim')
@@ -130,7 +156,7 @@ def userlist():
     end_index = min(start_index + per_page, total_customers)
 
     # Müşterileri veritabanından getir
-    customer_list = list(customers.find({}, {'_id':1, 'isim_soyisim':1, 'gallery_name':1, 'city':1, 'district':1, 'username':1}).sort("_id", -1).skip(start_index).limit(per_page))
+    customer_list = list(customers.find({}, {'_id':1, 'isim_soyisim':1, 'gallery_name':1, 'city':1, 'district':1, 'username':1, 'yetki':1 }).sort("_id", -1).skip(start_index).limit(per_page))
 
     
     # Pagination metadatasını oluştur
@@ -138,19 +164,41 @@ def userlist():
         'page': page,
         'per_page': per_page,
         'total_customers': total_customers,
-        'total_pages': int(total_customers / per_page) + 1
+        'total_pages': int(total_customers / per_page) + 1,
+        'sayfa_baslik': 'Kullanıcılar'
     }
 
     user_data = {
         "isim_soyisim": current_user.isim_soyisim,
         "cep_telefonu": current_user.id,
         "sehir": current_user.city,
+        "yetki": current_user.yetki,
+        "gallery_name": current_user.gallery_name,
     }
-
-
     
     return render_template('userlist.html', data=customer_list , metadata=metadata, user_data=user_data)
 
+# İstatistik Veriler sayfasi
+@app.route('/istatistik')
+@login_required
+def istatistik():
+
+    
+    # Pagination metadatasını oluştur
+    metadata = {
+      
+        'sayfa_baslik': 'İstatistik'
+    }
+
+    user_data = {
+        "isim_soyisim": current_user.isim_soyisim,
+        "cep_telefonu": current_user.id,
+        "sehir": current_user.city,
+        "yetki": current_user.yetki,
+        "gallery_name": current_user.gallery_name,
+    }
+    
+    return render_template('istatistik.html', metadata=metadata, user_data=user_data)
 
 # Basvuru Sayfasi
 @app.route('/basvuru')
@@ -180,7 +228,7 @@ def form():
             
             # Şifreyi hashleyin, kullanıcıyı veritabanına kaydedin ve otomatik olarak giriş yapın
             hashed_password = generate_password_hash(password)
-            users_collection.insert_one({'username': username, 'password': hashed_password, 'gallery_name': gallery_name, 'city': city, 'district': '', 'address': '', 'isim_soyisim':''})
+            users_collection.insert_one({'username': username, 'password': hashed_password, 'gallery_name': gallery_name, 'city': city, 'district': '', 'yetki': 'Oto Galeri', 'address': '', 'isim_soyisim':''})
 
 
         ## marka ve model bilgisi kasko kodundan alinarak db'ye eklenir
@@ -288,10 +336,15 @@ def dashboard():
         "isim_soyisim": current_user.isim_soyisim,
         "cep_telefonu": current_user.id,
         "sehir": current_user.city,
+        "yetki": current_user.yetki,
+        "gallery_name": current_user.gallery_name,
     }
     
+    metadata ={
+        'sayfa_baslik': 'Özet'
+    }
     # Template'e JSON verisini gönderin
-    return render_template("dashboard.html", user_data=user_data)
+    return render_template("dashboard.html", user_data=user_data, metadata=metadata)
 
 # GET isteği ile müşterileri pagination ile getirme
 @app.route('/customers', methods=['GET'])
@@ -362,7 +415,8 @@ def get_basvurular():
         'page': page,
         'per_page': per_page,
         'total_customers': total_customers,
-        'total_pages': int(total_customers / per_page) + 1
+        'total_pages': int(total_customers / per_page) + 1,
+        'sayfa_baslik': 'Kredi Başvuru Dosyaları'
     }
 
     # Son seçilen müşterinin bilgilerini al
@@ -384,6 +438,8 @@ def get_basvurular():
         "isim_soyisim": current_user.isim_soyisim,
         "cep_telefonu": current_user.id,
         "sehir": current_user.city,
+        "yetki": current_user.yetki,
+        "gallery_name": current_user.gallery_name,
     }
     
     return render_template('basvurular.html', data=customer_list , metadata=metadata, lstest_customer_id=lstest_customer_id, user_data=user_data)
@@ -460,7 +516,7 @@ login_manager.login_view = 'login'
 
 # Kullanıcı model sınıfının oluşturulması
 class User(UserMixin):
-    def __init__(self, username, password, gallery_name, city, district, address, isim_soyisim):
+    def __init__(self, username, password, gallery_name, city, district, address, isim_soyisim, yetki):
         self.id = username
         self.password = password
         self.gallery_name = gallery_name
@@ -468,6 +524,7 @@ class User(UserMixin):
         self.district = district
         self.address = address
         self.isim_soyisim = isim_soyisim
+        self.yetki = yetki
 
     def __repr__(self):
         return f'<User {self.id}>'
@@ -479,7 +536,7 @@ def load_user(user_id):
     user = users_collection.find_one({'username': user_id})
     if not user:
         return None
-    return User(user['username'], user['password'], user['gallery_name'], user['city'], user['district'], user['address'], user['isim_soyisim'])
+    return User(user['username'], user['password'], user['gallery_name'], user['city'], user['district'], user['address'], user['isim_soyisim'], user['yetki'])
 
 
 # Kayıt Olma İşlevi
@@ -494,6 +551,7 @@ def signup():
         district = request.form['district']
         address = request.form['address']
         isim_soyisim = request.form['isim_soyisim']
+        yetki = request.form['yetki'] if 'yetki' in request.form else 'Kullanıcı'
 
         # Kullanıcının mevcut olup olmadığını kontrol edin
         existing_user = users_collection.find_one({'username': username})
@@ -503,8 +561,8 @@ def signup():
 
         # Şifreyi hashleyin, kullanıcıyı veritabanına kaydedin ve otomatik olarak giriş yapın
         hashed_password = generate_password_hash(password)
-        users_collection.insert_one({'username': username, 'password': hashed_password, 'gallery_name': gallery_name, 'city': city, 'district': district, 'address': address, 'isim_soyisim':isim_soyisim})
-        user = User(username, hashed_password, gallery_name, city, district, address, isim_soyisim)
+        users_collection.insert_one({'username': username, 'password': hashed_password, 'gallery_name': gallery_name, 'city': city, 'district': district, 'address': address, 'isim_soyisim':isim_soyisim, 'yetki': yetki})
+        user = User(username, hashed_password, gallery_name, city, district, address, isim_soyisim, yetki)
         return render_template('kaydedildi.html', username=username)
 
     # GET isteklerinde kayıt sayfasını göster
@@ -1037,6 +1095,26 @@ def process_customer_ids():
     return jsonify(response)
 
 ##### Dosyalar sayfasindak'10 adet dosyanin yada daha fazla 15 saniyede bir g]ncellenmes icin servis sonu ############# 
+
+########silinecek deneme ############
+@app.route('/veriler', methods=['GET'])
+def veriler():
+    # Verilerinizi bir şekilde elde edin ve JSON formatına dönüştürün.
+    data = {
+        "01": {"tarih": "01-2023", "sehir": "İstanbul", "kredi_adedi": 100, "komisyon_geliri": 5000, "harcama": 4000, "artan_para": 1000},
+        "02": {"tarih": "01-2023", "sehir": "Ankara", "kredi_adedi": 200, "komisyon_geliri": 10000, "harcama": 8000, "artan_para": 2000},
+        "03": {"tarih": "01-2023", "sehir": "İzmir", "kredi_adedi": 150, "komisyon_geliri": 7500, "harcama": 6000, "artan_para": 1500},
+        "04": {"tarih": "02-2023", "sehir": "Bursa", "kredi_adedi": 175, "komisyon_geliri": 8750, "harcama": 7000, "artan_para": 1750},
+        "05": {"tarih": "02-2023", "sehir": "İstanbul", "kredi_adedi": 100, "komisyon_geliri": 5000, "harcama": 4000, "artan_para": 1000},
+        "06": {"tarih": "02-2023", "sehir": "Ankara", "kredi_adedi": 200, "komisyon_geliri": 10000, "harcama": 8000, "artan_para": 2000},
+        "07": {"tarih": "03-2023", "sehir": "İzmir", "kredi_adedi": 150, "komisyon_geliri": 7500, "harcama": 6000, "artan_para": 1500},
+        "08": {"tarih": "03-2023", "sehir": "Bursa", "kredi_adedi": 175, "komisyon_geliri": 8750, "harcama": 7000, "artan_para": 1750}
+    }
+    
+    # Verileri JSON formatına dönüştürün ve istemciye gönderin.
+    return jsonify(data)
+
+##################################
 
 if __name__ == '__main__':
     app.run(debug=True)

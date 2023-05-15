@@ -1,9 +1,7 @@
-{% extends "modul__base.html" %}
-
+{% extends "modul__base_yeni.html" %}
 
 
 {% block title %}HızlıKredi | En Hızlı Taşıt Kredisi{% endblock %}
-
 
 
 {% block content %}
@@ -11,7 +9,6 @@
 {% include 'modul_sayfa_kredi_basvurulari.html' %}
 
 {% endblock %}
-
 
 
 {% block scripts %} 
@@ -409,17 +406,24 @@ var customerIds = [];
         contentType: 'application/json', // Set content type header
         data: JSON.stringify({customerIds: customerIds}),
         success: function(data) {
+            console.log(data)
         // Verileri işleyin
         for (var i = 0; i < data.results.length; i++) {
             var dosya_id = data.results[i].dosya_id;
-            var aciklama = data.results[i].aciklama['inputValue'];
+            var aciklama = data.results[i].aciklama;
             var bankalar = data.results[i].bankalar;
             var durum = data.results[i].durum;
             
+            if (aciklama && aciklama.inputValue !== null && aciklama.inputValue !== undefined) {
+            var htmlAciklama = "<p>" + aciklama.inputValue + "</p>";
+            } else {
+            var htmlAciklama = "";
+            }
+
             // td öğesini bulun ve içeriğini güncelleyin
             var td = $('td[data-customer-id="' + dosya_id + '"]');
             td.html(durum);
-            td.append(aciklama)
+            td.append(htmlAciklama)
             // Bankaları gösteren yeni bir liste oluşturun
             var banka_listesi = $('<ul>');
             if (bankalar !== null) {
