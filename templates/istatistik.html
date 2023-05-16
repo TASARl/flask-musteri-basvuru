@@ -1,5 +1,42 @@
 {% extends "modul__base_yeni.html" %}
+{% block styles %}
+<style>
+.header-row {
+background-color: #002376;
+color: #fff;
+font-size: 20px;
+border-bottom: 2px solid #1976d2; /* Satırın alt kısmına belirginlik katmak için ekledim */
+font-family: sans-serif;
+}
 
+.table-row {
+  font-size: 16px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+
+.odd-table-row {
+background-color: #f5f5f5;
+font-size: 16px;
+}
+
+.even-table-row {
+background-color: #fafafa;
+font-size: 16px;
+}
+
+.table-cell, .header-cell {
+padding: 12px 24px;
+border: none; /* Hücrelerin kenarlığını kaldırdım */
+}
+
+/* Satırların üzerine gelindiğinde renk değişimi */
+tr:not(:first-child):hover {
+background-color: #5892e2;
+}
+</style>
+{% endblock %}
 
 
 {% block title %}HızlıKredi | En Hızlı Taşıt Kredisi{% endblock %}
@@ -7,13 +44,33 @@
 
 
 {% block content %}
-<select id="city_selector">
-    <option value="Tüm">Tüm Şehirler</option>
-    
-</select>
+<div class="card-rounded bg-light d-flex flex-stack flex-wrap p-5 mb-5">
+    <!--begin::Nav-->
+    <ul class="nav flex-wrap border-transparent fw-bold">
+        <!--begin::Nav item-->
+        <li class="nav-item my-1">
+            <select class="form-select" data-control="select2" id="city_selector">
+                <option value="Tüm">Tüm Şehirler</option>
+            </select>
+        </li>
+        <!--end::Nav item-->
+    </ul>
+    <!--end::Nav-->
 
+    <!--begin::Action-->
+    <div class="ms-auto">
+        <a href="#" data-bs-toggle="modal" data-bs-target="#kt_modal_new_ticket" class="btn btn-primary fw-bold fs-8 fs-lg-base me-2">Para Durumu</a>
+        <a href="#" data-bs-toggle="modal" data-bs-target="#kt_modal_new_ticket" class="btn btn-primary fw-bold fs-8 fs-lg-base">Kredi Kuruluşları</a>
+    </div>
+    <!--end::Action-->
+</div>
+
+
+
+<div class="py-5">
     <div id="chart_div"></div>
-    <div id="table_div"></div>
+</div>
+<div id="table_div" class="py-5"></div>
 
 
 {% endblock %}
@@ -33,7 +90,8 @@
                 url: "/veriler",
                 type: "GET",
                 success: function(data){
-
+                    
+                    // ilk tum sehirler bilgisini al ve selectboxa ekle
                     if (!isFunctionExecuted) {
                         var uniqueCities = [];
       
@@ -51,7 +109,7 @@
                         isFunctionExecuted = true;
                     }
                     
-
+                    // sehirlerin bilgisini suz
                     var filteredData = {};
                     console.log(selectedCity)
                     if (selectedCity === undefined || selectedCity==='Tüm') {
@@ -66,24 +124,27 @@
                     
                     var tarihler = Object.keys(filteredData); // ["01", "03"]
                     var veriler = tarihler.map(function(tarih){ return filteredData[tarih]; });
-
+                    
                     // Google Charts için veri hazırlama.
                     var artan_paralar = veriler.map(function(veri){ return [veri.tarih, veri.artan_para]; });
+                    
                     var tableData = veriler.map(function(veri){
-                        return [veri.tarih, 
-                                veri.sehir,
-                                veri.kredi_adedi.toLocaleString(), 
-                                veri.komisyon_geliri.toLocaleString() + ' TL', 
-                                veri.harcama.toLocaleString() + ' TL', 
-                                veri.artan_para.toLocaleString() + ' TL'];
+                    return [veri.tarih, 
+                            veri.sehir,
+                            veri.kredi_adedi.toLocaleString(), 
+                            veri.komisyon_geliri.toLocaleString() + ' TL', 
+                            veri.harcama.toLocaleString() + ' TL', 
+                            veri.artan_para.toLocaleString() + ' TL'];
                     });
+
+                    console.log(tableData)
                     
                     // Çizgi grafiği oluşturun.
                     var chartData = new google.visualization.DataTable();
                     chartData.addColumn('string', 'Tarih');
                     chartData.addColumn('number', 'Artan Para');
                     
-
+                    // eger tum sehirler seciliyse her tarihteki artan paralari topla. grafik icin
                     if (selectedCity === undefined || selectedCity==='Tüm') {
                         var artan_paralar = veriler.reduce(function(acc, veri) {
                             var index = acc.findIndex(function(item) {
@@ -99,19 +160,61 @@
                     } 
                     
                     chartData.addRows(artan_paralar);
+
+                    //çizgi grafik
+                    google.charts.load('current', { 
+                        'packages': ['corechart', 'line', 'material'], 
+                        'language': 'tr' 
+                    });
+
                     
                     var chartOptions = {
                         title: 'Artan Para',
+                        titleTextStyle: {
+                            fontSize: 24,
+                            bold: true, 
+                            color: 'black' // siyah renk eklendi
+                        },
                         hAxis: { title: 'Tarih' },
-                        vAxis: { format: 'currency' }
+                        vAxis: {
+                            format: '# TL',
+                            viewWindow: {
+                                min: 0,
+                                max: 'auto'
+                            }
+                        },
+                        theme: 'material',
                     };
+                    
+
                     
                     var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
                     chart.draw(chartData, chartOptions);
                     
-                    // Tabloyu oluşturma.
+                    // veri tablosu
+                    var options1 = {
+                        backgroundColor: "#f9f9f9",
+                        showRowNumber: false,
+                        width: '100%',
+                        height: '100%',
+                        textStyle: {color: '#333', fontSize: 16, fontName: 'Arial'},
+                        headerStyle: {backgroundColor: '#00A0E9', fontSize: 20, color: '#fff', padding: '10px 20px'},
+                        alternatingRowStyle: {backgroundColor: '#E7F1F5'},
+                        cssClassNames: {
+                            headerRow: 'header-row',
+                            tableRow: 'table-row',
+                            oddTableRow: 'odd-table-row',
+                            selectedTableRow: 'selected-table-row',
+                            hoverTableRow: 'hover-table-row',
+                            headerCell: 'header-cell',
+                            tableCell: 'table-cell'
+                        }
+                    };
+
                     var table = new google.visualization.Table(document.getElementById('table_div'));
-                    table.draw(google.visualization.arrayToDataTable([['Tarih','Şehir','Kredi Adedi', 'Komisyon Geliri', 'Harcama', 'Artan Para']].concat(tableData)), {showRowNumber: false, width: '100%', height: '100%'});
+                    table.draw(google.visualization.arrayToDataTable([['Tarih','Şehir','Kredi Adedi', 'Komisyon Geliri', 'Harcama', 'Artan Para']].concat(tableData)), options1);
+
+
                 }
             });
         }

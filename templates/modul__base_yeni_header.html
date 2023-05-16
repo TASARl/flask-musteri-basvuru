@@ -3589,6 +3589,7 @@
 button.addEventListener('click', function() {
   dosya_id = 'yeni';
   document.querySelector('[data-kt-element="files-next"]').querySelector('.indicator-label').textContent= 'Yeni Dosya Kaydet';
+  document.getElementById("modal_dosya_baslik").innerHTML = '<h2 id="modal_dosya_baslik">Yeni Kredi Başvurusu<small class="ms-2 fs-7 fw-normal opacity-50">Oluştur</small></h2>'
 
   $('#dosya_id').val(dosya_id);
   $('select[name="il_secimi_is"]').val('').trigger("change");

@@ -381,8 +381,8 @@ $(document).ready(function() {
   $('input[name="dosya_durumu"]').change(function() {
     if ($(this).val() == 'Kullandırıldı') {
       $('#hiddenDiv').show();
-      $("#kt_wrapper .modal-body").animate({
-        scrollTop: $("#kt_wrapper .modal-body").scrollTop() + 400
+      $("#kt_modal_durum_guncelle .modal-body").animate({
+        scrollTop: $("#kt_modal_durum_guncelle .modal-body").scrollTop() + 400
         }, 500);
     } else {
       $('#hiddenDiv').hide();
@@ -408,41 +408,120 @@ var customerIds = [];
         success: function(data) {
             console.log(data)
         // Verileri işleyin
+        // for (var i = 0; i < data.results.length; i++) {
+        //     var dosya_id = data.results[i].dosya_id;
+        //     var aciklama = data.results[i].aciklama;
+        //     var bankalar = data.results[i].bankalar;
+        //     var durum = data.results[i].durum;
+            
+        //     if (aciklama && aciklama.inputValue !== null && aciklama.inputValue !== undefined) {
+        //     var htmlAciklama = "<p>" + aciklama.inputValue + "</p>";
+        //     } else {
+        //     var htmlAciklama = "";
+        //     }
+
+        //     // td öğesini bulun ve içeriğini güncelleyin
+        //     var td = $('td[data-customer-id="' + dosya_id + '"]');
+        //     td.html(durum);
+        //     td.append(htmlAciklama)
+        //     // Bankaları gösteren yeni bir liste oluşturun
+        //     var banka_listesi = $('<ul>');
+        //     if (bankalar !== null) {
+        //         for (var banka in bankalar) {
+        //             if (bankalar.hasOwnProperty(banka)) {
+        //                 var durum = bankalar[banka];
+        //                 var banka_adi = banka.replace('-', ' ').toUpperCase();
+        //                 var banka_li = $('<li>').html(banka_adi + ': ' + durum);
+        //                 banka_listesi.append(banka_li);
+        //             }
+        //         }
+        //     } else {
+        //         var banka_li = $('<li>').html('Banka bilgisi yok');
+        //         banka_listesi.append(banka_li);
+        //     }
+            
+        //     // td öğesinin altına bankaları gösteren liste öğesini ekleyin
+        //     td.append(banka_listesi);
+        // }
         for (var i = 0; i < data.results.length; i++) {
             var dosya_id = data.results[i].dosya_id;
             var aciklama = data.results[i].aciklama;
             var bankalar = data.results[i].bankalar;
-            var durum = data.results[i].durum;
-            
-            if (aciklama && aciklama.inputValue !== null && aciklama.inputValue !== undefined) {
-            var htmlAciklama = "<p>" + aciklama.inputValue + "</p>";
-            } else {
+            var durum_dosya = data.results[i].durum;
+
             var htmlAciklama = "";
+            if (aciklama && aciklama.inputValue !== null && aciklama.inputValue !== undefined) {
+                htmlAciklama = aciklama.inputValue;
             }
 
             // td öğesini bulun ve içeriğini güncelleyin
-            var td = $('td[data-customer-id="' + dosya_id + '"]');
-            td.html(durum);
-            td.append(htmlAciklama)
+            var td = document.querySelector('td[data-customer-id="' + dosya_id + '"]');
+            
+
             // Bankaları gösteren yeni bir liste oluşturun
-            var banka_listesi = $('<ul>');
+            var banka_listesi = '';
             if (bankalar !== null) {
                 for (var banka in bankalar) {
                     if (bankalar.hasOwnProperty(banka)) {
                         var durum = bankalar[banka];
                         var banka_adi = banka.replace('-', ' ').toUpperCase();
-                        var banka_li = $('<li>').html(banka_adi + ': ' + durum);
-                        banka_listesi.append(banka_li);
+                        if( durum=== 'basvuruldu') {
+                            banka_listesi += '<span class="badge badge-warning">' + banka_adi + '</span>';
+                        }
+                        if( durum=== 'red') {
+                            banka_listesi += '<span class="badge badge-danger">' + banka_adi + '</span>';
+                        }
+                        if( durum=== 'onay') {
+                            banka_listesi += '<span class="badge badge-success">' + banka_adi + '</span>';
+                        }
                     }
                 }
             } else {
-                var banka_li = $('<li>').html('Banka bilgisi yok');
-                banka_listesi.append(banka_li);
+                banka_listesi += '<span class="badge badge-secondary">Giriş Yapılmadı</span>';
             }
             
-            // td öğesinin altına bankaları gösteren liste öğesini ekleyin
-            td.append(banka_listesi);
+            let renk='';
+            if(durum_dosya === 'Kullandırıldı'){
+                renk = 'success';
+            } 
+            if(durum_dosya === 'Kullandırılacak'){
+                renk = 'primary';
+            }
+            if(durum_dosya === 'Devam'){
+                renk = 'warning';
+            }
+            if(durum_dosya === 'Sonlandı'){
+                renk = 'danger';
+            }
+
+            const htmlCode = `
+            <div class="">
+                
+                <div class="d-flex flex-stack">
+                    <div class=" d-block mb-1 fs-6">${banka_listesi}</div>
+                    <div class="d-flex align-items-senter">
+                        <span class="badge badge-${renk} badge-lg ">${durum_dosya}</span>
+                    </div>
+                </div>
+
+                <div class="separator separator-dashed my-3"></div>
+
+                <div class="d-flex flex-stack">
+                    
+                    
+                    <span class="class="fw-semibold fw-bold  mb-1  fs-7"">${htmlAciklama}</span>
+                    </div>
+                </div>
+
+            </div>
+            `;
+            td.insertAdjacentHTML('beforeend', htmlCode);
+            
+
+           
         }
+        
+
     },
     error: function(xhr, status, error) {
         console.log('Hata:', error);
