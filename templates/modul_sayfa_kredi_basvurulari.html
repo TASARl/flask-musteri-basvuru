@@ -19,11 +19,11 @@
 
     <!--begin::Action-->
     <div class="ms-auto">
-        <a  class="btn btn-secondary fw-bold fs-8 fs-lg-base suzmeButon" data-value="Potansiyel Müşteri">Potansiyel Müşteri</a>
-        <a  class="btn btn-warning fw-bold fs-8 fs-lg-base me-2 suzmeButon" data-value="PDevam">Devam Eden</a>
-        <a href="#"  class="btn btn-primary fw-bold fs-8 fs-lg-base me-2 suzmeButon" data-value="Kullandırılacak">Kullandırılacak</a>
-        <a href="#"  class="btn btn-success fw-bold fs-8 fs-lg-base me-2 suzmeButon" data-value="Kullandırıldı">Kullandırıldı</a>
-        <a href="#"  class="btn btn-danger fw-bold fs-8 fs-lg-base suzmeButon" data-value="Sonlandı">İşlem Sonlandı</a>
+        <a  class="btn btn-secondary fw-bold fs-8 fs-lg-base suzmeButon" data-value="Potansiyel">Potansiyel Müşteri</a>
+        <a  class="btn btn-warning fw-bold fs-8 fs-lg-base me-2 suzmeButon" data-value="Devam">Devam Eden</a>
+        <a  class="btn btn-primary fw-bold fs-8 fs-lg-base me-2 suzmeButon" data-value="Kullandırılacak">Kullandırılacak</a>
+        <a  class="btn btn-success fw-bold fs-8 fs-lg-base me-2 suzmeButon" data-value="Kullandırıldı">Kullandırıldı</a>
+        <a  class="btn btn-danger fw-bold fs-8 fs-lg-base suzmeButon" data-value="Sonlandı">İşlem Sonlandı</a>
     </div>
     <!--end::Action-->
 </div>
@@ -154,7 +154,7 @@
                   <ul class="pagination">
                     {% if metadata.page > 1 %}
                       <li class="page-item">
-                        <a href="{{ url_for('get_basvurular', page=metadata.page-1, per_page=metadata.per_page, city=metadata.city) }}" class="page-link">&laquo;</a>
+                        <a href="{{ url_for('get_basvurular', page=metadata.page-1, per_page=metadata.per_page, city=metadata.city, durum=metadata.durum) }}" class="page-link">&laquo;</a>
                       </li>
                     {% endif %}
               
@@ -162,13 +162,13 @@
                       {% if num == metadata.page %}
                         <li class="page-item active"><span class="page-link">{{ num }} <span class="sr-only">(guncel)</span></span></li>
                       {% else %}
-                        <li class="page-item"><a href="{{ url_for('get_basvurular', page=num, per_page=metadata.per_page, city=metadata.city) }}" class="page-link">{{ num }}</a></li>
+                        <li class="page-item"><a href="{{ url_for('get_basvurular', page=num, per_page=metadata.per_page, city=metadata.city, durum=metadata.durum) }}" class="page-link">{{ num }}</a></li>
                       {% endif %}
                     {% endfor %}
               
                     {% if metadata.page < metadata.total_pages %}
                       <li class="page-item">
-                        <a href="{{ url_for('get_basvurular', page=metadata.page+1, per_page=metadata.per_page, city=metadata.city) }}" class="page-link">&raquo;</a>
+                        <a href="{{ url_for('get_basvurular', page=metadata.page+1, per_page=metadata.per_page, city=metadata.city, durum=metadata.durum) }}" class="page-link">&raquo;</a>
                       </li>
                     {% endif %}
                   </ul>

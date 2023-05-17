@@ -437,6 +437,7 @@ def get_basvurular():
         'total_customers': total_customers,
         'total_pages': int(total_customers / per_page) + 1,
         'city': selected_city,
+        'durum': dosya_durumu,
         'sayfa_baslik': 'Kredi Başvuru Dosyaları'
     }
 

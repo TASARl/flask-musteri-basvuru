@@ -593,7 +593,6 @@ $("#dosyalar_city_selector").change(function () {
 
     // Seçilen değer
     var selectedValue = $("#dosyalar_city_selector").val();
-    console.log(selectedValue)
   
     // Yeni URL oluşturulur
     //   var newUrl = window.location.href + "&city=" + selectedValue;
@@ -629,16 +628,22 @@ function fadeAnimasyonuIleHtmlDegistir(td, htmlCode) {
   }, 500); // 500ms'lik bir gecikme süresi belirleyerek eski içeriği silme ve yeni içeriği ekleme işlemine daha belirgin bir geçiş sağlayabilirsiniz
 }
 
-function handleButtonClick(event) {
+// suzme butonlari secimi sonrasi adres satirina status eklenip sayfa cagirilir
+function handleButtonClickk(event) {
     event.preventDefault();
-  var value = event.target.dataset.value;
-  console.log("Button clicked with value:", value);
-  // Burada yapılacak işlemleri gerçekleştirin
+    var value = event.target.dataset.value;
+    console.log("Button clicked with value:", );
+    let url = new URL(window.location.href);
+    url.searchParams.set('durum', value);
+    url.searchParams.set('page', '1');
+
+    // Sayfa yeniden yüklenir
+    window.location.href = url;
 }
 
-var buttons = document.querySelectorAll(".suzmeButon");
-for (var i = 0; i < buttons.length; i++) {
-  buttons[i].addEventListener("click", handleButtonClick);
+var buttonsSuzme = document.querySelectorAll(".suzmeButon");
+for (var i = 0; i < buttonsSuzme.length; i++) {
+  buttonsSuzme[i].addEventListener("click", handleButtonClickk);
 }
 
 </script>
