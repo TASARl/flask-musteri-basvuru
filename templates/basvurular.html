@@ -3,6 +3,12 @@
 
 {% block title %}HızlıKredi | En Hızlı Taşıt Kredisi{% endblock %}
 
+{% block styles %}
+<style>
+   
+</style>
+{% endblock %}
+
 
 {% block content %}
 
@@ -390,143 +396,250 @@ $(document).ready(function() {
   });
 });
 
+// bir sonraki kod icin sol cigideki renk siniflarini kaldirir
+function removeBackgroundClasses(element, yeniArkaplan) {
+  if (element.classList.contains("bg-success")) {
+    element.classList.remove("bg-success");
+  }
+
+  if (element.classList.contains("bg-primary")) {
+    element.classList.remove("bg-primary");
+  }
+
+  if (element.classList.contains("bg-warning")) {
+    element.classList.remove("bg-warning");
+  }
+
+  if (element.classList.contains("bg-danger")) {
+    element.classList.remove("bg-danger");
+  }
+
+  element.classList.add(yeniArkaplan);
+}
 
 // durum guncellemeleri icin durum iclerindeki tum idleri ajax ile gonder yeni verileri al ekrana ekle
-var customerIds = [];
+
+const sayfaDosyaBilgileriGuncelleme = function() {
+    
+    var customerIds = [];
     $('td[data-customer-id]').each(function() {
         var customerId = $(this).data('customer-id');
         if (customerId) {
             customerIds.push(customerId);
         }
     });
-
+    
+    if (customerIds.length === 0) {
+        return;
+    }
+   
+    
     $.ajax({
         url: '/process_customer_ids',
         method: 'POST',
         contentType: 'application/json', // Set content type header
         data: JSON.stringify({customerIds: customerIds}),
         success: function(data) {
-            console.log(data)
-        // Verileri işleyin
-        // for (var i = 0; i < data.results.length; i++) {
-        //     var dosya_id = data.results[i].dosya_id;
-        //     var aciklama = data.results[i].aciklama;
-        //     var bankalar = data.results[i].bankalar;
-        //     var durum = data.results[i].durum;
             
-        //     if (aciklama && aciklama.inputValue !== null && aciklama.inputValue !== undefined) {
-        //     var htmlAciklama = "<p>" + aciklama.inputValue + "</p>";
-        //     } else {
-        //     var htmlAciklama = "";
-        //     }
+        
+            for (var i = 0; i < data.results.length; i++) {
+                var dosya_id = data.results[i].dosya_id;
+                var aciklama = data.results[i].aciklama;
+                var bankalar = data.results[i].bankalar;
+                var durum_dosya = data.results[i].durum;
 
-        //     // td öğesini bulun ve içeriğini güncelleyin
-        //     var td = $('td[data-customer-id="' + dosya_id + '"]');
-        //     td.html(durum);
-        //     td.append(htmlAciklama)
-        //     // Bankaları gösteren yeni bir liste oluşturun
-        //     var banka_listesi = $('<ul>');
-        //     if (bankalar !== null) {
-        //         for (var banka in bankalar) {
-        //             if (bankalar.hasOwnProperty(banka)) {
-        //                 var durum = bankalar[banka];
-        //                 var banka_adi = banka.replace('-', ' ').toUpperCase();
-        //                 var banka_li = $('<li>').html(banka_adi + ': ' + durum);
-        //                 banka_listesi.append(banka_li);
-        //             }
-        //         }
-        //     } else {
-        //         var banka_li = $('<li>').html('Banka bilgisi yok');
-        //         banka_listesi.append(banka_li);
-        //     }
-            
-        //     // td öğesinin altına bankaları gösteren liste öğesini ekleyin
-        //     td.append(banka_listesi);
-        // }
-        for (var i = 0; i < data.results.length; i++) {
-            var dosya_id = data.results[i].dosya_id;
-            var aciklama = data.results[i].aciklama;
-            var bankalar = data.results[i].bankalar;
-            var durum_dosya = data.results[i].durum;
+                var htmlAciklama = "";
+                if (aciklama && aciklama.inputValue !== null && aciklama.inputValue !== undefined) {
+                    htmlAciklama = aciklama.inputValue;
+                }
 
-            var htmlAciklama = "";
-            if (aciklama && aciklama.inputValue !== null && aciklama.inputValue !== undefined) {
-                htmlAciklama = aciklama.inputValue;
-            }
+                // td öğesini bulun ve içeriğini güncelleyin
+                var td = document.querySelector('td[data-customer-id="' + dosya_id + '"]');
+                var solCizgi = document.querySelector('div[data-customer-id="' + dosya_id + '"].solCizgi');
 
-            // td öğesini bulun ve içeriğini güncelleyin
-            var td = document.querySelector('td[data-customer-id="' + dosya_id + '"]');
-            
+                
 
-            // Bankaları gösteren yeni bir liste oluşturun
-            var banka_listesi = '';
-            if (bankalar !== null) {
-                for (var banka in bankalar) {
-                    if (bankalar.hasOwnProperty(banka)) {
-                        var durum = bankalar[banka];
-                        var banka_adi = banka.replace('-', ' ').toUpperCase();
-                        if( durum=== 'basvuruldu') {
-                            banka_listesi += '<span class="badge badge-warning">' + banka_adi + '</span>';
-                        }
-                        if( durum=== 'red') {
-                            banka_listesi += '<span class="badge badge-danger">' + banka_adi + '</span>';
-                        }
-                        if( durum=== 'onay') {
-                            banka_listesi += '<span class="badge badge-success">' + banka_adi + '</span>';
+                // Bankaları gösteren yeni bir liste oluşturun
+                var banka_listesi = '';
+                if (bankalar !== null) {
+                    for (var banka in bankalar) {
+                        if (bankalar.hasOwnProperty(banka)) {
+                            var durum = bankalar[banka];
+                            var banka_adi = banka.replace('-', ' ').toUpperCase();
+                            if( durum=== 'basvuruldu') {
+                                banka_listesi += '<span class="badge badge-warning">' + banka_adi + '</span>';
+                            }
+                            if( durum=== 'red') {
+                                banka_listesi += '<span class="badge badge-danger">' + banka_adi + '</span>';
+                            }
+                            if( durum=== 'onay') {
+                                banka_listesi += '<span class="badge badge-success">' + banka_adi + '</span>';
+                            }
                         }
                     }
+                } else {
+                    banka_listesi += '<span class="badge badge-secondary">Giriş Yapılmadı</span>';
                 }
-            } else {
-                banka_listesi += '<span class="badge badge-secondary">Giriş Yapılmadı</span>';
-            }
-            
-            let renk='';
-            if(durum_dosya === 'Kullandırıldı'){
-                renk = 'success';
-            } 
-            if(durum_dosya === 'Kullandırılacak'){
-                renk = 'primary';
-            }
-            if(durum_dosya === 'Devam'){
-                renk = 'warning';
-            }
-            if(durum_dosya === 'Sonlandı'){
-                renk = 'danger';
-            }
-
-            const htmlCode = `
-            <div class="">
                 
-                <div class="d-flex flex-stack">
-                    <div class=" d-block mb-1 fs-6">${banka_listesi}</div>
-                    <div class="d-flex align-items-senter">
-                        <span class="badge badge-${renk} badge-lg ">${durum_dosya}</span>
-                    </div>
-                </div>
+                let renk='';
+                if(durum_dosya === 'Kullandırıldı'){
+                    renk = 'success';
+                    removeBackgroundClasses(solCizgi,'bg-success');
+                } 
+                if(durum_dosya === 'Kullandırılacak'){
+                    renk = 'primary';
+                    removeBackgroundClasses(solCizgi,'bg-primary');
+                }
+                if(durum_dosya === 'Devam'){
+                    renk = 'warning';
+                    removeBackgroundClasses(solCizgi,'bg-warning');
+                }
+                if(durum_dosya === 'Sonlandı'){
+                    renk = 'danger';
+                    removeBackgroundClasses(solCizgi,'bg-danger');
+                }
 
-                <div class="separator separator-dashed my-3"></div>
-
-                <div class="d-flex flex-stack">
+                const htmlCode = `
+                <div class="">
                     
-                    
-                    <span class="class="fw-semibold fw-bold  mb-1  fs-7"">${htmlAciklama}</span>
+                    <div class="d-flex flex-stack">
+                        <div class=" d-block mb-1 fs-6">${banka_listesi}</div>
+                        <div class="d-flex align-items-senter">
+                            <span class="badge badge-${renk} badge-lg ">${durum_dosya}</span>
+                        </div>
                     </div>
-                </div>
 
-            </div>
-            `;
-            td.insertAdjacentHTML('beforeend', htmlCode);
+                    <div class="separator separator-dashed my-3"></div>
+
+                    <div class="d-flex flex-stack">
+                        
+                        
+                        <span class="class="fw-semibold fw-bold  mb-1  fs-7"">${htmlAciklama}</span>
+                        </div>
+                    </div>
+
+                </div>
+                `;
             
+                // td.innerHTML = "";
+                // td.insertAdjacentHTML('beforeend', htmlCode);
+                fadeAnimasyonuIleHtmlDegistir(td, htmlCode)
 
-           
-        }
+            }
+            startAnimation();
         
-
     },
     error: function(xhr, status, error) {
         console.log('Hata:', error);
     }
     });
+};
+
+sayfaDosyaBilgileriGuncelleme(); // Fonksiyon hemen çağrılır
+
+const intervalId = setInterval(sayfaDosyaBilgileriGuncelleme, 60000);// Her 60 saniyede bir fonksiyon yenilenir
+
+
+// sayfanin yenilendigini gostermek icin loading dairesi
+let progressElem = document.querySelector(".progress-elem");
+let progressElemSvg = document.querySelector(".progress-elem svg");
+let progressBar = document.querySelector(".progress-bar");
+let success = document.querySelector(".success");
+
+let interval;
+function startAnimation () {
+  clearInterval(interval);
+  
+  success.style.display = "none";
+  
+  let initial = 251.3274;
+  let increment = 251.3274 / 100;
+  let incrementCount = 0;
+  interval = setInterval(() => {
+    if (incrementCount === 100) {
+      initial = 0;
+      progressBar.style.strokeDashoffset = initial;
+      clearInterval(interval);
+      setTimeout(() => {
+        
+        success.style.display = "";
+      }, 100);
+    } else {
+      initial -= increment;
+      progressBar.style.strokeDashoffset = initial;
+      incrementCount += 1;
+
+    }
+  }, 600);
+}
+
+startAnimation();
+
+// donen tekere basinca verileri gunceller
+document.querySelector('.loading-buton-guncelleme').addEventListener('click', function() {
+  sayfaDosyaBilgileriGuncelleme();
+  startAnimation();
+});
+
+</script>
+
+
+<script>
+// Select kutusu
+
+
+// dosyalar bolumunda sehir secildigindee adres satirinda varsa degerleri degistir yoksa yeni deger ekle
+$("#dosyalar_city_selector").change(function () {
+
+    // Seçilen değer
+    var selectedValue = $("#dosyalar_city_selector").val();
+    console.log(selectedValue)
+  
+    // Yeni URL oluşturulur
+    //   var newUrl = window.location.href + "&city=" + selectedValue;
+    let url = new URL(window.location.href);
+    url.searchParams.set('city', selectedValue);
+    url.searchParams.set('page', '1');
+
+    // Sayfa yeniden yüklenir
+    window.location.href = url;
+    }
+)
+
+
+// sayfadaki guncellemelerde animasyonlu gecis ekler
+function fadeAnimasyonuIleHtmlDegistir(td, htmlCode) {
+  // td öğesinin opacity değerini 0.5 yaparak eski içeriği bulanıklaştırın
+  td.style.opacity = "0.5";
+
+  // setTimeout fonksiyonu kullanarak eski içeriği silin ve yeni içeriği ekleme işlemini birkaç saniye geciktirin
+  setTimeout(function() {
+    td.innerHTML = "";
+    td.insertAdjacentHTML('beforeend', htmlCode);
+
+    // Yeni içeriği ekledikten sonra, td öğesinin opacity değerini 1'e kadar arttırarak animasyonlu bir şekilde görünür hale getirin
+    var op = 0.5;
+    var timer = setInterval(function () {
+      if (op >= 1){
+        clearInterval(timer);
+      }
+      td.style.opacity = op.toString();
+      op += 0.1;
+    }, 50);
+  }, 500); // 500ms'lik bir gecikme süresi belirleyerek eski içeriği silme ve yeni içeriği ekleme işlemine daha belirgin bir geçiş sağlayabilirsiniz
+}
+
+function handleButtonClick(event) {
+    event.preventDefault();
+  var value = event.target.dataset.value;
+  console.log("Button clicked with value:", value);
+  // Burada yapılacak işlemleri gerçekleştirin
+}
+
+var buttons = document.querySelectorAll(".suzmeButon");
+for (var i = 0; i < buttons.length; i++) {
+  buttons[i].addEventListener("click", handleButtonClick);
+}
 
 </script>
 {% endblock %}

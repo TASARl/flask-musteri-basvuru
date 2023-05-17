@@ -391,37 +391,54 @@ def get_customers():
 @app.route('/basvurular', methods=['GET'])
 @login_required
 def get_basvurular():
-    
+    # Sayfa numarasını al
+    page = int(request.args.get('page', 1))
+    # Her sayfada kaç müşteri gösterileceğini belirle
+    per_page = int(request.args.get('per_page', 10))
+
+    # İl seçimini al
+    selected_city = request.args.get('city')
+
+    # Durum seçimini al
+    dosya_durumu = request.args.get('durum')
+
     customers = db.musteriler
+
+    query = {}
+
+    if selected_city:
+        query['galeri_ili'] = selected_city
+
+    if dosya_durumu:
+        query['status'] = dosya_durumu
+
+    # Get total number of customers with the specified filters
+    total_customers = customers.count_documents(query)
+
+    # Get customers from the database with the specified filters
+    customer_list = list(customers.find(query, {'_id': 1, 'adi': 1, 'soyadi': 1, 'dosya_numarasi': 1, 'galeri_ili': 1, 'galeri_adi': 1, 'kredi_tutari': 1, 'kredi_vadesi': 1, 'calisma_sekli': 1, 'kredi_miktar': 1, 'kredi_vadesi': 1, 'created_time': 1, 'musteri_cep_telefonu': 1, 'model_yili': 1, 'marka_adi': 1, 'tip_adi': 1, 'created_by_isim': 1, 'status': 1}).sort("_id", -1))
 
     # Sayfa numarasını al
     page = int(request.args.get('page', 1))
     # Her sayfada kaç müşteri gösterileceğini belirle
     per_page = int(request.args.get('per_page', 10))
 
-    # Toplam müşteri sayısını al
-    total_customers = customers.count_documents({})
-
     # Pagination hesaplamaları
     start_index = (page - 1) * per_page
     end_index = min(start_index + per_page, total_customers)
 
-    # Müşterileri veritabanından getir
-    customer_list = list(customers.find({}, {'_id':1, 'adi':1, 'soyadi':1, 'dosya_numarasi':1, 'galeri_ili':1, 'galeri_adi':1, 'kredi_tutari':1, 'kredi_vadesi':1, 'calisma_sekli':1, 'kredi_miktar':1, 'kredi_vadesi':1, 'created_time':1, 'musteri_cep_telefonu':1, 'model_yili':1 ,'marka_adi':1 ,'tip_adi':1 , 'created_by_isim':1, 'status': 1}).sort("_id", -1).skip(start_index).limit(per_page))
+    # Müşterileri pagination ile sınırlandır
+    customer_list = customer_list[start_index:end_index]
 
-    
     # Pagination metadatasını oluştur
     metadata = {
         'page': page,
         'per_page': per_page,
         'total_customers': total_customers,
         'total_pages': int(total_customers / per_page) + 1,
+        'city': selected_city,
         'sayfa_baslik': 'Kredi Başvuru Dosyaları'
     }
-
-    # Son seçilen müşterinin bilgilerini al
-    # latest_customer = selected_customers.find().sort([('selection_date', DESCENDING)]).limit(1)
-    # lstest_customer_id = latest_customer[0]['customer_id']
 
     # secim yapilmis musteri dokumanini kullaniclara gore getirir. bu secim masaustu uygulamasi icin referanstir
     # eger bu kullanici icin secim yapima collectionunda bir dokuman varsa bul getir
@@ -433,7 +450,7 @@ def get_basvurular():
         lstest_customer_id = existing_doc["customer_id"]
     else:
         lstest_customer_id = '0'
-        
+
     user_data = {
         "isim_soyisim": current_user.isim_soyisim,
         "cep_telefonu": current_user.id,
@@ -441,8 +458,62 @@ def get_basvurular():
         "yetki": current_user.yetki,
         "gallery_name": current_user.gallery_name,
     }
-    
+
     return render_template('basvurular.html', data=customer_list , metadata=metadata, lstest_customer_id=lstest_customer_id, user_data=user_data)
+
+
+    
+    # customers = db.musteriler
+
+    # # Sayfa numarasını al
+    # page = int(request.args.get('page', 1))
+    # # Her sayfada kaç müşteri gösterileceğini belirle
+    # per_page = int(request.args.get('per_page', 10))
+
+    # # Toplam müşteri sayısını al
+    # total_customers = customers.count_documents({})
+
+    # # Pagination hesaplamaları
+    # start_index = (page - 1) * per_page
+    # end_index = min(start_index + per_page, total_customers)
+
+    # # Müşterileri veritabanından getir
+    # customer_list = list(customers.find({}, {'_id':1, 'adi':1, 'soyadi':1, 'dosya_numarasi':1, 'galeri_ili':1, 'galeri_adi':1, 'kredi_tutari':1, 'kredi_vadesi':1, 'calisma_sekli':1, 'kredi_miktar':1, 'kredi_vadesi':1, 'created_time':1, 'musteri_cep_telefonu':1, 'model_yili':1 ,'marka_adi':1 ,'tip_adi':1 , 'created_by_isim':1, 'status': 1}).sort("_id", -1).skip(start_index).limit(per_page))
+
+    
+    # # Pagination metadatasını oluştur
+    # metadata = {
+    #     'page': page,
+    #     'per_page': per_page,
+    #     'total_customers': total_customers,
+    #     'total_pages': int(total_customers / per_page) + 1,
+    #     'sayfa_baslik': 'Kredi Başvuru Dosyaları'
+    # }
+
+    # # Son seçilen müşterinin bilgilerini al
+    # # latest_customer = selected_customers.find().sort([('selection_date', DESCENDING)]).limit(1)
+    # # lstest_customer_id = latest_customer[0]['customer_id']
+
+    # # secim yapilmis musteri dokumanini kullaniclara gore getirir. bu secim masaustu uygulamasi icin referanstir
+    # # eger bu kullanici icin secim yapima collectionunda bir dokuman varsa bul getir
+    # query = {"current_user": current_user.id }
+    # existing_doc = selected_customers.find_one(query)
+
+    # if existing_doc:
+    #     # Doküman mevcut, secili musteri dosya bilgisini getirir
+    #     lstest_customer_id = existing_doc["customer_id"]
+    # else:
+    #     lstest_customer_id = '0'
+        
+    # user_data = {
+    #     "isim_soyisim": current_user.isim_soyisim,
+    #     "cep_telefonu": current_user.id,
+    #     "sehir": current_user.city,
+    #     "yetki": current_user.yetki,
+    #     "gallery_name": current_user.gallery_name,
+    # }
+    
+    # return render_template('basvurular.html', data=customer_list , metadata=metadata, lstest_customer_id=lstest_customer_id, user_data=user_data)
 
 #kullanici secimi ekle
 @app.route('/add_customer_selection', methods=['POST'])

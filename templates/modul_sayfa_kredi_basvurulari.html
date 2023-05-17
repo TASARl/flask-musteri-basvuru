@@ -4,8 +4,13 @@
     <ul class="nav flex-wrap border-transparent fw-bold">
         <!--begin::Nav item-->
         <li class="nav-item my-1">
-            <select class="form-select" data-control="select2" id="city_selector">
-                <option value="Tüm">Tüm Şehirler</option>
+            <select class="form-select" data-control="select2" id="dosyalar_city_selector">
+                <option value="">Şehir Seçimi</option>
+                <option value="">Tüm Şehirler</option>
+                <option value="Denizli">Denizli</option>
+                <option value="İzmir">İzmir</option>
+                <option value="İstanbul">İstanbul</option>
+                <option value="Ankara">Ankara</option>
             </select>
         </li>
         <!--end::Nav item-->
@@ -14,11 +19,11 @@
 
     <!--begin::Action-->
     <div class="ms-auto">
-        <a href="#" data-bs-toggle="modal" data-bs-target="#kt_modal_new_ticket" class="btn btn-secondary fw-bold fs-8 fs-lg-base">Potansiyel Müşteri</a>
-        <a href="#" data-bs-toggle="modal" data-bs-target="#kt_modal_new_ticket" class="btn btn-warning fw-bold fs-8 fs-lg-base me-2">Devam Eden</a>
-        <a href="#" data-bs-toggle="modal" data-bs-target="#kt_modal_new_ticket" class="btn btn-primary fw-bold fs-8 fs-lg-base me-2">Kullandırılacak</a>
-        <a href="#" data-bs-toggle="modal" data-bs-target="#kt_modal_new_ticket" class="btn btn-success fw-bold fs-8 fs-lg-base me-2">Kullandırıldı</a>
-        <a href="#" data-bs-toggle="modal" data-bs-target="#kt_modal_new_ticket" class="btn btn-danger fw-bold fs-8 fs-lg-base">İşlem Sonlandı</a>
+        <a  class="btn btn-secondary fw-bold fs-8 fs-lg-base suzmeButon" data-value="Potansiyel Müşteri">Potansiyel Müşteri</a>
+        <a  class="btn btn-warning fw-bold fs-8 fs-lg-base me-2 suzmeButon" data-value="PDevam">Devam Eden</a>
+        <a href="#"  class="btn btn-primary fw-bold fs-8 fs-lg-base me-2 suzmeButon" data-value="Kullandırılacak">Kullandırılacak</a>
+        <a href="#"  class="btn btn-success fw-bold fs-8 fs-lg-base me-2 suzmeButon" data-value="Kullandırıldı">Kullandırıldı</a>
+        <a href="#"  class="btn btn-danger fw-bold fs-8 fs-lg-base suzmeButon" data-value="Sonlandı">İşlem Sonlandı</a>
     </div>
     <!--end::Action-->
 </div>
@@ -47,7 +52,30 @@
                         <th class="col-1">Galeri</th>
                         <th class="col-2">Taşıt</th>
                         <th class="col">Müşteri</th>
-                        <th class="col-3" style="min-width: 400px;">Durum</th>
+                        <th class="col-3" style="min-width: 400px;">
+                            <div style="float:left;">Durum</div>
+                            <div style="float:right;">
+                                <div class="progress-elem loading-buton-guncelleme hover-scale" style="max-width: 27px; margin-bottom: -20px; margin-right: 17px; margin-top: -5px;" data-bs-toggle="tooltip" data-bs-placement="top" title="Güncelle">
+                                    <svg style="transform: rotate(90deg)" height="100%" viewBox="0 0 110 110" width="100%">
+                                        <!-- gray dashed -->
+                                        <circle cx="50%" cy="50%" fill="none" stroke-width="20" r="40" stroke="#D4D4D8" stroke-dasharray="1.4137,1.4137"></circle>
+                                        <!-- green solid -->
+                                        <circle class="progress-bar" cx="50%" cy="50%" fill="none" stroke-width="20" r="40" stroke="#19C558" style="stroke-dashoffset: 103.044; stroke-dasharray: 251.327;"></circle>
+                                        <!-- inner black stroke -->
+                                        <circle cx="50%" cy="50%" fill="none" stroke-width="1.5" r="27.5" stroke="#27272A"></circle>
+                                        <!-- outer black stroke -->
+                                        <circle cx="50%" cy="50%" fill="none" stroke-width="1.5" r="52.5" stroke="#27272A"></circle>
+                                        <g class="success" style="display:none;">
+                                            <!-- inner solid green success -->
+                                            <circle cx="50%" cy="50%" fill="#19C558" r="50"></circle>
+                                            <!-- checkmark line -->
+                                            <polyline points="55 80, 55 30" stroke="#fff" fill="none" stroke-width="10"></polyline>
+                                        </g>
+                                    </svg>
+                                </div>
+                            </div>
+                        </th>
+                        
                         <th class="col text-end" style=" width: 130px; min-width: 130px;">Uygulamalar</th>
                     </tr>
                 </thead>
@@ -66,7 +94,7 @@
                         
                         <td>
                             <div class="position-relative ps-6 pe-3 ">
-                                <div class="position-absolute start-0 top-0 w-4px h-100 rounded-2 bg-info"></div>
+                                <div class="position-absolute start-0 top-0 w-4px h-100 rounded-2 solCizgi" data-customer-id="{{ customer._id }}" ></div>
                                 <span class="text-dark fw-bold text-hover-primary fs-6 createdTime">{{ customer.created_time }}</span>
                                 <div class="fs-7 text-muted fw-bold">{{ customer.dosya_numarasi }}</div>
                                 <div class="fs-7 text-muted fw-bold">{{ customer.created_by_isim }}</div>
@@ -126,7 +154,7 @@
                   <ul class="pagination">
                     {% if metadata.page > 1 %}
                       <li class="page-item">
-                        <a href="{{ url_for('get_basvurular', page=metadata.page-1, per_page=metadata.per_page) }}" class="page-link">&laquo;</a>
+                        <a href="{{ url_for('get_basvurular', page=metadata.page-1, per_page=metadata.per_page, city=metadata.city) }}" class="page-link">&laquo;</a>
                       </li>
                     {% endif %}
               
@@ -134,13 +162,13 @@
                       {% if num == metadata.page %}
                         <li class="page-item active"><span class="page-link">{{ num }} <span class="sr-only">(guncel)</span></span></li>
                       {% else %}
-                        <li class="page-item"><a href="{{ url_for('get_basvurular', page=num, per_page=metadata.per_page) }}" class="page-link">{{ num }}</a></li>
+                        <li class="page-item"><a href="{{ url_for('get_basvurular', page=num, per_page=metadata.per_page, city=metadata.city) }}" class="page-link">{{ num }}</a></li>
                       {% endif %}
                     {% endfor %}
               
                     {% if metadata.page < metadata.total_pages %}
                       <li class="page-item">
-                        <a href="{{ url_for('get_basvurular', page=metadata.page+1, per_page=metadata.per_page) }}" class="page-link">&raquo;</a>
+                        <a href="{{ url_for('get_basvurular', page=metadata.page+1, per_page=metadata.per_page, city=metadata.city) }}" class="page-link">&raquo;</a>
                       </li>
                     {% endif %}
                   </ul>
