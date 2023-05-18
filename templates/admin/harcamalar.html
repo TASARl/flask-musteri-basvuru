@@ -95,24 +95,27 @@
 																<!--begin::Input group-->
 																<div class="fv-row mb-10">
 																	<label class="required fs-6 fw-semibold mb-2">Açıklama</label>
-                                                                     <input type="text" class="form-control form-control-solid" placeholder="Harcama Açıklaması" name="harcama_aciklamasi" />
+                                                                     <input type="text" class="form-control form-control-solid" placeholder="Harcama Açıklaması" name="harcama_aciklamasi" id="harcama_aciklamasi"/>
 																</div>
 																<!--end::Input group-->
                                                                 <div class="fv-row mb-10">
                                                                     <label class="d-flex align-items-center fs-6 fw-semibold form-label mb-2">
-                                                                        <span class="required">Kullandırım</span>
+                                                                        <span class="required">Harcama Turari</span>
                                                                         
                                                                     </label>
-                                                                    <input type="number" id="kullandirim" step="0.01" class="form-control form-control-solid">
+                                                                    <input type="number" id="tutar" step="0.01" class="form-control form-control-solid">
                                                                 </div>
 																<!--begin::Actions-->
 																<div class="text-center">
 																	
-																	<button type="submit" class="btn btn-primary" data-kt-users-modal-action="submit">
-																		<span class="indicator-label">Submit</span>
-																		<span class="indicator-progress">Please wait...
-																		<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-																	</button>
+																	<button type="button" class="btn btn-primary" id="harcamaEkleButon" >
+                                                                        <span class="indicator-label">
+                                                                            Ekle
+                                                                        </span>
+                                                                        <span class="indicator-progress">
+                                                                        <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                                                        </span>
+                                                                    </button>
 																</div>
 																<!--end::Actions-->
 															</form>
@@ -144,7 +147,7 @@
 												</tr>
 											</thead>
 											<tbody class="text-gray-600 fw-semibold">
-												{% for customer in data %} 
+												{% for harcama in data %} 
 												<tr>
 													
 													<td class="d-flex align-items-center">
@@ -153,16 +156,16 @@
 														<!--end::Avatar-->
 														<!--begin::User details-->
 														<div class="d-flex flex-column">
-															<a href="../../demo10/dist/apps/user-management/users/view.html" class="text-gray-800 text-hover-primary mb-1">{{ customer.isim_soyisim }}</a>
+															<a href="../../demo10/dist/apps/user-management/users/view.html" class="text-gray-800 text-hover-primary mb-1">{{ harcama.harcama_tarihi }}</a>
 															
 														</div>
 														<!--begin::User details-->
 													</td>
-													<td>{{ customer.city }} <span>{{ customer.district }} </span></td>
+													<td>{{ harcama.il_secimi_harcama }}</td>
 													<td>
-														<div class="badge badge-light fw-bold">{{ customer.username }}</div>
+														<div class="badge badge-light fw-bold">{{ harcama.harcama_aciklamasi }}</div>
 													</td>
-													<td>{{ customer.gallery_name }}</td>
+													<td>{{ harcama.tutar }}</td>
 													
 													<td class="text-end">
 														<a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">İşlem
@@ -187,6 +190,32 @@
 											</tbody>
 										</table>
 										<!--end::Table-->
+                                        <div>
+                                            <!-- Sayfa numaraları -->
+                                            {% if metadata.total_pages > 1 %}
+                                              <ul class="pagination">
+                                                {% if metadata.page > 1 %}
+                                                  <li class="page-item">
+                                                    <a href="{{ url_for('harcamalar', page=metadata.page-1, per_page=metadata.per_page) }}" class="page-link">&laquo;</a>
+                                                  </li>
+                                                {% endif %}
+                                          
+                                                {% for num in range(1, metadata.total_pages + 1) %}
+                                                  {% if num == metadata.page %}
+                                                    <li class="page-item active"><span class="page-link">{{ num }} <span class="sr-only">(guncel)</span></span></li>
+                                                  {% else %}
+                                                    <li class="page-item"><a href="{{ url_for('harcamalar', page=num, per_page=metadata.per_page) }}" class="page-link">{{ num }}</a></li>
+                                                  {% endif %}
+                                                {% endfor %}
+                                          
+                                                {% if metadata.page < metadata.total_pages %}
+                                                  <li class="page-item">
+                                                    <a href="{{ url_for('harcamalar', page=metadata.page+1, per_page=metadata.per_page) }}" class="page-link">&raquo;</a>
+                                                  </li>
+                                                {% endif %}
+                                              </ul>
+                                            {% endif %}
+                                        </div>
 									</div>
 									<!--end::Card body-->
 								</div>

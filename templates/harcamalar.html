@@ -25,5 +25,56 @@
         format: "DD.MM.YYYY",
       },
     });
+
+// harcama ekleme butonu
+$(document).ready(function() {
+    $('#harcamaEkleButon').on('click', function(event) {
+        event.preventDefault(); // Prevent default form submission behavior
+        
+        // Get the input value
+        const harcama_tarihi = $('#harcama_tarihi').val();
+        const il_secimi_harcama = $('#il_secimi_harcama').val();
+        const harcama_aciklamasi = $('#harcama_aciklamasi').val();
+        const tutar = $('#tutar').val();
+        
+
+        // Check if input value is empty
+        if (tutar === '') {
+            toastr.error("Harcama tutari boş olamaz.", "Hata");
+            return; // Exit the function if input is empty
+        }
+        $(this).attr("data-kt-indicator", "on");
+
+        // Make an AJAX request with the input value
+        $.ajax({
+            url: '/harcama_islemleri',
+            method: 'POST',
+            contentType: 'application/json', // Set content type header
+            data: JSON.stringify({
+                harcama_tarihi: harcama_tarihi,
+                il_secimi_harcama: il_secimi_harcama,
+                harcama_aciklamasi: harcama_aciklamasi,
+                tutar: tutar
+            }), // Convert data to JSON string
+            success: function(response) {
+                $('#harcama_tarihi').val('');  // Clear the input field after successful submission
+                $('#il_secimi_harcama').val('').trigger('change');
+                $('#harcama_aciklamasi').val('');
+                $('#tutar').val('');
+
+                $("#harcamaEkleButon").removeAttr("data-kt-indicator");
+
+                toastr.success("Harcama eklendi.", "Kayıt edildi");
+
+            },
+            error: function(xhr, status, error) {
+                $("#harcamaEkleButon").removeAttr("data-kt-indicator");
+                console.log('hata var');
+            }
+        });
+    });
+});
+
 </script>
 {% endblock %}
+

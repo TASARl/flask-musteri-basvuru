@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 from bson import json_util
 from bson.objectid import ObjectId
 from datetime import datetime
@@ -8,7 +8,6 @@ from pymongo import DESCENDING
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 
-from flask import redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 
@@ -20,6 +19,7 @@ import random
 import os
 
 from bson.json_util import dumps
+
 
 # Türkiye Saati'ni belirtmek için timezone objesi oluşturulur
 import pytz # turkiye saatiyle kayitlari eklemek icin
@@ -49,17 +49,20 @@ except Exception as e:
     print(e)
 
 db = client.otovitrin
-customers = db.musteriler
-users_collection = db['users']
-selected_customers = db.selected_customers
+customers = db.musteriler       # proje ilk basladiginda musteri uzerinden gitmistim. bu nedenle kredi dosyalari customers databaseinde
+users_collection = db.users     # hem web sitesi kullanicilarini hemde galerileri tutar
+selected_customers = db.selected_customers  # masa ustu uygulamasinda personelin secili dosyasinin bilgilerini almasini saglar
+harcamalar_db = db.harcamalar
 
-hazir_veriler = client["form_hazir_verileri"]
-modellerDb = hazir_veriler["modeller"]
+hazir_veriler = client["form_hazir_verileri"]   # vergi daireleri, iller, ilceler ve arac modelleri bu collectionda
+modellerDb = hazir_veriler["modeller"]          # ilk sutun integer. sonrakiler string
+il_ilce_tb = hazir_veriler["il_ilce"]           # il ve ilce select boxlarinda kullanmak icin.
+vergi_daire_il_ilceler = hazir_veriler["vergi_daireleri"]
 
 
-# ENV degisken ekle
 app = Flask(__name__)
 app.secret_key = secret
+
 
 # Index sayfasi
 @app.route('/')
@@ -68,13 +71,11 @@ def index():
     # index.html adlı template'i döndür
     return render_template('index.html')
 
-# Index sayfasi
 @app.route('/destek')
 @login_required
 def destek():
 
     metadata = {
-      
         'sayfa_baslik': 'Yardım Sayfası'
     }
 
@@ -93,9 +94,29 @@ def destek():
 @login_required
 def harcamalar():
 
+    # Sayfa numarasını al
+    page = int(request.args.get('page', 1))
+    # Her sayfada kaç harcama gösterileceğini belirle
+    per_page = int(request.args.get('per_page', 10))
+
+    # Toplam harcama sayısını al
+    total_customers = harcamalar_db.count_documents({})
+
+    # Pagination hesaplamaları
+    start_index = (page - 1) * per_page
+    end_index = min(start_index + per_page, total_customers)
+
+    # harcamaleri veritabanından getir
+    harcamalar_list = list(harcamalar_db.find({}, {'_id':1, 'harcama_tarihi':1, 'il_secimi_harcama':1, 'harcama_aciklamasi':1, 'tutar':1 }).sort("_id", -1).skip(start_index).limit(per_page))
+
+    
+    # Pagination metadatasını oluştur
     metadata = {
-      
-        'sayfa_baslik': 'Harcamalar Sayfası'
+        'page': page,
+        'per_page': per_page,
+        'total_customers': total_customers,
+        'total_pages': int(total_customers / per_page) + 1,
+        'sayfa_baslik': 'Harcamalar'
     }
 
     user_data = {
@@ -106,7 +127,7 @@ def harcamalar():
         "gallery_name": current_user.gallery_name,
     }
     
-    return render_template('harcamalar.html', metadata=metadata, user_data=user_data)
+    return render_template('harcamalar.html', data=harcamalar_list , metadata=metadata, user_data=user_data)
 
 # Index sayfasi
 @app.route('/iletisim')
@@ -140,23 +161,21 @@ def hesabim():
 @app.route('/userlist')
 @login_required
 def userlist():
-
-    customers = db.users
-
+    
     # Sayfa numarasını al
     page = int(request.args.get('page', 1))
     # Her sayfada kaç müşteri gösterileceğini belirle
     per_page = int(request.args.get('per_page', 10))
 
     # Toplam müşteri sayısını al
-    total_customers = customers.count_documents({})
+    total_customers = users_collection.count_documents({})
 
     # Pagination hesaplamaları
     start_index = (page - 1) * per_page
     end_index = min(start_index + per_page, total_customers)
 
     # Müşterileri veritabanından getir
-    customer_list = list(customers.find({}, {'_id':1, 'isim_soyisim':1, 'gallery_name':1, 'city':1, 'district':1, 'username':1, 'yetki':1 }).sort("_id", -1).skip(start_index).limit(per_page))
+    customer_list = list(users_collection.find({}, {'_id':1, 'isim_soyisim':1, 'gallery_name':1, 'city':1, 'district':1, 'username':1, 'yetki':1 }).sort("_id", -1).skip(start_index).limit(per_page))
 
     
     # Pagination metadatasını oluştur
@@ -200,12 +219,6 @@ def istatistik():
     
     return render_template('istatistik.html', metadata=metadata, user_data=user_data)
 
-# Basvuru Sayfasi
-@app.route('/basvuru')
-@login_required
-def basvuru():
-    # index.html adlı template'i döndür
-    return render_template('basvuru.html', current_user=current_user.id)
 
 # Yeni Kredi Dosyası Ekle
 @app.route('/form', methods=['GET', 'POST'])
@@ -327,7 +340,7 @@ def form():
     return jsonify({'message': 'Form gonderilmedi'}), 401
 
 
-# Pano sayfası
+# Ozet sayfası
 @app.route('/dashboard')
 @login_required
 def dashboard():
@@ -346,46 +359,6 @@ def dashboard():
     # Template'e JSON verisini gönderin
     return render_template("dashboard.html", user_data=user_data, metadata=metadata)
 
-# GET isteği ile müşterileri pagination ile getirme
-@app.route('/customers', methods=['GET'])
-@login_required
-def get_customers():
-    
-    customers = db.musteriler
-
-    # Sayfa numarasını al
-    page = int(request.args.get('page', 1))
-    # Her sayfada kaç müşteri gösterileceğini belirle
-    per_page = int(request.args.get('per_page', 10))
-
-    # Toplam müşteri sayısını al
-    total_customers = customers.count_documents({})
-
-    # Pagination hesaplamaları
-    start_index = (page - 1) * per_page
-    end_index = min(start_index + per_page, total_customers)
-
-    # Müşterileri veritabanından getir
-    customer_list = list(customers.find({}, {'_id':1, 'tc':1, 'ad_soyad':1, 'dogum_tarihi':1, 'telefon':1, 'email':1, 'calisma_durumu':1, 'aylik_net_gelir':1, 'calisma_sekli':1, 'kredi_miktar':1, 'kredi_vadesi':1, 'il_secimi':1}).sort("_id", -1).skip(start_index).limit(per_page))
-
-
-    # Pagination metadatasını oluştur
-    metadata = {
-        'page': page,
-        'per_page': per_page,
-        'total_customers': total_customers,
-        'total_pages': int(total_customers / per_page) + 1
-    }
-
-    # Son seçilen müşterinin bilgilerini al
-    latest_customer = selected_customers.find().sort([('selection_date', DESCENDING)]).limit(1)
-    lstest_customer_id = latest_customer[0]['customer_id']
-
-    # JSON'a dönüştür ve döndür
-    customer_json = json_util.dumps({'metadata': metadata, 'customers': customer_list})
-    
-    return render_template('customer.html', data=customer_list , metadata=metadata, lstest_customer_id=lstest_customer_id)
-
 
 # GET isteği ile müşterileri pagination ile getirme
 @app.route('/basvurular', methods=['GET'])
@@ -401,8 +374,6 @@ def get_basvurular():
 
     # Durum seçimini al
     dosya_durumu = request.args.get('durum')
-   
-    customers = db.musteriler
 
     query = {}
 
@@ -462,60 +433,6 @@ def get_basvurular():
 
     return render_template('basvurular.html', data=customer_list , metadata=metadata, lstest_customer_id=lstest_customer_id, user_data=user_data)
 
-
-    
-    # customers = db.musteriler
-
-    # # Sayfa numarasını al
-    # page = int(request.args.get('page', 1))
-    # # Her sayfada kaç müşteri gösterileceğini belirle
-    # per_page = int(request.args.get('per_page', 10))
-
-    # # Toplam müşteri sayısını al
-    # total_customers = customers.count_documents({})
-
-    # # Pagination hesaplamaları
-    # start_index = (page - 1) * per_page
-    # end_index = min(start_index + per_page, total_customers)
-
-    # # Müşterileri veritabanından getir
-    # customer_list = list(customers.find({}, {'_id':1, 'adi':1, 'soyadi':1, 'dosya_numarasi':1, 'galeri_ili':1, 'galeri_adi':1, 'kredi_tutari':1, 'kredi_vadesi':1, 'calisma_sekli':1, 'kredi_miktar':1, 'kredi_vadesi':1, 'created_time':1, 'musteri_cep_telefonu':1, 'model_yili':1 ,'marka_adi':1 ,'tip_adi':1 , 'created_by_isim':1, 'status': 1}).sort("_id", -1).skip(start_index).limit(per_page))
-
-    
-    # # Pagination metadatasını oluştur
-    # metadata = {
-    #     'page': page,
-    #     'per_page': per_page,
-    #     'total_customers': total_customers,
-    #     'total_pages': int(total_customers / per_page) + 1,
-    #     'sayfa_baslik': 'Kredi Başvuru Dosyaları'
-    # }
-
-    # # Son seçilen müşterinin bilgilerini al
-    # # latest_customer = selected_customers.find().sort([('selection_date', DESCENDING)]).limit(1)
-    # # lstest_customer_id = latest_customer[0]['customer_id']
-
-    # # secim yapilmis musteri dokumanini kullaniclara gore getirir. bu secim masaustu uygulamasi icin referanstir
-    # # eger bu kullanici icin secim yapima collectionunda bir dokuman varsa bul getir
-    # query = {"current_user": current_user.id }
-    # existing_doc = selected_customers.find_one(query)
-
-    # if existing_doc:
-    #     # Doküman mevcut, secili musteri dosya bilgisini getirir
-    #     lstest_customer_id = existing_doc["customer_id"]
-    # else:
-    #     lstest_customer_id = '0'
-        
-    # user_data = {
-    #     "isim_soyisim": current_user.isim_soyisim,
-    #     "cep_telefonu": current_user.id,
-    #     "sehir": current_user.city,
-    #     "yetki": current_user.yetki,
-    #     "gallery_name": current_user.gallery_name,
-    # }
-    
-    # return render_template('basvurular.html', data=customer_list , metadata=metadata, lstest_customer_id=lstest_customer_id, user_data=user_data)
-
 #kullanici secimi ekle
 @app.route('/add_customer_selection', methods=['POST'])
 @login_required
@@ -548,7 +465,7 @@ def add_customer_selection():
 
     return jsonify(str(result))
 
-# secili musteri getir. masa ustu uygulamasi icin
+# secili musteri getir. masa ustu uygulamasi icin cep telefonu gonderilen kullaninicnin secili musteri bilgileri gonderilir
 @app.route('/secili_musteri/<string:parametre>', methods=['GET'])
 def last_selected_customer(parametre):
     
@@ -558,7 +475,6 @@ def last_selected_customer(parametre):
         customer_id = str(secili_dosya['customer_id'])  # ObjectId to str
 
         # Müşteri bilgilerini veritabanından al
-        customers = db.musteriler
         customer = customers.find_one({'_id': ObjectId(customer_id)})
         
         if customer is None:
@@ -574,9 +490,6 @@ def last_selected_customer(parametre):
     
     return {'Hata':'hatali paralo'}, 200
     
-
-    
-
 
 
 ###### LOGIN BAS ##############
@@ -677,8 +590,6 @@ def logout():
     return redirect(url_for('index'))
 
 
-
-
 #######LOGIN SON ###########
 
 
@@ -776,9 +687,6 @@ def fiyat2():
 
 ####### il ilçe SECIMI BASLANGIC  ####
 
-hazir_veriler = client["form_hazir_verileri"]
-il_ilce_tb = hazir_veriler["il_ilce"]
-
 @app.route('/il_secimi', methods=['GET'])
 @login_required
 def il_secimi():
@@ -809,9 +717,7 @@ def ilce_secimi():
     return json_response, 200
 
 
-# vergi daireleri il ilce sorgu
-vergi_daire_il_ilceler = hazir_veriler["vergi_daireleri"]
-
+###### Vergi daireleri il ilce sorgu Baslangic #####
 @app.route('/vergi_ilce_secimi', methods=['GET'])
 def vergi_ilce_secimi():
     def turkish_upper(text):
@@ -831,11 +737,10 @@ def vergi_ilce_secimi():
     json_response = json.dumps(ilceler, ensure_ascii=False)
 
     return json_response, 200
-####### il ilçe SECIMI SON  ####
+###### Vergi daireleri il ilce sorgu SON #####
 
 
 ####### Telefondan Oto Galeri bul baslangic  ####
-
 @app.route('/galeri_sorgu', methods=['GET'])
 @login_required
 def galeri_sorgu():
@@ -859,7 +764,6 @@ def galeri_sorgu():
 
 
 ####### Sase no dan arac bilgilerini getir bul baslangic  ####
-
 @app.route('/saseden_arac_bilgileri', methods=['GET'])
 @login_required
 def saseden_arac_bilgileri():
@@ -881,11 +785,10 @@ def saseden_arac_bilgileri():
         return json_response, 200
     
     return jsonify({'message': 'Arac kayıtlı değil'}), 401
-
 ####### Sase no dan arac bilgilerini getir bul son  ####
 
-####### Dosya_id ile dosya icerigini tamemen getir. edit icin baslangic  ####
 
+####### Dosya_id ile dosya icerigini tamemen getir. edit icin baslangic  ####
 @app.route('/id_ile_dosya_bilgisi_getir', methods=['GET'])
 @login_required
 def id_ile_dosya_bilgisi_getir():
@@ -928,7 +831,8 @@ def dosya_guncelleme_ekle(dosya_id, inputValue, status):
 
     return result
 
-# Kredi dosyasi guncellemelri ekliyoruz ve getiriyoruz
+########### Kredi dosyasi guncellemelri ekliyoruz ve getiriyoruz BASLANGIC ########
+
 @app.route('/dosya_guncellemeleri', methods=['GET', 'POST'])
 @login_required
 def dosya_guncellemeleri():
@@ -940,33 +844,14 @@ def dosya_guncellemeleri():
             # Veritabanından id ye ait kisibilgisini cek
             kayitli_dosya_bilgisi = customers.find_one({'_id': ObjectId(dosya_id)})
 
-            if (request.json['inputValue'] == 'Devam') or (request.json['inputValue'] == 'Kullandırıldı') or (request.json['inputValue'] == 'Sonlandı'):
-                ekleyen = 'standart'
-            else:
-                ekleyen = 'kullanici'
+            # if (request.json['inputValue'] == 'Devam') or (request.json['inputValue'] == 'Kullandırıldı') or (request.json['inputValue'] == 'Sonlandı'):
+            #     ekleyen = 'standart'
+            # else:
+            #     ekleyen = 'kullanici'
 
+            ekleyen = 'kullanici'
             result = dosya_guncelleme_ekle(dosya_id, request.json['inputValue'], ekleyen)
-            # # guncellemelere ekle
-            # dataGuncelle = {}
-                    
-            # # musteriyi ekleyen kullanıcının cep telefonu. unique dir
-            # dataGuncelle['inputValue'] = request.json['inputValue']
-            # dataGuncelle['created_by'] = current_user.id
-            # dataGuncelle['isim_soyisim'] = current_user.isim_soyisim
-            # dataGuncelle['status'] = ekleyen   # otomatik(kendiliginden) kullanici(kullanici aciklama ekler) standart(dugmeler ile) 
-            # dataGuncelle['created_time'] = datetime.now()
-
-            # # Eğer güncellemeler listesi henüz tanımlanmadıysa, boş bir liste olarak başlatın
-            # if 'guncellemeler' not in kayitli_dosya_bilgisi:
-            #     kayitli_dosya_bilgisi['guncellemeler'] = []
             
-            # # Güncellemeler listesine yeni güncelleme verisini ekleyin
-            # kayitli_dosya_bilgisi["guncellemeler"].append(dataGuncelle)
-
-            # # MongoDB'deki belgeyi güncelleyin
-            # result = customers.update_one({"_id": ObjectId(dosya_id)}, {"$set": kayitli_dosya_bilgisi})
-            
-            # Başarılı bir şekilde kaydedildi sayfasını göster
             return jsonify({'message': 'Form kaydedildi'}), 200
         
         except Exception as e:
@@ -980,12 +865,6 @@ def dosya_guncellemeleri():
     documents_reverse = sorted(documents, key=lambda k: k['created_time'], reverse=True)
     json_documents = dumps(documents_reverse)
     return jsonify(json_documents), 200
-
-    # # BSON'den JSON'a dönüştürmek için "dumps()" fonksiyonunu kullanın
-    # json_documents = dumps(documents)
-
-    # # JSON yanıtını gönderin
-    # return jsonify(json_documents), 200
 
 ######## Dosya Guncellemeleri Servisi get ve post  Son #########
 
@@ -1019,19 +898,6 @@ def get_dosya_durum_data():
         
     # JSON olarak verileri döndürün
     return jsonify(dosya_status)
-
-@app.route('/update_document/<document_id>', methods=['POST'])
-def update_document(document_id):
-    # İstek verilerini alın
-    data = request.json
-    status = data.get('status')
-    print(status)
-    print(document_id)
-    # Durum alanını güncelle
-    customers.update_one({'_id': ObjectId(document_id)}, {'$set': {'status': status}})
-
-    # Başarılı yanıt döndür
-    return jsonify({'success': True})
 
 ####### Dosya durumu devam kullanildi sonlandi felan son #######
 
@@ -1085,6 +951,7 @@ def get_radio_data():
 
 ######## Banka yanlarındakı radıo butonlar ıle surec takibı için servis son #########
 
+
 ######## Kullandirim sonrasi verileri ve hesaplamalar baslangic #######
 
 @app.route('/kredi-kullandir', methods=['GET', 'POST'])
@@ -1110,6 +977,10 @@ def kredi_kullandir():
             {"_id": ObjectId(dosya_id)},
             {'$set': {'kullandirim_bilgileri': kullanım_bilgileri}}
         )
+
+        mesaj = '* * * Kullandırım bilgileri eklendi * * *'
+        dosya_guncelleme_ekle(dosya_id, mesaj, 'standart')
+
         # Başarılı bir şekilde kaydedildi sayfasını göster
         return jsonify({'message': 'Form kaydedildi'}), 200
 
@@ -1128,12 +999,11 @@ def kredi_kullandir():
 
 ######## Kullandirim sonrasi verileri ve hesaplamalar sonuc #######
 
-##### Dosyalar sayfasindak'10 adet dosyanin yada daha fazla 15 saniyede bir g]ncellenmes icin servis baslangici ######
+##### Dosyalar sayfasindak'10 adet dosyanin yada daha fazla 60 saniyede bir g]ncellenmes icin servis baslangici ######
 @app.route('/process_customer_ids', methods=[ 'POST'])
 def process_customer_ids():
    
     customerIds = request.json['customerIds']
-
 
     # for dosya_id in customerIds: # her bir müşteri kimliği için
     #     print( customers.find_one({'_id': ObjectId(dosya_id)})['durum'] )       # kimliği ekrana yazdır     customers.find_one({'_id': ObjectId(dosya_id)})
@@ -1192,6 +1062,36 @@ def veriler():
     return jsonify(data)
 
 ##################################
+
+########### Harcamlaar bolumu get ve post islemleri BASLANGIC ########
+
+@app.route('/harcama_islemleri', methods=['POST'])
+@login_required
+def harcama_islemleri():
+    
+    if request.method == 'POST':
+        data = request.json
+        
+        try:
+            # Add user information and timestamp to the data before saving it to the database
+            data['kayit_eden_kullanici_telefonu'] = current_user.id
+            data['kayit_eden_kullanici_ismi'] = current_user.isim_soyisim
+            data['kayit_zamani'] = datetime.now()
+            
+            # Insert the data into the "harcamalar" collection in your MongoDB database
+            db.harcamalar.insert_one(data)
+            
+            return jsonify({'message': 'Form kaydedildi'}), 200
+        
+        except Exception as e:
+            print(e)
+            return jsonify({'message': 'Bir hata oluştu'}), 500
+    
+    else:
+        return {'success': False, 'error': 'Invalid request method'}
+    
+
+######## Harcamlaar bolumu get ve post islemleri  Son #########
 
 if __name__ == '__main__':
     app.run(debug=True)

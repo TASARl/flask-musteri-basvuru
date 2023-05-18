@@ -45,7 +45,6 @@ $(document).ready(function() {
         // Get the input value
         const inputValue = $('#myInputGuncelle').val();
         const dosya_id_durum = $('#dosya_id_durum').val();
-        console.log(dosya_id_durum)
 
         // Check if input value is empty
         if (inputValue === '') {
@@ -330,7 +329,7 @@ radioButtonsKullandirim.forEach((button) => {
             success: function(response) {
 
                 toastr.success("Dosya durumu güncellendi.", "Kayıt edildi");
-
+                
                 getDosyaGuncellemeleri(document_id);
             },
             error: function(error) {
@@ -352,7 +351,7 @@ radioButtonsKullandirim.forEach((button) => {
     $("#kredi_kullandirildi_butonu").click(function() {
         // Activate indicator
         $(this).attr("data-kt-indicator", "on");
-
+        
         var document_id = $('#dosya_id_durum').val(); // Değiştirilecek belgenin ID'si
 
         var kredi = $("#kredi").val();
@@ -389,6 +388,8 @@ radioButtonsKullandirim.forEach((button) => {
                 toastr.success("Kredi kullandırım bilgileri kayıt edildi.", "Kayıt edildi");
 
                 $("#kredi_kullandirildi_butonu").removeAttr("data-kt-indicator");
+                
+                getDosyaGuncellemeleri(document_id);
             },
             error: function(error) {
                 $("#kredi_kullandirildi_butonu").removeAttr("data-kt-indicator");
