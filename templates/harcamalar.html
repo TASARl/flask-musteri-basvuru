@@ -8,12 +8,22 @@
 
 {% block content %}
 
-harcamalar
+{% include 'admin/harcamalar.html' %}
 
 {% endblock %}
 
 
 
 {% block scripts %} 
-
+<script>
+    // harcam tarihi seçimi bolumu için js,
+    $("#harcama_tarihi").daterangepicker({
+      singleDatePicker: true,
+      showDropdowns: false,
+      autoApply: true,
+      locale: {
+        format: "DD.MM.YYYY",
+      },
+    });
+</script>
 {% endblock %}

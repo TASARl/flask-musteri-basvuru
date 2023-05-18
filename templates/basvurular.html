@@ -19,6 +19,7 @@
 
 {% block scripts %} 
 <script>
+// ustte cıkan kaydedıldı yada hata mesajlarının ayarları
 toastr.options = {
   "closeButton": true,
   "debug": false,
@@ -74,7 +75,7 @@ $(document).ready(function() {
     });
 });
 
-// gunnelemeler sayfasindaki timeline yenilemek ve getirmek icin
+// guncelemeler sayfasindaki timeline yenilemek ve getirmek icin. guncellemelr ıcınde yapılan her ıslemden sonra sayfa ıcerıgını yenılemesı ıcın cagırılır
 function getDosyaGuncellemeleri(dosya_id) {
     $.ajax({
         url: '/dosya_guncellemeleri',
@@ -83,6 +84,8 @@ function getDosyaGuncellemeleri(dosya_id) {
         success: function(data){
             // Veriyi parse et
             var json_data = JSON.parse(data);
+            var oncekiDay=0;
+            var oncekiMonth=0;
 
             // HTML kodunu oluştur
             var html = '<div class="timeline">';
@@ -95,6 +98,16 @@ function getDosyaGuncellemeleri(dosya_id) {
                 hours = ('0' + hours).slice(-2);
                 var minutes = ('0' + date.getMinutes()).slice(-2);
                 var seconds = date.getSeconds();
+
+                var year = date.getFullYear();
+                var month = ('0' + (date.getMonth() + 1)).slice(-2);
+                var day = ('0' + date.getDate()).slice(-2);
+                // eger onceki tarihle ayni degilse ekrana yazdir ve onceki degerlere ata
+                if (day !== oncekiDay || month !== oncekiMonth){
+                    oncekiDay= day;
+                    oncekiMonth= month;
+                    html +=  '<div class="timeline-label fw-bold text-gray-800 fs-6">' + day + '/' + month + '/' + year + '</div>';
+                }
 
                 html += '<div class="timeline-item">';
                 html += '<div class="timeline-label fw-bold text-gray-800 fs-6">' + hours + ':' + minutes  + '</div>';
@@ -159,6 +172,7 @@ function getDosyaGuncellemeleri(dosya_id) {
             $("#kredi-primi").val(data.kredi_primi);
             $("#kullandirim").val(data.kullandirim);
             $("#banka_kullandirim").val(data.banka_kullandirim).trigger("change");
+            $("#kullandirim_tarihi").val(data.kullandirim_tarihi).trigger("change");
             $("#net-gelir").val(data.net_gelir);
         },
         error: function(xhr, status, error) {
@@ -349,6 +363,7 @@ radioButtonsKullandirim.forEach((button) => {
         var krediPrimi = $("#kredi-primi").val();
         var kullandirim = $("#kullandirim").val();
         var bankaKullandirim = $("#banka_kullandirim").val();
+        var kullandirim_tarihi = $("#kullandirim_tarihi").val();
         var netGelir = $("#net-gelir").val();
 
         $.ajax({
@@ -365,6 +380,7 @@ radioButtonsKullandirim.forEach((button) => {
                 kredi_primi: krediPrimi,
                 kullandirim: kullandirim,
                 banka_kullandirim: bankaKullandirim,
+                kullandirim_tarihi:kullandirim_tarihi,
                 net_gelir: netGelir
             }),
             success: function(response) {
@@ -467,13 +483,13 @@ const sayfaDosyaBilgileriGuncelleme = function() {
                             var durum = bankalar[banka];
                             var banka_adi = banka.replace('-', ' ').toUpperCase();
                             if( durum=== 'basvuruldu') {
-                                banka_listesi += '<span class="badge badge-warning">' + banka_adi + '</span>';
+                                banka_listesi += '<span class="badge badge-light-warning">' + banka_adi + '</span>';
                             }
                             if( durum=== 'red') {
-                                banka_listesi += '<span class="badge badge-danger">' + banka_adi + '</span>';
+                                banka_listesi += '<span class="badge badge-light-danger">' + banka_adi + '</span>';
                             }
                             if( durum=== 'onay') {
-                                banka_listesi += '<span class="badge badge-success">' + banka_adi + '</span>';
+                                banka_listesi += '<span class="badge badge-light-success">' + banka_adi + '</span>';
                             }
                         }
                     }
@@ -585,26 +601,55 @@ document.querySelector('.loading-buton-guncelleme').addEventListener('click', fu
 
 
 <script>
-// Select kutusu
-
-
-// dosyalar bolumunda sehir secildigindee adres satirinda varsa degerleri degistir yoksa yeni deger ekle
-$("#dosyalar_city_selector").change(function () {
-
-    // Seçilen değer
-    var selectedValue = $("#dosyalar_city_selector").val();
-  
-    // Yeni URL oluşturulur
-    //   var newUrl = window.location.href + "&city=" + selectedValue;
+$(document).ready(function() {
+    // Select kutuları
+    //sayfa yukelndığinde adres satırından parametreleri al ve selec boxlara ekle
     let url = new URL(window.location.href);
-    url.searchParams.set('city', selectedValue);
-    url.searchParams.set('page', '1');
+    let urlParams = new URLSearchParams(url.search);
 
-    // Sayfa yeniden yüklenir
-    window.location.href = url;
-    }
-)
+    const adresSatirCity = urlParams.get('city')  || 'Tüm';
+    $("#dosyalar_city_selector").val(adresSatirCity).trigger('change')
 
+    const adresSatirDurum = urlParams.get('durum')  || 'Hepsi';
+    $("#dosyalar_durum_selector").val(adresSatirDurum).trigger('change')
+
+    const kilitDeger=1;
+
+    // dosyalar bolumunda sehir secildigindee adres satirinda varsa degerleri degistir yoksa yeni deger ekle
+    $("#dosyalar_city_selector").change(function () {
+        if (kilitDeger === 1){
+            // Seçilen değer
+            var selectedValue = $("#dosyalar_city_selector").val();
+        
+            // Yeni URL oluşturulur
+            //   var newUrl = window.location.href + "&city=" + selectedValue;
+            
+            url.searchParams.set('city', selectedValue);
+            url.searchParams.set('page', '1');
+
+            // Sayfa yeniden yüklenir
+            window.location.href = url;
+            }
+        }
+    )
+
+    // dosyalar bolumunda durum secildigindee adres satirinda varsa degerleri degistir yoksa yeni deger ekle
+    $("#dosyalar_durum_selector").change(function () {
+
+        // Seçilen değer
+        var selectedValue = $("#dosyalar_durum_selector").val();
+
+        // Yeni URL oluşturulur
+        //   var newUrl = window.location.href + "&city=" + selectedValue;
+        let url = new URL(window.location.href);
+        url.searchParams.set('durum', selectedValue);
+        url.searchParams.set('page', '1');
+
+        // Sayfa yeniden yüklenir
+        window.location.href = url;
+        }
+    )
+});
 
 // sayfadaki guncellemelerde animasyonlu gecis ekler
 function fadeAnimasyonuIleHtmlDegistir(td, htmlCode) {
@@ -628,23 +673,15 @@ function fadeAnimasyonuIleHtmlDegistir(td, htmlCode) {
   }, 500); // 500ms'lik bir gecikme süresi belirleyerek eski içeriği silme ve yeni içeriği ekleme işlemine daha belirgin bir geçiş sağlayabilirsiniz
 }
 
-// suzme butonlari secimi sonrasi adres satirina status eklenip sayfa cagirilir
-function handleButtonClickk(event) {
-    event.preventDefault();
-    var value = event.target.dataset.value;
-    console.log("Button clicked with value:", );
-    let url = new URL(window.location.href);
-    url.searchParams.set('durum', value);
-    url.searchParams.set('page', '1');
 
-    // Sayfa yeniden yüklenir
-    window.location.href = url;
-}
-
-var buttonsSuzme = document.querySelectorAll(".suzmeButon");
-for (var i = 0; i < buttonsSuzme.length; i++) {
-  buttonsSuzme[i].addEventListener("click", handleButtonClickk);
-}
-
+// kullandırım altındakı tarih secimi icin 
+$("#kullandirim_tarihi").daterangepicker({
+      singleDatePicker: true,
+      showDropdowns: false,
+      autoApply: true,
+      locale: {
+        format: "DD.MM.YYYY",
+      },
+    });
 </script>
 {% endblock %}

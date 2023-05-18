@@ -1,40 +1,81 @@
 
-<div class="card-rounded bg-light d-flex flex-stack flex-wrap p-5 mb-5">
-    <!--begin::Nav-->
-    <ul class="nav flex-wrap border-transparent fw-bold">
-        <!--begin::Nav item-->
-        <li class="nav-item my-1">
-            <select class="form-select" data-control="select2" id="dosyalar_city_selector">
-                <option value="">Şehir Seçimi</option>
-                <option value="">Tüm Şehirler</option>
+
+<form action="#">
+    <!--begin::Card-->
+    <div class="card mb-7">
+        <!--begin::Card body-->
+        <div class="card-body">
+            <!--begin::Compact form-->
+            <div class="d-flex align-items-center">
+                <!--begin::Input group-->
+                <div class="position-relative w-md-400px me-md-2">
+                    <i class="ki-duotone ki-magnifier fs-3 text-gray-500 position-absolute top-50 translate-middle ms-6">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                    </i>
+                    <input type="text" class="form-control form-control-solid ps-10" name="search" value="" placeholder="Ara">
+                </div>
+                <!--end::Input group-->
+                <!--begin:Action-->
+                <div class="d-flex align-items-center">
+                    <button type="submit" class="btn btn-primary me-5">Ara</button>
+                    
+                </div>
+                <!--end:Action-->
+            </div>
+            <!--end::Compact form-->
+            
+            
+            <!--end::Advance form-->
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+</form>
+
+<div class="d-flex flex-wrap flex-stack pb-7">
+    <!--begin::Title-->
+    <div class="d-flex flex-wrap align-items-center my-1">
+        <h3 class="fw-bold me-5 my-1">{{ metadata.total_customers }} Adet Dosya
+        <span class="text-gray-400 fs-6">Eklenme Tarihine Göre ↓</span></h3>
+    </div>
+    <!--end::Title-->
+    <!--begin::Controls-->
+    <div class="d-flex flex-wrap my-1">
+        
+        <!--begin::Actions-->
+        <div class="d-flex my-0">
+            <!--begin::Select-->
+            <select name="status" data-control="select2" id="dosyalar_city_selector" data-hide-search="true" data-placeholder="Şehir Seçimi" class="form-select form-select-sm form-select-solid w-150px me-5">
+                <option></option>
+                <option value="Tüm">Tüm Şehirler</option>
                 <option value="Denizli">Denizli</option>
                 <option value="İzmir">İzmir</option>
                 <option value="İstanbul">İstanbul</option>
                 <option value="Ankara">Ankara</option>
             </select>
-        </li>
-        <!--end::Nav item-->
-    </ul>
-    <!--end::Nav-->
-
-    <!--begin::Action-->
-    <div class="ms-auto">
-        <a  class="btn btn-secondary fw-bold fs-8 fs-lg-base suzmeButon" data-value="Potansiyel">Potansiyel Müşteri</a>
-        <a  class="btn btn-warning fw-bold fs-8 fs-lg-base me-2 suzmeButon" data-value="Devam">Devam Eden</a>
-        <a  class="btn btn-primary fw-bold fs-8 fs-lg-base me-2 suzmeButon" data-value="Kullandırılacak">Kullandırılacak</a>
-        <a  class="btn btn-success fw-bold fs-8 fs-lg-base me-2 suzmeButon" data-value="Kullandırıldı">Kullandırıldı</a>
-        <a  class="btn btn-danger fw-bold fs-8 fs-lg-base suzmeButon" data-value="Sonlandı">İşlem Sonlandı</a>
+            <!--end::Select-->
+            <!--begin::Select-->
+            <select name="status" data-control="select2" id="dosyalar_durum_selector" data-hide-search="true" data-placeholder="Durum" class="form-select form-select-sm form-select-solid w-200px">
+                <option></option>
+                <option value="Hepsi">Hepsi</option>
+                <option value="Devam">Devam Eden</option>
+                <option value="Kullandırılacak">Kullandırılacak</option>
+                <option value="Kullandırıldı">Kullandırıldı</option>
+                <option value="Sonlandı">İşlem Sonlandı</option>
+                <option value="Potansiyel">Potansiyel Müşteri</option>
+            </select>
+            <!--end::Select-->
+        </div>
+        <!--end::Actions-->
     </div>
-    <!--end::Action-->
+    <!--end::Controls-->
 </div>
 
 <div class="card mb-5 mb-xl-8">
     <!--begin::Header-->
     <div class="card-header border-0 pt-5">
-        <h3 class="card-title align-items-start flex-column">
-            
-            <span class="text-muted mt-1 fw-semibold fs-7">Toplam {{ metadata.total_customers }} adet</span>
-        </h3>
+       
         
     </div>
     <!--end::Header-->
@@ -76,7 +117,7 @@
                             </div>
                         </th>
                         
-                        <th class="col text-end" style=" width: 130px; min-width: 130px;">Uygulamalar</th>
+                        <th class="col text-end" style=" width: 130px; min-width: 130px;">İşlemler</th>
                     </tr>
                 </thead>
                 <!--end::Table head-->
@@ -86,9 +127,9 @@
                     {% for customer in data %} 
 
                     {% if lstest_customer_id|string == customer._id|string %}
-                    <tr style="background-color: #daf3ff; vertical-align: top; border-bottom-color: #babde7;">
+                    <tr style="background-color: #daf3ff; vertical-align: top; border-bottom-color: #d8d8d8;">
                     {% else %}
-                    <tr style="vertical-align: top; border-bottom-color: #babde7;">
+                    <tr style="vertical-align: top; border-bottom-color: #d8d8d8;">
                     {% endif %}
 
                         

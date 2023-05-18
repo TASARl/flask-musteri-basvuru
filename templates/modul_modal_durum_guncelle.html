@@ -1,8 +1,8 @@
-<div class="modal bg-body fade" tabindex="-1" id="kt_modal_durum_guncelle">
-    <div class="modal-dialog modal-fullscreen">
+<div class="modal  fade" tabindex="-1" id="kt_modal_durum_guncelle">
+    <div class="modal-dialog p-9 modal-dialog-centered" style="max-width: 1200px;">
         <div class="modal-content shadow-none">
             <div class="modal-header">
-                <h5 class="modal-title"><span id="dosyaNumarasi"></span> Numaralı Dosya İşlem Geçmişi</h5>
+                <h5 class="modal-title"><span id="dosyaNumarasi"></span> Numaralı Dosya İşlemleri</h5>
 
                 <!--begin::Close-->
                 <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
@@ -39,7 +39,7 @@
                                                             <div class="form-check form-check-custom form-check-solid">
                                                                 
                                                                 <label class="form-check-label  " for="kt_settings_notification_email">
-                                                                    İşlem Yapılmadı
+                                                                    -
                                                                 </label>
                                                             </div>
                                                         </td>
@@ -585,7 +585,7 @@
                                 <!--begin::Option-->
                                 <label class="btn btn-outline btn-outline-dashed btn-active-light-primary w-100 p-4 dosya_durum_secim_radios">
                                     <input type="radio" class="btn-check" name="dosya_durumu" value="Devam">    
-                                    <span class="fw-bold fs-3">İşlem Devam Ediyor</span>
+                                    <span class="fw-bold fs-3">Devam</span>
                                 </label>       
                                 <!--end::Option-->     
                             </div>
@@ -594,7 +594,7 @@
                             <!--begin::Col-->
                             <div class="col">                            
                                 <!--begin::Option-->
-                                <label class="btn btn-outline btn-outline-dashed btn-active-light-primary w-100 p-4 dosya_durum_secim_radios">
+                                <label class="btn btn-outline btn-outline-dashed btn-active-light-primary w-100 p-4 dosya_durum_secim_radios" data-bs-toggle="tooltip" data-bs-toggle="tooltip" data-bs-delay-hide="400" data-bs-placement="top" title="Müşteri Kullanmaya Karar Verdi">
                                     <input type="radio" class="btn-check" name="dosya_durumu" value="Kullandırılacak">     
                                     <span class="fw-bold fs-3">Kullandırılacak</span>
                                 </label>
@@ -605,9 +605,9 @@
                             <!--begin::Col-->
                             <div class="col">
                                 <!--begin::Option-->
-                                <label class="btn btn-outline btn-outline-dashed btn-active-light-primary w-100 p-4 dosya_durum_secim_radios">
+                                <label class="btn btn-outline btn-outline-dashed btn-active-light-primary w-100 p-4 dosya_durum_secim_radios" data-bs-toggle="tooltip" data-bs-toggle="tooltip" data-bs-delay-hide="400" data-bs-placement="top" title="Kullandırım Yapılamadı ya da Kredi Onaylanmadı">
                                     <input type="radio" class="btn-check" name="dosya_durumu" value="Sonlandı">  
-                                    <span class="fw-bold fs-3">İşlem Sonlandı</span>
+                                    <span class="fw-bold fs-3">Sonlandı</span>
                                 </label>
                                 <!--end::Option-->
                             </div>
@@ -618,7 +618,7 @@
                                 <!--begin::Option-->
                                 <label class="btn btn-outline btn-outline-dashed btn-active-light-primary w-100 p-4 dosya_durum_secim_radios">
                                     <input type="radio" class="btn-check" name="dosya_durumu" value="Kullandırıldı">     
-                                    <span class="fw-bold fs-3">Kredi Kullandırıldı</span>
+                                    <span class="fw-bold fs-3">Kullandırıldı</span>
                                 </label>
                                 <!--end::Option-->
                             </div>
@@ -712,29 +712,12 @@
                                 <!--end::Col-->
                                 <!--begin::Col-->
                                 <div class="col-md-6 fv-row">
+                                    <label class="d-flex align-items-center fs-6 fw-semibold form-label mb-2">
+                                        <span class="required">Net Gelir</span>
+                                        
+                                    </label>
+                                    <input type="text" id="net-gelir" class="form-control form-control-solid" readonly>
                                     
-                                        <label class="d-flex align-items-center fs-6 fw-semibold form-label mb-2">
-                                            <span class="required">Kullandırılan Banka</span>
-                                            
-                                        </label>
-                                    
-                                        <select class="form-select form-select-solid" data-control="select2" data-placeholder="Banka" name="banka_kullandirim" data-dropdown-parent="#kt_modal_durum_guncelle" id="banka_kullandirim">
-                                            <option value=""></option>
-                                            <option value="yapikredi">YAPI KREDİ</option>
-                                            <option value="kocfinans">KOÇ FİNANS</option>
-                                            <option value="aljfinans">ALJ FİNANS</option>
-                                            <option value="turkiyefinans">TÜRKİYE FİNANS</option>
-                                            <option value="teb">TEB</option>
-                                            <option value="garanti">GARANTİ BANKASI</option>
-                                            <option value="otosor">OTOSOR</option>
-                                            <option value="aktifbank">AKTİF BANK</option>
-                                            <option value="vdf">VDF</option>
-                                            <option value="burganbank">BURGAN BANK</option>
-                                            <option value="quickfinans">QUICK FİNANS</option>
-                                            <option value="ingbank">ING BANK</option>
-                                            <option value="albaraka">AL BARAKA</option>
-                                        </select>
-                                
                                 </div>
                                 <!--end::Col-->
                             </div>
@@ -743,12 +726,51 @@
                                 <!--begin::Col-->
                                 <div class="col-md-6 fv-row">
                                     <label class="d-flex align-items-center fs-6 fw-semibold form-label mb-2">
-                                        <span class="required">Net Gelir</span>
+                                        <span class="required">Kullandırılan Banka</span>
                                         
                                     </label>
-                                    <input type="text" id="net-gelir" class="form-control form-control-solid" readonly>
-                                    
+                                
+                                    <select class="form-select form-select-solid" data-control="select2" data-placeholder="Banka" name="banka_kullandirim" data-dropdown-parent="#kt_modal_durum_guncelle" id="banka_kullandirim">
+                                        <option value=""></option>
+                                        <option value="yapikredi">YAPI KREDİ</option>
+                                        <option value="kocfinans">KOÇ FİNANS</option>
+                                        <option value="aljfinans">ALJ FİNANS</option>
+                                        <option value="turkiyefinans">TÜRKİYE FİNANS</option>
+                                        <option value="teb">TEB</option>
+                                        <option value="garanti">GARANTİ BANKASI</option>
+                                        <option value="otosor">OTOSOR</option>
+                                        <option value="aktifbank">AKTİF BANK</option>
+                                        <option value="vdf">VDF</option>
+                                        <option value="burganbank">BURGAN BANK</option>
+                                        <option value="quickfinans">QUICK FİNANS</option>
+                                        <option value="ingbank">ING BANK</option>
+                                        <option value="albaraka">AL BARAKA</option>
+                                    </select>
                                 </div>
+                                <!--end::Col-->
+                                <div class="col-md-6 fv-row">
+                                    <label class="required fs-6 fw-semibold mb-2">Kullandırım Tarihi</label>
+                                    <div class="position-relative d-flex align-items-center">
+                                        <!--begin::Icon-->
+                                        <i class="ki-duotone ki-calendar-8 fs-2 position-absolute mx-4">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                            <span class="path3"></span>
+                                            <span class="path4"></span>
+                                            <span class="path5"></span>
+                                            <span class="path6"></span>
+                                        </i>
+                                        <!--end::Icon-->
+                                        <!--begin::Datepicker-->
+                                        <input class="form-control form-control-solid ps-12" placeholder="Tarih Seçin" name="kullandirim_tarihi" id="kullandirim_tarihi"/>
+                                        <!--end::Datepicker-->
+                                    </div>
+                                </div>
+                                
+                            </div>
+
+                            <div class="row g-9 mb-8">
+                                
                                 <!--end::Col-->
                                 <div class="col-md-6 fv-row">
                                     <label class="d-flex align-items-center fs-6 fw-semibold form-label mb-2">
@@ -766,28 +788,51 @@
                                 </div>
                                 
                             </div>
+
+                            
         
                         </div>
 
                     </div>
 
                     <div class="col-md-12 col-lg-6">
+                        <div class="card mb-5 mb-xxl-8" data-select2-id="select2-data-150-n61t">
+                            <div class="card-header align-items-center border-0 mt-4">
+                                <h3 class="card-title align-items-start flex-column">
+                                    <span class="fw-bold mb-2 text-dark">Açıklama</span>  
+                                    <span class="text-muted fw-semibold fs-7">Eklenen en son açıklama, dosyalar listesinde gösterilecektir.</span>          
+                                </h3>    
+                            </div>
+                            <!--begin::Header-->
+                            <div class=" align-items-center border-0">
+                                <div class="d-flex align-items-center">
+                                    <!--begin::Input group-->
+                                    <div class="position-relative me-md-2 col-10">
+                                        <input type="text" class="form-control form-control-solid" id="myInputGuncelle">
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin:Action-->
+                                    <div class="d-flex align-items-center">
+                                        <button type="button" class="btn btn-primary" id="submitButtonGuncelle" style="width: 100%;">
+                                            <span class="indicator-label">
+                                                Ekle
+                                            </span>
+                                            <span class="indicator-progress">
+                                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                            </span>
+                                        </button>
+                                    </div>
+                                    <!--end:Action-->
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="card mb-5 mb-xxl-8" data-select2-id="select2-data-150-n61t">
                             <!--begin::Header-->
                             <div class="card-header align-items-center border-0 mt-4">
                                 <h3 class="card-title align-items-start flex-column">
                                     <span class="fw-bold mb-2 text-dark">Güncellemeler</span>            
-                                    <span class="text-muted fw-semibold fs-7">.....</span>
-                                </h3>
-                        
-                                <div class="card-toolbar" data-select2-id="select2-data-149-uha8">
-                                    <!--begin::Menu-->
-                                
-                                    
-                        
-                        <!--end::Menu-->
-                                </div>
+                                </h3>    
                             </div>
                             <!--end::Header-->
                         
@@ -827,31 +872,6 @@
 
                 
             </div>
-
-            <div class="modal-footer">
-
-                <div class="container-fluid">
-                  <div class="row">
-                    <div class="col-10">
-                      <input type="text" class="form-control form-control-solid" id="myInputGuncelle">
-                    </div>
-                    <div class="col-2">
-                        <button type="button" class="btn btn-primary me-10" id="submitButtonGuncelle" style="width: 100%;">
-                            <span class="indicator-label">
-                                Ekle
-                            </span>
-                            <span class="indicator-progress">
-                            Ekle <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
-                            </span>
-                        </button>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-              
-              
-              
         </div>
     </div>
 </div>

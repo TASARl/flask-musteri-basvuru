@@ -401,22 +401,22 @@ def get_basvurular():
 
     # Durum seçimini al
     dosya_durumu = request.args.get('durum')
-
+   
     customers = db.musteriler
 
     query = {}
 
-    if selected_city:
+    if selected_city and selected_city != 'Tüm':
         query['galeri_ili'] = selected_city
 
-    if dosya_durumu:
+    if dosya_durumu and dosya_durumu != 'Hepsi':
         query['status'] = dosya_durumu
 
     # Get total number of customers with the specified filters
     total_customers = customers.count_documents(query)
 
     # Get customers from the database with the specified filters
-    customer_list = list(customers.find(query, {'_id': 1, 'adi': 1, 'soyadi': 1, 'dosya_numarasi': 1, 'galeri_ili': 1, 'galeri_adi': 1, 'kredi_tutari': 1, 'kredi_vadesi': 1, 'calisma_sekli': 1, 'kredi_miktar': 1, 'kredi_vadesi': 1, 'created_time': 1, 'musteri_cep_telefonu': 1, 'model_yili': 1, 'marka_adi': 1, 'tip_adi': 1, 'created_by_isim': 1, 'status': 1}).sort("_id", -1))
+    customer_list = list(customers.find(query, {'_id': 1, 'adi': 1, 'soyadi': 1, 'dosya_numarasi': 1, 'galeri_ili': 1, 'galeri_adi': 1, 'kredi_tutari': 1, 'kredi_vadesi': 1, 'calisma_sekli': 1, 'kredi_miktar': 1, 'kredi_vadesi': 1, 'created_time': 1, 'musteri_cep_telefonu': 1, 'model_yili': 1, 'marka_adi': 1, 'tip_adi': 1, 'created_by_isim': 1, 'status': 1}).sort("created_time", -1))
 
     # Sayfa numarasını al
     page = int(request.args.get('page', 1))
@@ -976,12 +976,16 @@ def dosya_guncellemeleri():
     dosya_id = request.args.get('dosya_id')
     
     documents = customers.find_one({'_id': ObjectId(dosya_id)})['guncellemeler']
-
-    # BSON'den JSON'a dönüştürmek için "dumps()" fonksiyonunu kullanın
-    json_documents = dumps(documents)
-
-    # JSON yanıtını gönderin
+    
+    documents_reverse = sorted(documents, key=lambda k: k['created_time'], reverse=True)
+    json_documents = dumps(documents_reverse)
     return jsonify(json_documents), 200
+
+    # # BSON'den JSON'a dönüştürmek için "dumps()" fonksiyonunu kullanın
+    # json_documents = dumps(documents)
+
+    # # JSON yanıtını gönderin
+    # return jsonify(json_documents), 200
 
 ######## Dosya Guncellemeleri Servisi get ve post  Son #########
 
@@ -1097,6 +1101,7 @@ def kredi_kullandir():
             'kredi_primi': request.json['kredi_primi'],
             'kullandirim': request.json['kullandirim'],
             'banka_kullandirim': request.json.get('banka_kullandirim', ''),
+            'kullandirim_tarihi': request.json.get('kullandirim_tarihi', ''),
             'net_gelir': request.json['net_gelir']
         }
 
