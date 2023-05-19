@@ -614,6 +614,9 @@ $(document).ready(function() {
     const adresSatirDurum = urlParams.get('durum')  || 'Hepsi';
     $("#dosyalar_durum_selector").val(adresSatirDurum).trigger('change')
 
+    const adresSatirPersonel = urlParams.get('personel')  || 'Hepsi';
+    $("#dosyalar_saha_personel_selector").val(adresSatirPersonel).trigger('change')
+
     const adresSatirArama = urlParams.get('arama')  || '';
     $("#search").val(adresSatirArama).trigger('change')
 
@@ -647,6 +650,23 @@ $(document).ready(function() {
         //   var newUrl = window.location.href + "&city=" + selectedValue;
         let url = new URL(window.location.href);
         url.searchParams.set('durum', selectedValue);
+        url.searchParams.set('page', '1');
+
+        // Sayfa yeniden yüklenir
+        window.location.href = url;
+        }
+    )
+
+    // dosyalar bolumunda durum secildigindee adres satirinda varsa degerleri degistir yoksa yeni deger ekle
+    $("#dosyalar_saha_personel_selector").change(function () {
+
+        // Seçilen değer
+        var selectedValue = $("#dosyalar_saha_personel_selector").val();
+
+        // Yeni URL oluşturulur
+        //   var newUrl = window.location.href + "&city=" + selectedValue;
+        let url = new URL(window.location.href);
+        url.searchParams.set('personel', selectedValue);
         url.searchParams.set('page', '1');
 
         // Sayfa yeniden yüklenir

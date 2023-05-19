@@ -277,6 +277,8 @@ def form():
                 del data["dosya_id"]
                 del data["dosya_numarasi"]
                 del data["created_time"]
+                if "saha_personeli" in data and data["saha_personeli"]:
+                    del data["saha_personeli"]
 
                 dosya_guncelleme_ekle(dosya_id, 'Dosya guncellendi', 'otomatik')
                 # # guncelleme bılgılerı tımelıne ekleme
@@ -381,6 +383,9 @@ def get_basvurular():
     # Durum seçimini al
     dosya_durumu = request.args.get('durum')
 
+    # Personel seçimini al
+    saha_personeli = request.args.get('personel')
+
     # Adres satırından arama kelimesi al
     search_keyword = request.args.get('arama')
 
@@ -391,6 +396,9 @@ def get_basvurular():
 
     if dosya_durumu and dosya_durumu != 'Hepsi':
         query['status'] = dosya_durumu
+
+    if saha_personeli and saha_personeli != 'Hepsi':
+        query['saha_personeli'] = saha_personeli
 
     if search_keyword:
         # eger isim soyisim gonderilirse son kelimeyi soyisim olarak ayirip aramayi yapmak icin asagisi var
@@ -410,6 +418,7 @@ def get_basvurular():
                         {"galeri_telefonu": {"$regex": search_keyword, "$options": "i"}},
                         {"galeri_ili": {"$regex": search_keyword, "$options": "i"}},
                         {"model_yili": {"$regex": search_keyword, "$options": "i"}},
+                        {"saha_personeli": {"$regex": search_keyword, "$options": "i"}},
                         {"marka_adi": {"$regex": search_keyword, "$options": "i"}},
                         {"tip_adi": {"$regex": search_keyword, "$options": "i"}},
                         {"kaskokodu": {"$regex": search_keyword, "$options": "i"}},
@@ -450,6 +459,7 @@ def get_basvurular():
         'total_pages': int(total_customers / per_page) + 1,
         'city': selected_city,
         'durum': dosya_durumu,
+        'saha_personeli': saha_personeli,
         'sayfa_baslik': 'Kredi Başvuru Dosyaları'
     }
 

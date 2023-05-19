@@ -42,7 +42,7 @@
     <!--begin::Title-->
     <div class="d-flex flex-wrap align-items-center my-1">
         <h3 class="fw-bold me-5 my-1">{{ metadata.total_customers }} Adet Dosya
-        <span class="text-gray-400 fs-6">Eklenme Tarihine Göre ↓</span></h3>
+        <span class="text-gray-400 fs-6">Dosya Tarihine Göre ↓</span></h3>
     </div>
     <!--end::Title-->
     <!--begin::Controls-->
@@ -50,6 +50,24 @@
         
         <!--begin::Actions-->
         <div class="d-flex my-0">
+            
+            <!--begin::Select-->
+            <select name="status" data-control="select2" id="dosyalar_saha_personel_selector" data-hide-search="true" data-placeholder="Saha Personeli" class="form-select form-select-sm form-select-solid w-150px me-5">
+                <option></option>
+                <option value="Hepsi">Tüm Personel</option>
+                <option value="Otovitrin Plaza">Otovitrin Plaza</option>
+                <option value="Merkez">Merkez</option>
+                <option value="Büşra">Büşra</option>
+                <option value="Melisa">Melisa</option>
+                <option value="Muhammet">Muhammet</option>
+                <option value="Hamdi">Hamdi</option>
+                <option value="Ümit">Ümit</option>
+                <option value="Ahmet">Ahmet</option>
+                <option value="İsmail">İsmail</option>
+                <option value="Yusuf">Yusuf</option>
+                <option value="Uğur">Uğur</option>
+            </select>
+            <!--end::Select-->
             <!--begin::Select-->
             <select name="status" data-control="select2" id="dosyalar_city_selector" data-hide-search="true" data-placeholder="Şehir Seçimi" class="form-select form-select-sm form-select-solid w-150px me-5">
                 <option></option>
@@ -61,15 +79,16 @@
             </select>
             <!--end::Select-->
             <!--begin::Select-->
-            <select name="status" data-control="select2" id="dosyalar_durum_selector" data-hide-search="true" data-placeholder="Durum" class="form-select form-select-sm form-select-solid w-200px">
+            <select name="status" data-control="select2" id="dosyalar_durum_selector" data-hide-search="true" data-placeholder="Durum" class="form-select form-select-sm form-select-solid w-150px">
                 <option></option>
-                <option value="Hepsi">Hepsi</option>
+                <option value="Hepsi">Tüm Durumlar</option>
                 <option value="Devam">Devam Eden</option>
                 <option value="Kullandırılacak">Kullandırılacak</option>
                 <option value="Kullandırıldı">Kullandırıldı</option>
                 <option value="Sonlandı">İşlem Sonlandı</option>
                 <option value="Potansiyel">Potansiyel Müşteri</option>
             </select>
+            
             <!--end::Select-->
         </div>
         <!--end::Actions-->
@@ -200,7 +219,7 @@
                   <ul class="pagination">
                     {% if metadata.page > 1 %}
                       <li class="page-item">
-                        <a href="{{ url_for('get_basvurular', page=metadata.page-1, per_page=metadata.per_page, city=metadata.city, durum=metadata.durum) }}" class="page-link">&laquo;</a>
+                        <a href="{{ url_for('get_basvurular', page=metadata.page-1, per_page=metadata.per_page, city=metadata.city, durum=metadata.durum, personel=metadata.saha_personeli) }}" class="page-link">&laquo;</a>
                       </li>
                     {% endif %}
               
@@ -208,13 +227,13 @@
                       {% if num == metadata.page %}
                         <li class="page-item active"><span class="page-link">{{ num }} <span class="sr-only">(guncel)</span></span></li>
                       {% else %}
-                        <li class="page-item"><a href="{{ url_for('get_basvurular', page=num, per_page=metadata.per_page, city=metadata.city, durum=metadata.durum) }}" class="page-link">{{ num }}</a></li>
+                        <li class="page-item"><a href="{{ url_for('get_basvurular', page=num, per_page=metadata.per_page, city=metadata.city, durum=metadata.durum, personel=metadata.saha_personeli) }}" class="page-link">{{ num }}</a></li>
                       {% endif %}
                     {% endfor %}
               
                     {% if metadata.page < metadata.total_pages %}
                       <li class="page-item">
-                        <a href="{{ url_for('get_basvurular', page=metadata.page+1, per_page=metadata.per_page, city=metadata.city, durum=metadata.durum) }}" class="page-link">&raquo;</a>
+                        <a href="{{ url_for('get_basvurular', page=metadata.page+1, per_page=metadata.per_page, city=metadata.city, durum=metadata.durum, personel=metadata.saha_personeli) }}" class="page-link">&raquo;</a>
                       </li>
                     {% endif %}
                   </ul>
@@ -287,7 +306,8 @@ function addSelectedCustomer(event, customerId) {
                 $('select[name="vergi_dairesi_il"]').val(data.vergi_dairesi_il).trigger("change");
                 $('select[name="il_secimi_ev"]').val(data.il_secimi_ev).trigger("change");
                 $('select[name="model_yili"]').val(data.model_yili).trigger("change");
-
+                $('select[name="saha_personeli"]').val(data.saha_personeli).trigger("change");
+                
                 $('input[name="galeri_telefonu"]').val(data.galeri_telefonu).trigger("input");
                 
                 $('input[name="sasi_no"]').val(data.sasi_no)
@@ -349,6 +369,9 @@ function addSelectedCustomer(event, customerId) {
                 });
 
                 document.querySelector('.dosya_tarihi_secimi_bolumu').style.display = 'none';
+
+                // saha personeli secilemez
+                document.getElementById("saha_personeli").disabled = true;
                 
             },
             error: function (xhr) {
@@ -436,6 +459,10 @@ eskiBasvuruButon.addEventListener('click', function() {
 
     // dosya tarihi bolumunu goster
     document.querySelector('.dosya_tarihi_secimi_bolumu').style.display = 'block';
+
+    // saha personeli secilebilir
+    document.getElementById("saha_personeli").disabled = false;
+    
 })
     
 

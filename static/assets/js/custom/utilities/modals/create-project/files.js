@@ -111,6 +111,7 @@ var KTModalCreateProjectFiles = (function () {
                 dosya_id: $("#dosya_id").val(),
                 dosya_numarasi: "",
                 created_by: "",
+                saha_personeli: $('select[name="saha_personeli"]').val(),
                 created_time: $('input[name="dosya_tarihi_eski"]').val(),
                 basvuruTuru: $('input[name="basvuruTuru"]').val(),
                 galeri_telefonu: $('input[name="galeri_telefonu"]')
