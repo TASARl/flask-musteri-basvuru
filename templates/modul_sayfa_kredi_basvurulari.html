@@ -16,17 +16,22 @@
                     <input type="text" class="form-control form-control-solid ps-10" name="search" id="search" value="" placeholder="Ara">
                 </div>
                 <!--end::Input group-->
-                <!--begin:Action-->
-                <div class="d-flex align-items-center">
-                    <button  id="aramaYapButonu" class="btn btn-primary me-5">Ara</button>
-                    
+                <div class="card-toolbar flex-row-fluid justify-content-end gap-5" data-select2-id="select2-data-132-iud1">
+                    <div class="d-flex align-items-center ms-auto">
+                        <button id="aramaYapButonu" class="btn btn-primary me-5">Ara</button>              
+                    </div>
                 </div>
-                <!--end:Action-->
+                <div class="app-navbar-item">
+                    <a href="#" class="btn btn-sm btn-success d-flex flex-center ms-6 ps-3 pe-4 h-35px eskiBasvuru" data-bs-toggle="modal" data-bs-target="#kt_modal_create_project" data-customerid="yeni">
+                        <i class="ki-duotone ki-plus-square fs-2">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                            <span class="path3"></span>
+                        </i>
+                        <span>Eski Kredi Dosyası</span>
+                    </a>
+                </div>
             </div>
-            <!--end::Compact form-->
-            
-            
-            <!--end::Advance form-->
         </div>
         <!--end::Card body-->
     </div>
@@ -342,6 +347,8 @@ function addSelectedCustomer(event, customerId) {
                 elements.forEach(element => {
                     element.style.setProperty('display', 'none', 'important');
                 });
+
+                document.querySelector('.dosya_tarihi_secimi_bolumu').style.display = 'none';
                 
             },
             error: function (xhr) {
@@ -353,5 +360,83 @@ function addSelectedCustomer(event, customerId) {
     });
 
 
+
+</script>
+
+<script>
+    // Eski kredi dosyasi kaydetme. normalden farki dosya tarihi gitilebilir. Kaydet dugmesının adını degıstır
+const eskiBasvuruButon = document.querySelector('.eskiBasvuru');
+    
+eskiBasvuruButon.addEventListener('click', function() {
+  dosya_id = 'eski';
+  document.querySelector('[data-kt-element="files-next"]').querySelector('.indicator-label').textContent= 'Kaydet';
+  document.getElementById("modal_dosya_baslik").innerHTML = '<h2 id="modal_dosya_baslik">Eski Kredi Dosyası Kaydet<small class="ms-2 fs-7 fw-normal opacity-50">Oluştur</small></h2>'
+
+  $('#dosya_id').val(dosya_id);
+  $('select[name="il_secimi_is"]').val('').trigger("change");
+  $('select[name="vergi_dairesi_il"]').val('').trigger("change");
+  $('select[name="il_secimi_ev"]').val('').trigger("change");
+  $('select[name="model_yili"]').val('').trigger("change");
+  
+  $('input[name="galeri_telefonu"]').val('').trigger("input");
+  $('input[name="dosya_tarihi_eski"]').val('');           
+  $('input[name="sasi_no"]').val('');
+  $('input[name="motor_no"]').val('');
+  $('input[name="tescil_belge_no"]').val('');
+  $('input[name="arac_plakasi"]').val('');
+  $('input[name="arac_satis_tutari"]').val('');
+  $('input[name="kredi_tutari"]').val('');
+  $('input[name="kredi_vadesi"]').val('');
+  $('input[name="musteri_cep_telefonu"]').val('');
+  $('input[name="tc"]').val('');
+  $('input[name="adi"]').val('');
+  $('input[name="soyadi"]').val('');
+  $('input[name="kimlik_seri"]').val('');
+  $('input[name="dogum_tarihi"]').val('');
+  $('select[name="egitim_durumu"]').val('').trigger("change");
+  $('select[name="meslek_gurubu"]').val('').trigger("change");
+  $('select[name="meslek"]').val('').trigger("change");
+  $('input[name="aylik_gelir"]').val('');
+  $('select[name="sosyal_guvenlik"]').val('').trigger("change");
+  $('select[name="sektor"]').val('').trigger("change");
+  $('input[name="calisma_suresi_yil"]').val('');
+  $('input[name="calisma_suresi_ay"]').val('');
+
+  $('input[name="vergi_no"]').val('');
+  $('select[name="ikamet_tipi"]').val('').trigger("change");
+
+  $('input[name="mahalle_ev"]').val('');
+  $('input[name="ikamet_sure_ev"]').val('');
+  $('textarea[name="acik_adres_ev"]').val('');
+  $('input[name="isyeri_adi"]').val('');
+  $('input[name="isyeri_telefonu"]').val('');
+
+  $('input[name="mahalle_is"]').val('');
+  $('textarea[name="acik_adres_is"]').val('');
+  // digerlerinin degisimi ile ortayacikanlar
+  $('input[name="kaskokodu"]').val('').trigger("input");
+  $('select[name="vergi_dairesi_ilce"]').val('').trigger("change");
+  $('select[name="ilce_secimi_ev"]').val('').trigger("change");
+  $('select[name="ilce_secimi_is"]').val('').trigger("change");
+
+    // content classına sahip tüm divleri seçin
+    const contentDivs = document.querySelectorAll('[data-kt-stepper-element="content"]');
+
+    // Her bir div için döngü ile geçin
+    for (let i = 0; i < contentDivs.length; i++) {
+        // İlk div current sınıfına sahip olarak ayarlanır, diğerleri ise pending sınıfına sahip
+        contentDivs[i].className = "current";
+    }
+
+
+    const elements = document.querySelectorAll('.edit_bolumu_icin_gizle');
+    elements.forEach(element => {
+        element.style.setProperty('display', 'none', 'important');
+    });
+
+    // dosya tarihi bolumunu goster
+    document.querySelector('.dosya_tarihi_secimi_bolumu').style.display = 'block';
+})
+    
 
 </script>

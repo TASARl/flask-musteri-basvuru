@@ -267,27 +267,30 @@ def form():
 
         # eger dokuman id baska bir dokumanda varsa bilgileri gunceller. not kelimesi dikkat
         dosya_id=request.json.get('dosya_id')
-        if not (dosya_id=='' or dosya_id == "yeni"):
+        if not (dosya_id=='' or dosya_id == "yeni" or dosya_id == "eski"):
             # Veritabanından model yılına ait markai çek
             kayitli_dosya_bilgisi = customers.find_one({'_id': ObjectId(dosya_id)})
             
             # JSON formatında modelleri döndür
             if kayitli_dosya_bilgisi:
-                #alttaki degerler bosluk ve gereksiz degerler guncellenmemesi icin jsondan kaldir
+                #alttaki degerlerlerin guncellenmemesi icin jsondan kaldir
                 del data["dosya_id"]
                 del data["dosya_numarasi"]
+                del data["created_time"]
 
-                dataGuncelle = {
-                    'inputValue': 'Dosya guncellendi',
-                    'created_by': current_user.id,
-                    'isim_soyisim': current_user.isim_soyisim,
-                    'status': 'otomatik',   # success  pending  failed
-                    'created_time': datetime.now(),
-                }
+                dosya_guncelleme_ekle(dosya_id, 'Dosya guncellendi', 'otomatik')
+                # # guncelleme bılgılerı tımelıne ekleme
+                # dataGuncelle = {
+                #     'inputValue': 'Dosya guncellendi',
+                #     'created_by': current_user.id,
+                #     'isim_soyisim': current_user.isim_soyisim,
+                #     'status': 'otomatik',   # success  pending  failed
+                #     'created_time': datetime.now(),
+                # }
 
-                data['guncellemeler'] = kayitli_dosya_bilgisi['guncellemeler']
+                # data['guncellemeler'] = kayitli_dosya_bilgisi['guncellemeler']
 
-                data["guncellemeler"].append(dataGuncelle)
+                # data["guncellemeler"].append(dataGuncelle)
 
                 new_data = {
                     "$set": data
@@ -296,13 +299,20 @@ def form():
                 result = customers.update_one({"_id": ObjectId(dosya_id)}, new_data)
                 
                 return jsonify({'message': 'Form kaydedildi'}), 200
+            
+        # aslinda son 3 farkli dosya_id gelme ihtimali var: yeni, eski, varolan baska bir fokumanin id'si
+        if (dosya_id == "eski"):
+            date_str = request.json.get('created_time')
+            date_obj = datetime.strptime(date_str, '%d.%m.%Y')
+            data['created_time'] = date_obj
+        else:
+            # eger dosya daha onceden yoksa ve İLK DEFA BİR DOSYA OLUŞTURULUyorsa
+            data['created_time'] = datetime.now(turkey_tz)
 
+        # yeni ve eski kelimelerini siler. bunu otomatik atar
         if "dosya_id" in data:
             del data["dosya_id"]
-
-        # eger dosya daha onceden yoksa ve İLK DEFA BİR DOSYA OLUŞTURULUyorsa
-        data['created_time'] = datetime.now(turkey_tz)
-
+        
         data['status'] = 'Devam'   # surec sayfasindaki renkli butonlar
 
         # Rastgele 5 haneli büyük harf, rakam ve tirelerden oluşan benzersiz bir dizi oluşturuyoruz.
@@ -315,18 +325,14 @@ def form():
         # benzersiz dosya numarasi eklenir
         data['dosya_numarasi'] = dosya_numarasi
 
-        dataGuncelle = {
-            'inputValue': 'Dosya oluşturuldu.',
-            'created_by': current_user.id,
-            'isim_soyisim': current_user.isim_soyisim,
-            'status': 'otomatik',   # success  pending  failed
-            'created_time': datetime.now(),
-        }
-
-        # yeni yaratildigi icin
-        data['guncellemeler'] = []
-        
-        data["guncellemeler"].append(dataGuncelle)
+        # dosya numarasi belli olmadigi icin guncelleme fonksiyonu kullanilamadi
+        data["guncellemeler"] = [{
+            "inputValue": "Dosya oluşturuldu.",
+            "created_by": current_user.id,
+            "isim_soyisim": current_user.isim_soyisim,
+            "status": "otomatik",   # success  pending  failed
+            "created_time": datetime.now(),
+        }]
 
         # Database kayıt işlemi
         result = customers.insert_one(data)

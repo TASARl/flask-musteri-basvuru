@@ -3665,9 +3665,11 @@ button.addEventListener('click', function() {
 
 
     const elements = document.querySelectorAll('.edit_bolumu_icin_gizle');
-                elements.forEach(element => {
-                    element.style.setProperty('display', '', 'important');
-                });
+    elements.forEach(element => {
+        element.style.setProperty('display', '', 'important');
+    });
+
+    document.querySelector('.dosya_tarihi_secimi_bolumu').style.display = 'none';
 })
     
 

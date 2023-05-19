@@ -28,7 +28,7 @@ var KTModalCreateProjectTargets = (function () {
     // });
 
     // Due date. For more info, please visit the official plugin site: https://flatpickr.js.org/
-    var dueDate = $(form.querySelector('[name="dogum_tarihi"]'));
+    var dueDate = $(form.querySelector('[name="dosya_tarihi_eski"]'));
     dueDate.daterangepicker({
       singleDatePicker: true,
       showDropdowns: false,
