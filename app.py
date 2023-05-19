@@ -375,6 +375,9 @@ def get_basvurular():
     # Durum seçimini al
     dosya_durumu = request.args.get('durum')
 
+    # Adres satırından arama kelimesi al
+    search_keyword = request.args.get('arama')
+
     query = {}
 
     if selected_city and selected_city != 'Tüm':
@@ -382,6 +385,38 @@ def get_basvurular():
 
     if dosya_durumu and dosya_durumu != 'Hepsi':
         query['status'] = dosya_durumu
+
+    if search_keyword:
+        # eger isim soyisim gonderilirse son kelimeyi soyisim olarak ayirip aramayi yapmak icin asagisi var
+        kelimeler = search_keyword.split()
+
+        if len(kelimeler) > 1:
+            son_kelime = kelimeler[-1]
+            diger_kisim = ' '.join(kelimeler[:-1])
+        else:
+            son_kelime = search_keyword
+            diger_kisim = search_keyword
+
+        query["$or"] = [{"adi": {"$regex": diger_kisim, "$options": "i"}},
+                        {"soyadi": {"$regex": son_kelime, "$options": "i"}},
+                        {"dosya_numarasi": {"$regex": search_keyword, "$options": "i"}},
+                        {"galeri_adi": {"$regex": search_keyword, "$options": "i"}},
+                        {"galeri_telefonu": {"$regex": search_keyword, "$options": "i"}},
+                        {"galeri_ili": {"$regex": search_keyword, "$options": "i"}},
+                        {"model_yili": {"$regex": search_keyword, "$options": "i"}},
+                        {"marka_adi": {"$regex": search_keyword, "$options": "i"}},
+                        {"tip_adi": {"$regex": search_keyword, "$options": "i"}},
+                        {"kaskokodu": {"$regex": search_keyword, "$options": "i"}},
+                        {"sasi_no": {"$regex": search_keyword, "$options": "i"}},
+                        {"motor_no": {"$regex": search_keyword, "$options": "i"}},
+                        {"tescil_belge_no": {"$regex": search_keyword, "$options": "i"}},
+                        {"arac_plakasi": {"$regex": search_keyword, "$options": "i"}},
+                        {"musteri_cep_telefonu": {"$regex": search_keyword, "$options": "i"}},
+                        {"tc": {"$regex": search_keyword, "$options": "i"}},
+                        {"acik_adres_ev": {"$regex": search_keyword, "$options": "i"}},
+                        {"isyeri_adi": {"$regex": search_keyword, "$options": "i"}},
+                        {"acik_adres_is": {"$regex": search_keyword, "$options": "i"}},
+                        {"guncellemeler": {"$elemMatch": {"inputValue": {"$regex": search_keyword, "$options": "i"}}} }]
 
     # Get total number of customers with the specified filters
     total_customers = customers.count_documents(query)

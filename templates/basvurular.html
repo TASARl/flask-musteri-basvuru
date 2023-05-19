@@ -351,7 +351,7 @@ radioButtonsKullandirim.forEach((button) => {
     $("#kredi_kullandirildi_butonu").click(function() {
         // Activate indicator
         $(this).attr("data-kt-indicator", "on");
-        
+
         var document_id = $('#dosya_id_durum').val(); // Değiştirilecek belgenin ID'si
 
         var kredi = $("#kredi").val();
@@ -614,6 +614,9 @@ $(document).ready(function() {
     const adresSatirDurum = urlParams.get('durum')  || 'Hepsi';
     $("#dosyalar_durum_selector").val(adresSatirDurum).trigger('change')
 
+    const adresSatirArama = urlParams.get('arama')  || '';
+    $("#search").val(adresSatirArama).trigger('change')
+
     const kilitDeger=1;
 
     // dosyalar bolumunda sehir secildigindee adres satirinda varsa degerleri degistir yoksa yeni deger ekle
@@ -650,6 +653,16 @@ $(document).ready(function() {
         window.location.href = url;
         }
     )
+    
+    $("#aramaYapButonu").click(function(event) {
+        event.preventDefault();
+        const searchValue = $("#search").val();
+        const url = new URL(window.location.href);
+        url.searchParams.set("arama", searchValue);
+        window.location.href = url.toString();
+    });
+
+
 });
 
 // sayfadaki guncellemelerde animasyonlu gecis ekler
