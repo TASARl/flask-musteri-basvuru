@@ -252,12 +252,6 @@ $(document).ready(function () {
     cityNames.forEach((city) => {
       select.append('<option value="' + city + '">' + city + "</option>");
     });
-
-    var select = $("#il_secimi_harcama");
-
-    cityNames.forEach((city) => {
-      select.append('<option value="' + city + '">' + city + "</option>");
-    });
   });
 
   // Load District Options

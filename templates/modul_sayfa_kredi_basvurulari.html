@@ -151,9 +151,9 @@
                     {% for customer in data %} 
 
                     {% if lstest_customer_id|string == customer._id|string %}
-                    <tr style="background-color: #daf3ff; vertical-align: top; border-bottom-color: #d8d8d8;">
+                    <tr style="background-color: #daf3ff; vertical-align: top; border-bottom-color: #d8d8d8;" data-customer-id="{{ customer._id }}">
                     {% else %}
-                    <tr style="vertical-align: top; border-bottom-color: #d8d8d8;">
+                    <tr style="vertical-align: top; border-bottom-color: #d8d8d8;" data-customer-id="{{ customer._id }}">
                     {% endif %}
 
                         
@@ -272,7 +272,9 @@ function addSelectedCustomer(event, customerId) {
     data: JSON.stringify({ customer_id: customerId }),
     success: function (response) {
       //alert("Müşteri seçimi kaydedildi!");
-      window.location.reload();
+      $('tr[data-customer-id]').css('background-color', '');
+      $('tr[data-customer-id="' + customerId + '"]').css('background-color', '#daf3ff');
+    //   window.location.reload();
     },
     error: function (error) {
       alert("Hata oluştu!");

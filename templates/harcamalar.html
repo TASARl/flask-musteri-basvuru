@@ -33,7 +33,7 @@ $(document).ready(function() {
         
         // Get the input value
         const harcama_tarihi = $('#harcama_tarihi').val();
-        const il_secimi_harcama = $('#il_secimi_harcama').val();
+        const harcama_kisi_secimi = $('#harcama_kisi_secimi').val();
         const harcama_aciklamasi = $('#harcama_aciklamasi').val();
         const tutar = $('#tutar').val();
         
@@ -52,13 +52,13 @@ $(document).ready(function() {
             contentType: 'application/json', // Set content type header
             data: JSON.stringify({
                 harcama_tarihi: harcama_tarihi,
-                il_secimi_harcama: il_secimi_harcama,
+                harcama_kisi_secimi: harcama_kisi_secimi,
                 harcama_aciklamasi: harcama_aciklamasi,
                 tutar: tutar
             }), // Convert data to JSON string
             success: function(response) {
                 $('#harcama_tarihi').val('');  // Clear the input field after successful submission
-                $('#il_secimi_harcama').val('').trigger('change');
+                $('#harcama_kisi_secimi').val('').trigger('change');
                 $('#harcama_aciklamasi').val('');
                 $('#tutar').val('');
 
@@ -73,6 +73,28 @@ $(document).ready(function() {
             }
         });
     });
+});
+
+
+// harcama sil butonu basıldıgında yapılacaklar
+$(document).ready(function() {
+  $('.harcama_sil_buton').click(function(event) {
+    event.preventDefault();
+    var harcamaid = $(this).data('harcamaid');
+    
+
+    $.ajax({
+      type: 'POST',
+      url: '/harcama_sil', // Silme işlemini yapacak PHP dosyasının adı ve yolunu buraya yazmalısınız.
+      data: { harcamaid: harcamaid },
+      success: function(response) {
+        $('tr[data-harcamaid="' + harcamaid + '"]').remove();
+      },
+      error: function(xhr, status, error) {
+        console.log(xhr.responseText);
+      }
+    });
+  });
 });
 
 </script>

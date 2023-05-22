@@ -107,7 +107,7 @@ def harcamalar():
     end_index = min(start_index + per_page, total_customers)
 
     # harcamaleri veritabanından getir
-    harcamalar_list = list(harcamalar_db.find({}, {'_id':1, 'harcama_tarihi':1, 'il_secimi_harcama':1, 'harcama_aciklamasi':1, 'tutar':1 }).sort("_id", -1).skip(start_index).limit(per_page))
+    harcamalar_list = list(harcamalar_db.find({}, {'_id':1, 'harcama_tarihi':1, 'harcama_kisi_secimi':1, 'harcama_aciklamasi':1, 'tutar':1 }).sort("_id", -1).skip(start_index).limit(per_page))
 
     
     # Pagination metadatasını oluştur
@@ -1130,7 +1130,7 @@ def harcama_islemleri():
             data['kayit_zamani'] = datetime.now()
             
             # Insert the data into the "harcamalar" collection in your MongoDB database
-            db.harcamalar.insert_one(data)
+            harcamalar_db.insert_one(data)
             
             return jsonify({'message': 'Form kaydedildi'}), 200
         
@@ -1143,6 +1143,15 @@ def harcama_islemleri():
     
 
 ######## Harcamlaar bolumu get ve post islemleri  Son #########
+
+######### Harcamlar bolumu harcama silme ####################
+@app.route('/harcama_sil', methods=['POST'])
+def sil():
+    harcamaid = request.form['harcamaid'] 
+    harcamalar_db.delete_one({'_id': ObjectId(harcamaid)})
+    return jsonify({'success': True})
+
+#############################################################
 
 if __name__ == '__main__':
     app.run(debug=True)
