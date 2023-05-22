@@ -398,6 +398,32 @@
 											</tbody>
 										</table>
 										<!--end::Table-->
+										<div>
+                                            <!-- Sayfa numaraları -->
+                                            {% if metadata.total_pages > 1 %}
+                                              <ul class="pagination">
+                                                {% if metadata.page > 1 %}
+                                                  <li class="page-item">
+                                                    <a href="{{ url_for('userlist', page=metadata.page-1, per_page=metadata.per_page) }}" class="page-link">&laquo;</a>
+                                                  </li>
+                                                {% endif %}
+                                          
+                                                {% for num in range(1, metadata.total_pages + 1) %}
+                                                  {% if num == metadata.page %}
+                                                    <li class="page-item active"><span class="page-link">{{ num }} <span class="sr-only">(guncel)</span></span></li>
+                                                  {% else %}
+                                                    <li class="page-item"><a href="{{ url_for('userlist', page=num, per_page=metadata.per_page) }}" class="page-link">{{ num }}</a></li>
+                                                  {% endif %}
+                                                {% endfor %}
+                                          
+                                                {% if metadata.page < metadata.total_pages %}
+                                                  <li class="page-item">
+                                                    <a href="{{ url_for('userlist', page=metadata.page+1, per_page=metadata.per_page) }}" class="page-link">&raquo;</a>
+                                                  </li>
+                                                {% endif %}
+                                              </ul>
+                                            {% endif %}
+                                        </div>
 									</div>
 									<!--end::Card body-->
 								</div>
