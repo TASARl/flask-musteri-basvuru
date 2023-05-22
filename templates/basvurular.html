@@ -717,5 +717,29 @@ $("#kullandirim_tarihi").daterangepicker({
         format: "DD.MM.YYYY",
       },
     });
+
+    
+// harcama sil butonu basıldıgında yapılacaklar
+$(document).ready(function() {
+  $('.musteri_dosya_sil_butonu').click(function(event) {
+    event.preventDefault();
+    var customer_id = $(this).data('customer_id');
+    
+    // Uyarı penceresi göstermek için
+    if(confirm("Dosya silme islemini yapmak istediğinizden emin misiniz? Silme işlemi sonrası tüm dosya bilgileri veritababında tutulamaya devam edicek ancak kullanıcılar dosyayı goremeyecektir.")) {
+      $.ajax({
+        type: 'POST',
+        url: '/basvuru_dosyasi_sil', // Silme işlemini yapacak PHP dosyasının adı ve yolunu buraya yazmalısınız.
+        data: { customer_id: customer_id },
+        success: function(response) {
+          $('tr[data-customer-id="' + customer_id + '"]').remove();
+        },
+        error: function(xhr, status, error) {
+          console.log(xhr.responseText);
+        }
+      });
+    }
+  });
+});
 </script>
 {% endblock %}

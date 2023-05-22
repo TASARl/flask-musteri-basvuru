@@ -433,6 +433,9 @@ def get_basvurular():
                         {"acik_adres_is": {"$regex": search_keyword, "$options": "i"}},
                         {"guncellemeler": {"$elemMatch": {"inputValue": {"$regex": search_keyword, "$options": "i"}}} }]
 
+    # silindi olarak işaretlenmiş dosyaları gösterme
+    query = {'$and': [{'silindi': {'$ne': 1}}, query]}
+
     # Get total number of customers with the specified filters
     total_customers = customers.count_documents(query)
 
@@ -1146,9 +1149,23 @@ def harcama_islemleri():
 
 ######### Harcamlar bolumu harcama silme ####################
 @app.route('/harcama_sil', methods=['POST'])
-def sil():
+def harcama_sil():
     harcamaid = request.form['harcamaid'] 
     harcamalar_db.delete_one({'_id': ObjectId(harcamaid)})
+    return jsonify({'success': True})
+
+#############################################################
+
+######### Basvuru Dosyası silme, veri tabanına silindi diye bir ekleme yapar. ####################
+@app.route('/basvuru_dosyasi_sil', methods=['POST'])
+def basvuru_dosyasi_sil():
+    customer_id = request.form['customer_id'] 
+
+    # Yeni alanın adı ve değeri
+    new_field = {"silindi": 1}
+
+    # Belgeyi güncelle
+    customers.update_one({"_id": ObjectId(customer_id)}, {"$set": new_field})   
     return jsonify({'success': True})
 
 #############################################################
