@@ -14,6 +14,16 @@ var KTModalCreateProjectType = (function () {
     Inputmask({
       mask: "999 999 99 99",
     }).mask("#galeri_telefonu");
+
+	var eski_dosya_tarihi = $(form.querySelector('[name="dogum_tarihi"]'));
+    eski_dosya_tarihi.daterangepicker({
+      singleDatePicker: true,
+      showDropdowns: false,
+      autoApply: true,
+      locale: {
+        format: "DD.MM.YYYY",
+      },
+    });
   };
 
   // Private functions
