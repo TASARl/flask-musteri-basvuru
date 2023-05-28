@@ -53,6 +53,7 @@ customers = db.musteriler       # proje ilk basladiginda musteri uzerinden gitmi
 users_collection = db.users     # hem web sitesi kullanicilarini hemde galerileri tutar
 selected_customers = db.selected_customers  # masa ustu uygulamasinda personelin secili dosyasinin bilgilerini almasini saglar
 harcamalar_db = db.harcamalar
+gecici_guncellemeler = db.gecici_guncellemeler
 
 hazir_veriler = client["form_hazir_verileri"]   # vergi daireleri, iller, ilceler ve arac modelleri bu collectionda
 modellerDb = hazir_veriler["modeller"]          # ilk sutun integer. sonrakiler string
@@ -148,14 +149,21 @@ def iletisim():
 @login_required
 def hesabim():
 
+    # Pagination metadatasını oluştur
+    metadata = {
+        'sayfa_baslik': 'İstatistik'
+    }
+
     user_data = {
         "isim_soyisim": current_user.isim_soyisim,
         "cep_telefonu": current_user.id,
         "sehir": current_user.city,
+        "yetki": current_user.yetki,
+        "gallery_name": current_user.gallery_name,
     }
     
     
-    return render_template('hesabim.html', user_data=user_data)
+    return render_template('hesabim.html', user_data=user_data, metadata=metadata)
 
 # Index sayfasi
 @app.route('/userlist')
@@ -198,14 +206,13 @@ def userlist():
     return render_template('userlist.html', data=customer_list , metadata=metadata, user_data=user_data)
 
 # İstatistik Veriler sayfasi
-@app.route('/istatistik')
+@app.route('/istatistik/')
+@app.route('/istatistik/<parametre>')
 @login_required
-def istatistik():
+def istatistik(parametre=None):
 
-    
     # Pagination metadatasını oluştur
     metadata = {
-      
         'sayfa_baslik': 'İstatistik'
     }
 
@@ -216,8 +223,25 @@ def istatistik():
         "yetki": current_user.yetki,
         "gallery_name": current_user.gallery_name,
     }
-    
-    return render_template('istatistik.html', metadata=metadata, user_data=user_data)
+
+    if parametre:
+        if parametre == 'bankalar':
+            # Sayfa 1'in render edilmesi
+            metadata = {
+                'sayfa_baslik': 'Bankalara Göre Dağılım'
+            }
+            return render_template('/istatistik/bankalar.html', metadata=metadata, user_data=user_data)
+
+        elif parametre == 'gelir-gider':
+            # Sayfa 2'nin render edilmesi
+            metadata = {
+                'sayfa_baslik': 'Gelir Gider İstatistikleri'
+            }
+            return render_template('/istatistik/gelir-gider.html', metadata=metadata,user_data=user_data)
+        else:
+            return render_template('/istatistik/ana.html', metadata=metadata, user_data=user_data)
+    else:
+        return render_template('/istatistik/ana.html', metadata=metadata, user_data=user_data)
 
 
 # Yeni Kredi Dosyası Ekle
@@ -277,6 +301,8 @@ def form():
                 del data["dosya_id"]
                 del data["dosya_numarasi"]
                 del data["created_time"]
+
+                # edit islemi esnasinda saha personeli silinemez
                 if "saha_personeli" in data and data["saha_personeli"]:
                     del data["saha_personeli"]
 
@@ -302,7 +328,7 @@ def form():
                 
                 return jsonify({'message': 'Form kaydedildi'}), 200
             
-        # aslinda son 3 farkli dosya_id gelme ihtimali var: yeni, eski, varolan baska bir fokumanin id'si
+        # 3 farkli dosya_id gelme ihtimali var: yeni, eski, varolan baska bir fokumanin id'si. ESKI dosya bilgisi kaydetmek icin id eski gelir
         if (dosya_id == "eski"):
             date_str = request.json.get('created_time')
             date_obj = datetime.strptime(date_str, '%d.%m.%Y')
@@ -328,22 +354,24 @@ def form():
         data['dosya_numarasi'] = dosya_numarasi
 
         # dosya numarasi belli olmadigi icin guncelleme fonksiyonu kullanilamadi
-        data["guncellemeler"] = [{
-            "inputValue": "Dosya oluşturuldu.",
-            "created_by": current_user.id,
-            "isim_soyisim": current_user.isim_soyisim,
-            "status": "otomatik",   # success  pending  failed
-            "created_time": datetime.now(),
-        }]
+        # data["guncellemeler"] = [{
+        #     "inputValue": "Dosya oluşturuldu.",
+        #     "created_by": current_user.id,
+        #     "isim_soyisim": current_user.isim_soyisim,
+        #     "status": "otomatik",   # success  pending  failed
+        #     "created_time": datetime.now(),
+        # }]
 
         # Database kayıt işlemi
         result = customers.insert_one(data)
 
-        document_id = result.inserted_id
-        print(f"_id of inserted document {document_id}")
+        dosya_id = result.inserted_id
+        print(f"_id of inserted document {dosya_id}")
+
+        dosya_guncelleme_ekle(dosya_id, "Dosya oluşturuldu.", "otomatik")
 
         # Başarılı bir şekilde kaydedildi sayfasını göster
-        return jsonify({'message': 'Form kaydedildi','dosya_id': str(document_id)}), 200
+        return jsonify({'message': 'Form kaydedildi','dosya_id': str(dosya_id)}), 200
         
     return jsonify({'message': 'Form gonderilmedi'}), 401
 
@@ -867,7 +895,7 @@ def id_ile_dosya_bilgisi_getir():
 
 ######## Dosya Guncellemeleri Servisi get ve post  baslangic #########
 
-# dosya guncellemeleri genel fonlsiyon/ sadece edit ve create icin bu fonksiyon kullanilmadi/ eger yeni alan eklenirse oralarida guncelle
+# dosya guncellemeleri genel fonlsiyon/ 
 def dosya_guncelleme_ekle(dosya_id, inputValue, status):
     # ilgili_galeri = customers.find_one({'_id': ObjectId(dosya_id)})['galeri_telefonu'] #bunu daha sonra galeri guncellemlerini eklerken kullanacagim
     dataGuncelle = {
@@ -882,6 +910,26 @@ def dosya_guncelleme_ekle(dosya_id, inputValue, status):
         {"_id": ObjectId(dosya_id)},
         {"$push": {"guncellemeler": dataGuncelle}}
     )
+
+    galeri_adi = customers.find_one({'_id': ObjectId(dosya_id)})['galeri_adi']
+    gorunen_dosya_no = customers.find_one({'_id': ObjectId(dosya_id)})['dosya_numarasi']
+    geciciDataGuncelle = {
+        'galeri_adi':galeri_adi,
+        'gorunen_dosya_no':gorunen_dosya_no,
+        'inputValue': inputValue,
+        'isim_soyisim': current_user.isim_soyisim,
+        'status': status,   
+        'created_time': datetime.now(),
+    }
+
+    print(geciciDataGuncelle)
+    
+
+    gecici_guncellemeler.insert_one(geciciDataGuncelle)
+
+    # eger gecici guncellemeler 100 den fazlaysa tarihe gore ilk kayidi sil
+    if gecici_guncellemeler.count_documents({}) > 100:
+        oldest_record = gecici_guncellemeler.find_one_and_delete(sort=[('_id', 1)])               
 
     return result
 
@@ -921,6 +969,26 @@ def dosya_guncellemeleri():
     return jsonify(json_documents), 200
 
 ######## Dosya Guncellemeleri Servisi get ve post  Son #########
+
+
+###### GEcici guncellmeleri json ile getir baslangic ##########
+##### Bunu daha sonra kullaniciya yonelik gosterilmesi gerekenler olarak duzenle######
+@app.route('/api/gecici_guncellemeler', methods=['GET'])
+@login_required
+def get_gecici_guncellemeler():
+    
+    gecici_guncellemeler_data = []
+    for record in gecici_guncellemeler.find().sort("_id", -1).limit(40):
+        # json_util.dumps() yöntemini kullanarak ObjectId'yi dizeye dönüştürün:
+        serialized_record = json.loads(json_util.dumps(record))
+
+        # ObjectId'i kaldır
+        del serialized_record['_id']
+        gecici_guncellemeler_data.append(serialized_record)
+
+    return jsonify(gecici_guncellemeler_data)
+
+###### GEcici guncellmeleri json ile getir son ##########
 
 ####### Dosya durumu devam kullanildi sonlandi felan baslangic #######   Devam , Sonlandı , Kullandırıldı
 # Dökümanı güncelleme işlemi
@@ -1097,26 +1165,6 @@ def process_customer_ids():
 
 ##### Dosyalar sayfasindak'10 adet dosyanin yada daha fazla 15 saniyede bir g]ncellenmes icin servis sonu ############# 
 
-########silinecek deneme ############
-@app.route('/veriler', methods=['GET'])
-def veriler():
-    # Verilerinizi bir şekilde elde edin ve JSON formatına dönüştürün.
-    data = {
-        "01": {"tarih": "01-2023", "sehir": "İstanbul", "kredi_adedi": 100, "komisyon_geliri": 5000, "harcama": 4000, "artan_para": 1000},
-        "02": {"tarih": "01-2023", "sehir": "Ankara", "kredi_adedi": 200, "komisyon_geliri": 10000, "harcama": 8000, "artan_para": 2000},
-        "03": {"tarih": "01-2023", "sehir": "İzmir", "kredi_adedi": 150, "komisyon_geliri": 7500, "harcama": 6000, "artan_para": 1500},
-        "04": {"tarih": "02-2023", "sehir": "Bursa", "kredi_adedi": 175, "komisyon_geliri": 8750, "harcama": 7000, "artan_para": 1750},
-        "05": {"tarih": "02-2023", "sehir": "İstanbul", "kredi_adedi": 100, "komisyon_geliri": 5000, "harcama": 4000, "artan_para": 1000},
-        "06": {"tarih": "02-2023", "sehir": "Ankara", "kredi_adedi": 200, "komisyon_geliri": 10000, "harcama": 8000, "artan_para": 2000},
-        "07": {"tarih": "03-2023", "sehir": "İzmir", "kredi_adedi": 150, "komisyon_geliri": 7500, "harcama": 6000, "artan_para": 1500},
-        "08": {"tarih": "03-2023", "sehir": "Bursa", "kredi_adedi": 175, "komisyon_geliri": 8750, "harcama": 7000, "artan_para": 1750}
-    }
-    
-    # Verileri JSON formatına dönüştürün ve istemciye gönderin.
-    return jsonify(data)
-
-##################################
-
 ########### Harcamlaar bolumu get ve post islemleri BASLANGIC ########
 
 @app.route('/harcama_islemleri', methods=['POST'])
@@ -1160,15 +1208,61 @@ def harcama_sil():
 @app.route('/basvuru_dosyasi_sil', methods=['POST'])
 def basvuru_dosyasi_sil():
     customer_id = request.form['customer_id'] 
+    dosya_id = customer_id
 
     # Yeni alanın adı ve değeri
     new_field = {"silindi": 1}
+
+    dosya_guncelleme_ekle(dosya_id, "Dosya Silindi.", "otomatik")
 
     # Belgeyi güncelle
     customers.update_one({"_id": ObjectId(customer_id)}, {"$set": new_field})   
     return jsonify({'success': True})
 
 #############################################################
+
+
+######## İSTATİSTİK VERİLER İÇİN SERVİSLER BAŞLANGIÇ ############
+@app.route('/veriler', methods=['GET'])
+def veriler():
+    # Verilerinizi bir şekilde elde edin ve JSON formatına dönüştürün.
+    data = {
+        "01": {"tarih": "01-2023", "sehir": "İstanbul", "kredi_adedi": 100, "komisyon_geliri": 5000, "harcama": 4000, "artan_para": 1000},
+        "02": {"tarih": "01-2023", "sehir": "Ankara", "kredi_adedi": 200, "komisyon_geliri": 10000, "harcama": 8000, "artan_para": 2000},
+        "03": {"tarih": "01-2023", "sehir": "İzmir", "kredi_adedi": 150, "komisyon_geliri": 7500, "harcama": 6000, "artan_para": 1500},
+        "04": {"tarih": "02-2023", "sehir": "Bursa", "kredi_adedi": 175, "komisyon_geliri": 8750, "harcama": 7000, "artan_para": 1750},
+        "05": {"tarih": "02-2023", "sehir": "İstanbul", "kredi_adedi": 100, "komisyon_geliri": 5000, "harcama": 4000, "artan_para": 1000},
+        "06": {"tarih": "02-2023", "sehir": "Ankara", "kredi_adedi": 200, "komisyon_geliri": 10000, "harcama": 8000, "artan_para": 2000},
+        "07": {"tarih": "03-2023", "sehir": "İzmir", "kredi_adedi": 150, "komisyon_geliri": 7500, "harcama": 6000, "artan_para": 1500},
+        "08": {"tarih": "03-2023", "sehir": "Bursa", "kredi_adedi": 175, "komisyon_geliri": 8750, "harcama": 7000, "artan_para": 1750}
+    }
+    
+    # Verileri JSON formatına dönüştürün ve istemciye gönderin.
+    return jsonify(data)
+
+
+@app.route('/gelir-gider-chart-data')
+def chart_data():
+    # Burada API'dan verileri çekip JSON formatında döndürüyoruz.
+    data = {
+        "revenue": [31, 40, 28, 51, 42, 109, 0],
+        "net_income": [11, 32, 45, 32, 34, 52, 1],
+        "expenses": [1, 20, 128, 1, 0, 9, 0],
+        "categories": [
+            "Tuesday, 22 March",
+            "Wednesday, 23 March",
+            "Thursday, 24 March",
+            "Friday, 25 March",
+            "Saturday, 26 March",
+            "Sunday, 27 March",
+            "Monday, 28 March"
+        ]
+    }
+    return jsonify(data)
+
+######## İSTATİSTİK VERİLER İÇİN SERVİSLER SONUC ############
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

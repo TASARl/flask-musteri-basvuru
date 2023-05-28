@@ -48,7 +48,7 @@
                                                 <!--begin:Menu item-->
                                                 <div class="menu-item p-0 m-0">
                                                     <!--begin:Menu link-->
-                                                    <a href="../../demo45/dist/index.html" class="menu-link active">
+                                                    <a href="{{ url_for('dashboard') }}" class="menu-link active">
                                                         <span class="menu-custom-icon d-flex flex-center flex-shrink-0 rounded w-40px h-40px me-3">
                                                             <i class="ki-duotone ki-element-11 text-primary fs-1">
                                                                 <span class="path1"></span>
@@ -96,7 +96,7 @@
                                                 <!--begin:Menu item-->
                                                 <div class="menu-item p-0 m-0">
                                                     <!--begin:Menu link-->
-                                                    <a href="../../demo45/dist/dashboards/projects.html" class="menu-link">
+                                                    <a href="{{ url_for('get_basvurular') }}" class="menu-link">
                                                         <span class="menu-custom-icon d-flex flex-center flex-shrink-0 rounded w-40px h-40px me-3">
                                                             <i class="ki-duotone ki-abstract-44 text-info fs-1">
                                                                 <span class="path1"></span>
@@ -159,7 +159,7 @@
                                                 <!--begin:Menu item-->
                                                 <div class="menu-item p-0 m-0">
                                                     <!--begin:Menu link-->
-                                                    <a href="../../demo45/dist/dashboards/marketing.html" class="menu-link">
+                                                    <a href="{{ url_for('istatistik') }}" class="menu-link">
                                                         <span class="menu-custom-icon d-flex flex-center flex-shrink-0 rounded w-40px h-40px me-3">
                                                             <i class="ki-duotone ki-chart-simple text-dark fs-1">
                                                                 <span class="path1"></span>
@@ -205,7 +205,7 @@
                                                 <!--begin:Menu item-->
                                                 <div class="menu-item p-0 m-0">
                                                     <!--begin:Menu link-->
-                                                    <a href="../../demo45/dist/dashboards/pos.html" class="menu-link">
+                                                    <a href="{{ url_for('hesabim') }}" class="menu-link">
                                                         <span class="menu-custom-icon d-flex flex-center flex-shrink-0 rounded w-40px h-40px me-3">
                                                             <i class="ki-duotone ki-abstract-42 text-danger fs-1">
                                                                 <span class="path1"></span>
@@ -374,14 +374,14 @@
                             <!--begin:Menu item-->
                             <div class="menu-item">
                                 <!--begin:Menu link-->
-                                <a class="menu-link" href="https://preview.keenthemes.com/html/metronic/docs/base/utilities" target="_blank" title="Check out over 200 in-house components, plugins and ready for use solutions" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                                <a class="menu-link" href="{{ url_for('istatistik') }}/bankalar" title="Yapılan Başvuru Sonuçlarını Bankalara Göre İstatistiksel Olarak İnceleyin" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
                                     <span class="menu-icon">
-                                        <i class="ki-duotone ki-rocket fs-2">
+                                        <i class="ki-duotone ki-abstract-45 fs-2 text-warning">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
                                         </i>
                                     </span>
-                                    <span class="menu-title">Components</span>
+                                    <span class="menu-title">Bankalar</span>
                                 </a>
                                 <!--end:Menu link-->
                             </div>
@@ -389,14 +389,14 @@
                             <!--begin:Menu item-->
                             <div class="menu-item">
                                 <!--begin:Menu link-->
-                                <a class="menu-link" href="https://preview.keenthemes.com/html/metronic/docs" target="_blank" title="Check out the complete documentation" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                                <a class="menu-link" href="{{ url_for('istatistik') }}/gelir-gider" title="Gelir Giderleri Analiz Edin" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
                                     <span class="menu-icon">
-                                        <i class="ki-duotone ki-abstract-26 fs-2">
+                                        <i class="ki-duotone ki-abstract-21 fs-2 text-info">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
                                         </i>
                                     </span>
-                                    <span class="menu-title">Documentation</span>
+                                    <span class="menu-title">Gelir Gider</span>
                                 </a>
                                 <!--end:Menu link-->
                             </div>
@@ -1197,13 +1197,15 @@
                 <!--begin::Activities-->
                 <div class="app-navbar-item ms-1 ms-lg-3">
                     <!--begin::Drawer toggle-->
-                    <div class="btn btn-icon btn-icon-white btn-custom btn-active-color-primary w-35px h-35px w-md-40px h-md-40px" id="kt_activities_toggle">
-                        <i class="ki-duotone ki-notification-status  fs-2x text-white">
+                    <div class="btn btn-icon btn-icon-white btn-custom btn-active-color-primary w-35px h-35px w-md-40px h-md-40px position-relative " id="kt_activities_toggle">
+                        <i class="ki-duotone ki-tablet-text-down  fs-2x text-white">
                             <span class="path1"></span>
                             <span class="path2"></span>
                             <span class="path3"></span>
                             <span class="path4"></span>
                         </i>
+                        <span class="bullet bullet-dot bg-success h-6px w-6px position-absolute translate-middle top-0 mt-0 start-50 animation-blink">
+                        </span>
                     </div>
                     <!--end::Drawer toggle-->
                 </div>
