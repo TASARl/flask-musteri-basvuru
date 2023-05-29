@@ -928,8 +928,8 @@ def dosya_guncelleme_ekle(dosya_id, inputValue, status):
     gecici_guncellemeler.insert_one(geciciDataGuncelle)
 
     # eger gecici guncellemeler 100 den fazlaysa tarihe gore ilk kayidi sil
-    if gecici_guncellemeler.count_documents({}) > 100:
-        oldest_record = gecici_guncellemeler.find_one_and_delete(sort=[('_id', 1)])               
+    # if gecici_guncellemeler.count_documents({}) > 100:
+    #     oldest_record = gecici_guncellemeler.find_one_and_delete(sort=[('_id', 1)])               
 
     return result
 
