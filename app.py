@@ -468,7 +468,10 @@ def get_basvurular():
     total_customers = customers.count_documents(query)
 
     # Get customers from the database with the specified filters
-    customer_list = list(customers.find(query, {'_id': 1, 'adi': 1, 'soyadi': 1, 'dosya_numarasi': 1, 'galeri_ili': 1, 'galeri_adi': 1, 'kredi_tutari': 1, 'kredi_vadesi': 1, 'calisma_sekli': 1, 'kredi_miktar': 1, 'kredi_vadesi': 1, 'created_time': 1, 'musteri_cep_telefonu': 1, 'model_yili': 1, 'marka_adi': 1, 'tip_adi': 1, 'created_by_isim': 1, 'status': 1}).sort("created_time", -1))
+    # customer_list = list(customers.find(query, {'_id': 1, 'adi': 1, 'soyadi': 1, 'dosya_numarasi': 1, 'galeri_ili': 1, 'galeri_adi': 1, 'kredi_tutari': 1, 'kredi_vadesi': 1, 'calisma_sekli': 1, 'kredi_miktar': 1, 'kredi_vadesi': 1, 'created_time': 1, 'musteri_cep_telefonu': 1, 'model_yili': 1, 'marka_adi': 1, 'tip_adi': 1, 'created_by_isim': 1, 'status': 1}).sort("created_time", -1))
+    customer_list = list(customers.find(query, {'_id': 1, 'adi': 1, 'soyadi': 1, 'dosya_numarasi': 1, 'galeri_ili': 1, 'galeri_adi': 1, 'kredi_tutari': 1, 'kredi_vadesi': 1, 'calisma_sekli': 1, 'kredi_miktar': 1, 'kredi_vadesi': 1, 'created_time': 1, 'musteri_cep_telefonu': 1, 'model_yili': 1, 'marka_adi': 1, 'tip_adi': 1, 'created_by_isim': 1, 'status': 1}).sort('created_time', pymongo.DESCENDING))
+
+
 
     # Sayfa numarasını al
     page = int(request.args.get('page', 1))
