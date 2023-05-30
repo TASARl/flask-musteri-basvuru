@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 from bson import json_util
 from bson.objectid import ObjectId
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import pymongo
 from pymongo import DESCENDING
@@ -64,6 +64,39 @@ vergi_daire_il_ilceler = hazir_veriler["vergi_daireleri"]
 app = Flask(__name__)
 app.secret_key = secret
 
+# Kullanıcı Bilgileri getir fonksiyonu
+def user_data_getir():
+    
+    # 30 gunluk kullandirilan sorgu yap
+    belgeler = customers.find({
+        "status": "Kullandırıldı",
+        "created_time": {
+            "$gte": datetime.now() - timedelta(days=30)
+        }
+    }, )
+
+    # Net geliri hesapla
+    kullandirilan_30_gunluk = 0
+    for belge in belgeler:
+        try:
+            net_gelir_str = belge['kullandirim_bilgileri']['kredi']
+            if net_gelir_str: # string boş değilse devam et
+                net_gelir_str = net_gelir_str.replace('.', '')  # Noktaları kaldır
+                net_gelir_str = net_gelir_str.replace(',', '.')  # Virgülü noktaya çevir
+                net_gelir_float = float(net_gelir_str)  # sayiyi integer donustur
+                kullandirilan_30_gunluk += net_gelir_float
+        except KeyError:
+            continue
+
+
+    return {
+        "isim_soyisim": current_user.isim_soyisim,
+        "cep_telefonu": current_user.id,
+        "sehir": current_user.city,
+        "yetki": current_user.yetki,
+        "gallery_name": current_user.gallery_name,
+        "kullandirilan_30_gunluk": kullandirilan_30_gunluk
+    }
 
 # Index sayfasi
 @app.route('/')
@@ -80,13 +113,7 @@ def destek():
         'sayfa_baslik': 'Yardım Sayfası'
     }
 
-    user_data = {
-        "isim_soyisim": current_user.isim_soyisim,
-        "cep_telefonu": current_user.id,
-        "sehir": current_user.city,
-        "yetki": current_user.yetki,
-        "gallery_name": current_user.gallery_name,
-    }
+    user_data = user_data_getir()
     
     return render_template('destek.html', metadata=metadata, user_data=user_data)
 
@@ -120,13 +147,7 @@ def harcamalar():
         'sayfa_baslik': 'Harcamalar'
     }
 
-    user_data = {
-        "isim_soyisim": current_user.isim_soyisim,
-        "cep_telefonu": current_user.id,
-        "sehir": current_user.city,
-        "yetki": current_user.yetki,
-        "gallery_name": current_user.gallery_name,
-    }
+    user_data = user_data_getir()
     
     return render_template('harcamalar.html', data=harcamalar_list , metadata=metadata, user_data=user_data)
 
@@ -154,13 +175,7 @@ def hesabim():
         'sayfa_baslik': 'İstatistik'
     }
 
-    user_data = {
-        "isim_soyisim": current_user.isim_soyisim,
-        "cep_telefonu": current_user.id,
-        "sehir": current_user.city,
-        "yetki": current_user.yetki,
-        "gallery_name": current_user.gallery_name,
-    }
+    user_data = user_data_getir()
     
     
     return render_template('hesabim.html', user_data=user_data, metadata=metadata)
@@ -195,13 +210,7 @@ def userlist():
         'sayfa_baslik': 'Kullanıcılar'
     }
 
-    user_data = {
-        "isim_soyisim": current_user.isim_soyisim,
-        "cep_telefonu": current_user.id,
-        "sehir": current_user.city,
-        "yetki": current_user.yetki,
-        "gallery_name": current_user.gallery_name,
-    }
+    user_data = user_data_getir()
     
     return render_template('userlist.html', data=customer_list , metadata=metadata, user_data=user_data)
 
@@ -216,13 +225,7 @@ def istatistik(parametre=None):
         'sayfa_baslik': 'İstatistik'
     }
 
-    user_data = {
-        "isim_soyisim": current_user.isim_soyisim,
-        "cep_telefonu": current_user.id,
-        "sehir": current_user.city,
-        "yetki": current_user.yetki,
-        "gallery_name": current_user.gallery_name,
-    }
+    user_data = user_data_getir()
 
     if parametre:
         if parametre == 'bankalar':
@@ -381,13 +384,7 @@ def form():
 @login_required
 def dashboard():
    
-    user_data = {
-        "isim_soyisim": current_user.isim_soyisim,
-        "cep_telefonu": current_user.id,
-        "sehir": current_user.city,
-        "yetki": current_user.yetki,
-        "gallery_name": current_user.gallery_name,
-    }
+    user_data = user_data_getir()
     
     metadata ={
         'sayfa_baslik': 'Özet'
@@ -508,13 +505,7 @@ def get_basvurular():
     else:
         lstest_customer_id = '0'
 
-    user_data = {
-        "isim_soyisim": current_user.isim_soyisim,
-        "cep_telefonu": current_user.id,
-        "sehir": current_user.city,
-        "yetki": current_user.yetki,
-        "gallery_name": current_user.gallery_name,
-    }
+    user_data = user_data_getir()
 
     return render_template('basvurular.html', data=customer_list , metadata=metadata, lstest_customer_id=lstest_customer_id, user_data=user_data)
 
