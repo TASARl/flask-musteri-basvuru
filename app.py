@@ -928,7 +928,13 @@ def dosya_guncelleme_ekle(dosya_id, inputValue, status):
 
     # eger gecici guncellemeler 100 den fazlaysa tarihe gore ilk kayidi sil
     # if gecici_guncellemeler.count_documents({}) > 100:
-    #     oldest_record = gecici_guncellemeler.find_one_and_delete(sort=[('_id', 1)])               
+    #     oldest_record = gecici_guncellemeler.find_one_and_delete(sort=[('_id', 1)])  
+
+    # En son 100 belgeyi hariç tutarak tüm kayıtları getir
+    docs_to_delete = gecici_guncellemeler.find().sort('_id', -1).skip(100)
+
+    # Silme işlemini gerçekleştir
+    delete_result = gecici_guncellemeler.delete_many({'_id': {'$in': [doc['_id'] for doc in docs_to_delete]}})             
 
     return result
 

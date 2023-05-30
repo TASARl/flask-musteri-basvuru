@@ -1,11 +1,48 @@
-<!--begin::Timeline items-->
-<div class="timeline" id="timeline">
-    <!--begin::Timeline item-->
-    
-    
 
+<div id="kt_sidebar" class="sidebar px-5 py-5 py-lg-8 px-lg-11" data-kt-drawer="true" data-kt-drawer-name="sidebar" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="375px" data-kt-drawer-direction="end" data-kt-drawer-toggle="#kt_sidebar_toggle" data-kt-drawer-close="#kt_drawer_advanced_close">
+    <!--begin::Header-->
+    <div class="d-flex flex-stack mb-5 mb-lg-8" id="kt_sidebar_header">
+        <!--begin::Title-->
+        <h2 class="text-white">Son İşlemler</h2>
+        <!--end::Title-->
+        <!--begin::Menu-->
+        <div class="ms-1">
+            <button class="btn btn-icon btn-sm btn-color-white btn-active-color-primary me-n5"  data-kt-menu-placement="bottom-end" data-kt-menu-overflow="true" id="kt_drawer_advanced_close">
+                <i class="ki-duotone ki-right-square fs-2">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                    <span class="path3"></span>
+                    <span class="path4"></span>
+                </i>
+            </button>
+            
+            
+            <!--end::Menu-->
+        </div>
+    </div>
+    <!--end::Header-->
+    <!--begin::Body-->
+    <div class="mb-5 mb-lg-8" id="kt_sidebar_body">
+        <!--begin::Scroll-->
+        <div class="hover-scroll-y me-n6 pe-6" id="kt_sidebar_body" data-kt-scroll="true" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_sidebar_header, #kt_sidebar_footer" data-kt-scroll-wrappers="#kt_page, #kt_sidebar, #kt_sidebar_body" data-kt-scroll-offset="0">
+            <!--begin::Timeline items-->
+            <div class="timeline" id="timeline">
+
+                
+            </div>
+            <!--end::Timeline items-->
+        </div>
+        <!--end::Scroll-->
+    </div>
+    <!--end::Body-->
+    <!--begin::Footer-->
+    <div class="text-center" id="kt_sidebar_footer">
+        <!--begin::Link-->
+        <a href="../../demo10/dist/pages/user-profile/activity.html" class="btn btn-hover-rise text-white bg-white bg-opacity-10 text-uppercase fs-7 fw-bold">Hepsini Gör</a>
+        <!--end::Link-->
+    </div>
+    <!--end::Footer-->
 </div>
-<!--end::Timeline items-->
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -35,15 +72,17 @@
 
                     let basketType;
                     if(item.status === 'standart') {
-                        basketType = 'ki-setting-4 text-success';
+                        basketType = 'ki-setting-4 text-white';
                     } else if(item.status === 'kullanici') {
-                        basketType = 'ki-pencil text-warning';
+                        basketType = 'ki-pencil text-white';
                     } else{
-                        basketType = 'ki-abstract-10 text-primary';
+                        basketType = 'ki-abstract-10 text-white';
                     }
                     
+                    
+
                     // Icon içindeki simgeyi oluşturma
-                    const iconSymbol = $('<div>').addClass('symbol-label bg-light');
+                    const iconSymbol = $('<div>').addClass('symbol-label');
                     const icon = $('<i>').addClass(`ki-duotone ${basketType} fs-2`);
                     const paths = ['path1', 'path2', 'path3', 'path4'];
                     $.each(paths, function(index, path) {
@@ -53,10 +92,11 @@
                     iconSymbol.append(icon);
                     timelineIcon.append(iconSymbol);
 
+
                     // Timeline content öğesi oluşturma
                     const timelineContent = $('<div>').addClass('timeline-content mt-n1');
                     const timelineHeading = $('<div>').addClass('pe-3 mb-5');
-                    const title = $('<div>').addClass('fs-5 fw-semibold mb-2').html(`${item.galeri_adi} <br/> ${item.dosya_tarihi} tarihli ${item.gorunen_dosya_no} numaralı dosyada işlem yapıldı --- ${item.inputValue}`);
+                    const title = $('<div>').addClass('fs-5 text-white fw-semibold mb-2').html(`${item.galeri_adi} <br/> ${item.dosya_tarihi} tarihli ${item.gorunen_dosya_no} numaralı dosyada işlem yapıldı --- ${item.inputValue}`);
                     timelineHeading.append(title);
                     const currentDate = new Date(item.created_time.$date);
                     const formattedDate = currentDate.toLocaleDateString();
@@ -79,4 +119,3 @@
         });
     });
     </script>
-    
