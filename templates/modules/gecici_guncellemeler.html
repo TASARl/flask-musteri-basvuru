@@ -56,7 +56,7 @@
                     // Timeline content öğesi oluşturma
                     const timelineContent = $('<div>').addClass('timeline-content mt-n1');
                     const timelineHeading = $('<div>').addClass('pe-3 mb-5');
-                    const title = $('<div>').addClass('fs-5 fw-semibold mb-2').html(`${item.galeri_adi} <br/> ${item.gorunen_dosya_no} numaralı dosyada işlem yapıldı --- ${item.inputValue}`);
+                    const title = $('<div>').addClass('fs-5 fw-semibold mb-2').html(`${item.galeri_adi} <br/> ${item.dosya_tarihi} tarihli ${item.gorunen_dosya_no} numaralı dosyada işlem yapıldı --- ${item.inputValue}`);
                     timelineHeading.append(title);
                     const currentDate = new Date(item.created_time.$date);
                     const formattedDate = currentDate.toLocaleDateString();

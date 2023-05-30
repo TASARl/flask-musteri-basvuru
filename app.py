@@ -347,7 +347,7 @@ def form():
         data['status'] = 'Devam'   # surec sayfasindaki renkli butonlar
 
         # Rastgele 5 haneli büyük harf, rakam ve tirelerden oluşan benzersiz bir dizi oluşturuyoruz.
-        dosya_numarasi = ''.join(random.choices(string.ascii_uppercase + string.digits + '-', k=5))
+        dosya_numarasi = ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
 
         # Benzersiz dosya numarasi daha önce kullanılmış mı diye kontrol ediyoruz.
         while customers.find_one({"dosya_numarasi": dosya_numarasi}) is not None:
@@ -907,9 +907,14 @@ def dosya_guncelleme_ekle(dosya_id, inputValue, status):
 
     galeri_adi = customers.find_one({'_id': ObjectId(dosya_id)})['galeri_adi']
     gorunen_dosya_no = customers.find_one({'_id': ObjectId(dosya_id)})['dosya_numarasi']
+    dosya_tarihi_long = customers.find_one({'_id': ObjectId(dosya_id)})['created_time']
+    # String olarak verilen tarihi datetime nesnesine dönüştürme
+    dosya_tarihi = dosya_tarihi_long.strftime("%d/%m/%Y")
+
     geciciDataGuncelle = {
         'galeri_adi':galeri_adi,
         'gorunen_dosya_no':gorunen_dosya_no,
+        'dosya_tarihi':dosya_tarihi,
         'inputValue': inputValue,
         'isim_soyisim': current_user.isim_soyisim,
         'status': status,   
