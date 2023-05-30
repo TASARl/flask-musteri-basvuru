@@ -256,10 +256,10 @@
                                         <!--begin:Landing-->
                                         <div class="d-flex flex-stack flex-wrap flex-lg-nowrap gap-2 mx-5">
                                             <div class="d-flex flex-column me-5">
-                                                <div class="fs-6 fw-bold text-gray-800">Landing Page Template</div>
-                                                <div class="fs-7 fw-semibold text-muted">Onpe page landing template with pricing & others</div>
+                                                <div class="fs-6 fw-bold text-gray-800">{{ user_data.gallery_name }} - {{ user_data.isim_soyisim }}</div>
+                                                <div class="fs-7 fw-semibold text-muted">{{ user_data.sehir }} - {{ user_data.yetki }}</div>
                                             </div>
-                                            <a href="../../demo45/dist/landing.html" class="btn btn-sm btn-primary fw-bold">Explore</a>
+                                            <a href="{{ url_for('logout') }}" class="btn btn-sm btn-primary fw-bold">Çıkış Yap</a>
                                         </div>
                                         <!--end:Landing-->
                                     </div>
@@ -296,60 +296,7 @@
                                             <!--end:Menu link-->
                                         </div>
                                         <!--end:Menu item-->
-                                        <!--begin:Menu item-->
-                                        <div class="menu-item p-0 m-0">
-                                            <!--begin:Menu link-->
-                                            <a href="../../demo45/dist/dashboards/store-analytics.html" class="menu-link py-2">
-                                                <span class="menu-title">Store Analytics</span>
-                                            </a>
-                                            <!--end:Menu link-->
-                                        </div>
-                                        <!--end:Menu item-->
-                                        <!--begin:Menu item-->
-                                        <div class="menu-item p-0 m-0">
-                                            <!--begin:Menu link-->
-                                            <a href="../../demo45/dist/dashboards/social.html" class="menu-link py-2">
-                                                <span class="menu-title">Social</span>
-                                            </a>
-                                            <!--end:Menu link-->
-                                        </div>
-                                        <!--end:Menu item-->
-                                        <!--begin:Menu item-->
-                                        <div class="menu-item p-0 m-0">
-                                            <!--begin:Menu link-->
-                                            <a href="../../demo45/dist/dashboards/delivery.html" class="menu-link py-2">
-                                                <span class="menu-title">Delivery</span>
-                                            </a>
-                                            <!--end:Menu link-->
-                                        </div>
-                                        <!--end:Menu item-->
-                                        <!--begin:Menu item-->
-                                        <div class="menu-item p-0 m-0">
-                                            <!--begin:Menu link-->
-                                            <a href="../../demo45/dist/dashboards/crypto.html" class="menu-link py-2">
-                                                <span class="menu-title">Crypto</span>
-                                            </a>
-                                            <!--end:Menu link-->
-                                        </div>
-                                        <!--end:Menu item-->
-                                        <!--begin:Menu item-->
-                                        <div class="menu-item p-0 m-0">
-                                            <!--begin:Menu link-->
-                                            <a href="../../demo45/dist/dashboards/school.html" class="menu-link py-2">
-                                                <span class="menu-title">School</span>
-                                            </a>
-                                            <!--end:Menu link-->
-                                        </div>
-                                        <!--end:Menu item-->
-                                        <!--begin:Menu item-->
-                                        <div class="menu-item p-0 m-0">
-                                            <!--begin:Menu link-->
-                                            <a href="../../demo45/dist/dashboards/podcast.html" class="menu-link py-2">
-                                                <span class="menu-title">Podcast</span>
-                                            </a>
-                                            <!--end:Menu link-->
-                                        </div>
-                                        <!--end:Menu item-->
+                                        
                                     </div>
                                     <!--end:Col-->
                                 </div>
@@ -401,38 +348,6 @@
                                 <!--end:Menu link-->
                             </div>
                             <!--end:Menu item-->
-                            <!--begin:Menu item-->
-                            <div class="menu-item">
-                                <!--begin:Menu link-->
-                                <a class="menu-link" href="https://preview.keenthemes.com/metronic8/demo45/layout-builder.html" title="Build your layout and export HTML for server side integration" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
-                                    <span class="menu-icon">
-                                        <i class="ki-duotone ki-switch fs-2">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                        </i>
-                                    </span>
-                                    <span class="menu-title">Layout Builder</span>
-                                </a>
-                                <!--end:Menu link-->
-                            </div>
-                            <!--end:Menu item-->
-                            <!--begin:Menu item-->
-                            <div class="menu-item">
-                                <!--begin:Menu link-->
-                                <a class="menu-link" href="https://preview.keenthemes.com/html/metronic/docs/getting-started/changelog" target="_blank">
-                                    <span class="menu-icon">
-                                        <i class="ki-duotone ki-code fs-2">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                            <span class="path3"></span>
-                                            <span class="path4"></span>
-                                        </i>
-                                    </span>
-                                    <span class="menu-title">Changelog v8.1.8</span>
-                                </a>
-                                <!--end:Menu link-->
-                            </div>
-                            <!--end:Menu item-->
                         </div>
                         <!--end:Menu sub-->
                     </div>
@@ -458,7 +373,7 @@
                                             <span class="path2"></span>
                                         </i>
                                     </span>
-                                    <span class="menu-title">Components</span>
+                                    <span class="menu-title">İletişim</span>
                                 </a>
                                 <!--end:Menu link-->
                             </div>
@@ -473,7 +388,7 @@
                                             <span class="path2"></span>
                                         </i>
                                     </span>
-                                    <span class="menu-title">Documentation</span>
+                                    <span class="menu-title">Sık Sorulan Sorular</span>
                                 </a>
                                 <!--end:Menu link-->
                             </div>
@@ -488,28 +403,12 @@
                                             <span class="path2"></span>
                                         </i>
                                     </span>
-                                    <span class="menu-title">Layout Builder</span>
+                                    <span class="menu-title">Eğitim</span>
                                 </a>
                                 <!--end:Menu link-->
                             </div>
                             <!--end:Menu item-->
-                            <!--begin:Menu item-->
-                            <div class="menu-item">
-                                <!--begin:Menu link-->
-                                <a class="menu-link" href="https://preview.keenthemes.com/html/metronic/docs/getting-started/changelog" target="_blank">
-                                    <span class="menu-icon">
-                                        <i class="ki-duotone ki-code fs-2">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                            <span class="path3"></span>
-                                            <span class="path4"></span>
-                                        </i>
-                                    </span>
-                                    <span class="menu-title">Changelog v8.1.8</span>
-                                </a>
-                                <!--end:Menu link-->
-                            </div>
-                            <!--end:Menu item-->
+                            
                         </div>
                         <!--end:Menu sub-->
                     </div>
@@ -1219,14 +1118,7 @@
                         </i>
                     </a>
                 </div>
-                <div class="app-navbar-item ms-3 ms-lg-3">
-                    <a href="{{ url_for('logout') }}" class="btn btn-icon btn-icon-white btn-custom btn-active-color-primary w-35px h-35px w-md-40px h-md-40px" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Çıkış">
-                        <i class="ki-duotone ki-exit-right fs-2x text-white">
-                            <span class="path1"></span>
-                            <span class="path2"></span>
-                        </i>
-                    </a>
-                </div>
+                
                 <!--begin::Action-->
                 <div class="app-navbar-item">
                     <a href="#" class="btn btn-sm btn-success d-flex flex-center ms-6 ps-3 pe-4 h-35px yeniBasvuru" data-bs-toggle="modal" data-bs-target="#kt_modal_create_project" data-customerid="yeni">
