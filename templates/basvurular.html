@@ -6,6 +6,198 @@
 {% block styles %}
 <style>
    
+.w-32 {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: .85em
+}
+
+.tl-item .avatar {
+    z-index: 2
+}
+
+.circle {
+    border-radius: 500px
+}
+
+.gd-warning {
+    color: #fff;
+    border: none;
+    background: #f4c414 linear-gradient(45deg, #f4c414, #f45414)
+}
+
+.timeline {
+    position: relative;
+    border-color: rgba(160, 175, 185, .15);
+    padding: 0;
+    margin: 0
+}
+
+.p-4 {
+    padding: 1.5rem !important
+}
+
+.block,
+.card {
+    background: #fff;
+    border-width: 0;
+    border-radius: .25rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .05);
+    margin-bottom: 1.5rem
+}
+
+.mb-4,
+.my-4 {
+    margin-bottom: 1.5rem !important
+}
+
+.tl-item {
+    border-radius: 3px;
+    position: relative;
+    display: -ms-flexbox;
+    display: flex
+}
+
+.tl-item>* {
+    padding: 10px
+}
+
+.tl-item .avatar {
+    z-index: 2
+}
+
+.tl-item:last-child .tl-dot:after {
+    display: none
+}
+
+.tl-item.active .tl-dot:before {
+    border-color: #448bff;
+    box-shadow: 0 0 0 4px rgba(68, 139, 255, .2)
+}
+
+.tl-item:last-child .tl-dot:after {
+    display: none
+}
+
+.tl-item.active .tl-dot:before {
+    border-color: #448bff;
+    box-shadow: 0 0 0 4px rgba(68, 139, 255, .2)
+}
+
+.tl-dot {
+    position: relative;
+    border-color: rgba(160, 175, 185, .15)
+}
+
+.tl-dot:after,
+.tl-dot:before {
+    content: '';
+    position: absolute;
+    border-color: inherit;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%)
+}
+
+.tl-dot:after {
+    width: 0;
+    height: auto;
+    top: 25px;
+    bottom: -15px;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-radius: 0
+}
+
+tl-item.active .tl-dot:before {
+    border-color: #448bff;
+    box-shadow: 0 0 0 4px rgba(68, 139, 255, .2)
+}
+
+.tl-dot {
+    position: relative;
+    border-color: rgba(160, 175, 185, .15)
+}
+
+.tl-dot:after,
+.tl-dot:before {
+    content: '';
+    position: absolute;
+    border-color: inherit;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%)
+}
+
+.tl-dot:after {
+    width: 0;
+    height: auto;
+    top: 25px;
+    bottom: -15px;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-radius: 0
+}
+
+.tl-content p:last-child {
+    margin-bottom: 0
+}
+
+.tl-date {
+    font-size: .85em;
+    margin-top: 2px;
+    min-width: 100px;
+    max-width: 100px
+}
+
+.avatar {
+    position: relative;
+    line-height: 1;
+    border-radius: 500px;
+    white-space: nowrap;
+    font-weight: 700;
+    border-radius: 100%;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    border-radius: 500px;
+    box-shadow: 0 5px 10px 0 rgba(50, 50, 50, .15)
+}
+
+.b-warning {
+    border-color: #f4c414!important;
+}
+
+.b-primary {
+    border-color: #448bff!important;
+}
+
+.b-danger {
+    border-color: #f54394!important;
+}
+.b-success{
+    border-color: #3fac5a!important;
+}
+.b-white {
+    border-color: #f7f7f7!important;
+}
 </style>
 {% endblock %}
 
@@ -80,6 +272,55 @@ function getDosyaGuncellemeleri(dosya_id) {
         url: '/dosya_guncellemeleri',
         method: 'GET',
         data: { dosya_id: dosya_id },
+        // success: function(data){
+        //     // Veriyi parse et
+        //     var json_data = JSON.parse(data);
+        //     var oncekiDay=0;
+        //     var oncekiMonth=0;
+
+        //     // HTML kodunu oluştur
+        //     var html = '<div class="timeline">';
+        //     for (var i=0; i<json_data.length; i++) {
+        //          // Tarihten sadece saat kısmını al
+
+        //         var date = new Date(json_data[i].created_time.$date);
+        //         // Saat, dakika ve saniyeyi al
+        //         var hours = date.getUTCHours() + 3; // UTC saat diliminden Türkiye saat dilimine geçiş yap
+        //         hours = ('0' + hours).slice(-2);
+        //         var minutes = ('0' + date.getMinutes()).slice(-2);
+        //         var seconds = date.getSeconds();
+
+        //         var year = date.getFullYear();
+        //         var month = ('0' + (date.getMonth() + 1)).slice(-2);
+        //         var day = ('0' + date.getDate()).slice(-2);
+        //         // eger onceki tarihle ayni degilse ekrana yazdir ve onceki degerlere ata
+        //         if (day !== oncekiDay || month !== oncekiMonth){
+        //             oncekiDay= day;
+        //             oncekiMonth= month;
+        //             html +=  '<div class="timeline-label fw-bold text-gray-800 fs-6">' + day + '/' + month + '/' + year + '</div>';
+        //         }
+
+        //         html += '<div class="timeline-item">';
+        //         html += '<div class="timeline-label fw-bold text-gray-800 fs-6">' + hours + ':' + minutes  + '</div>';
+        //         if (json_data[i].status == 'kullanici') {
+        //             html += '<div class="timeline-badge"><i class="fa fa-genderless text-warning fs-1"></i></div>';
+        //         } else if (json_data[i].status == 'otomatik'){
+        //             html += '<div class="timeline-badge"><i class="fa fa-genderless text-primary fs-1"></i></div>';
+        //         }
+        //         else {
+        //             html += '<div class="timeline-badge"><i class="fa fa-genderless text-success fs-1"></i></div>';
+        //         }
+        //         html += '<div class="fw-mormal timeline-content text-muted ps-3">';
+        //         html += '<span>' + json_data[i].inputValue + '</span>';
+        //         html += '<br><small class="text-muted">Ekleyen: ' + json_data[i].isim_soyisim + '</small>';
+        //         html += '</div>';
+        //         html += '</div>';
+        //     }
+        //     html += '</div>';
+
+        //     // HTML kodunu sayfaya ekle
+        //     $('#eklenecekGuncellemeler').html(html);
+        // },
         success: function(data){
             // Veriyi parse et
             var json_data = JSON.parse(data);
@@ -87,10 +328,9 @@ function getDosyaGuncellemeleri(dosya_id) {
             var oncekiMonth=0;
 
             // HTML kodunu oluştur
-            var html = '<div class="timeline">';
+            var html = '<div class="timeline p-4 block mb-4">';
             for (var i=0; i<json_data.length; i++) {
-                 // Tarihten sadece saat kısmını al
-
+                // Tarihten sadece saat kısmını al
                 var date = new Date(json_data[i].created_time.$date);
                 // Saat, dakika ve saniyeyi al
                 var hours = date.getUTCHours() + 3; // UTC saat diliminden Türkiye saat dilimine geçiş yap
@@ -101,26 +341,31 @@ function getDosyaGuncellemeleri(dosya_id) {
                 var year = date.getFullYear();
                 var month = ('0' + (date.getMonth() + 1)).slice(-2);
                 var day = ('0' + date.getDate()).slice(-2);
+
                 // eger onceki tarihle ayni degilse ekrana yazdir ve onceki degerlere ata
                 if (day !== oncekiDay || month !== oncekiMonth){
                     oncekiDay= day;
                     oncekiMonth= month;
-                    html +=  '<div class="timeline-label fw-bold text-gray-800 fs-6">' + day + '/' + month + '/' + year + '</div>';
+                    html += '<div class="tl-item">';
+                    html += '<div class="tl-dot b-white"></div>';
+                    html += '<div class="tl-content">';
+                    html += '<div class="fw-bold text-gray-800 fs-6">' + day + '/' + month + '/' + year + '</div>';
+                    html += '</div></div>';    
                 }
 
-                html += '<div class="timeline-item">';
-                html += '<div class="timeline-label fw-bold text-gray-800 fs-6">' + hours + ':' + minutes  + '</div>';
+                html += '<div class="tl-item '+ (i==0 ? 'active': '' )+ '">';
                 if (json_data[i].status == 'kullanici') {
-                    html += '<div class="timeline-badge"><i class="fa fa-genderless text-warning fs-1"></i></div>';
+                    html += '<div class="tl-dot b-warning"></div>';
                 } else if (json_data[i].status == 'otomatik'){
-                    html += '<div class="timeline-badge"><i class="fa fa-genderless text-primary fs-1"></i></div>';
+                    html += '<div class="tl-dot b-primary"></div>';
                 }
                 else {
-                    html += '<div class="timeline-badge"><i class="fa fa-genderless text-success fs-1"></i></div>';
+                    html += '<div class="tl-dot b-success"></div>';
                 }
-                html += '<div class="timeline-content fw-mormal text-muted ps-3">';
-                html += '<span>' + json_data[i].inputValue + '</span>';
-                html += '<br><small class="text-muted">Ekleyen: ' + json_data[i].isim_soyisim + '</small>';
+                html += '<div class="tl-content">';
+                html += '<div class="">' + json_data[i].inputValue + '</div>';
+                html += '<div class="tl-date text-muted mt-1">' + hours + ':' + minutes + '</div>';
+                html += '<div><small class="text-muted">Ekleyen: ' + json_data[i].isim_soyisim + '</small></div>';
                 html += '</div>';
                 html += '</div>';
             }
@@ -129,6 +374,8 @@ function getDosyaGuncellemeleri(dosya_id) {
             // HTML kodunu sayfaya ekle
             $('#eklenecekGuncellemeler').html(html);
         },
+
+
         error: function(xhr, status, error) {
             console.error(error);
         }
