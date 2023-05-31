@@ -111,7 +111,7 @@
             <table class="table table-row-bordered table-row-gray-100 align-middle gs-0 gy-3">
                 <!--begin::Table head-->
                 <thead>
-                    <tr class="fw-bold text-muted">
+                    <tr class="fw-bold text-muted" style="border-bottom-color: #d8d8d8;">
                         
                         <th class="col-1">Dosya Numarası</th>
                         <th class="col-1">Galeri</th>
@@ -185,13 +185,13 @@
                             
                         </td>
                         <td class="text-end">
-                            <a href="#" class="btn btn-icon btn-light-facebook btn-sm me-1" onclick="addSelectedCustomer(event, '{{ customer._id }}'); return false;" >
+                            <a href="#" class="btn btn-icon btn-light-facebook btn-sm " onclick="addSelectedCustomer(event, '{{ customer._id }}'); return false;" >
                                 <i class="ki-duotone ki-switch fs-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Seç">
                                     <span class="path1"></span>
                                     <span class="path2"></span>
                                 </i>
                             </a>
-                            <button type="button" class="btn btn-icon btn-light-facebook btn-sm me-1 dosyaButonu" data-bs-toggle="modal" data-bs-target="#kt_modal_create_project" data-customerid="{{ customer._id }}" >
+                            <button type="button" class="btn btn-icon btn-light-facebook btn-sm  dosyaButonu" data-bs-toggle="modal" data-bs-target="#kt_modal_create_project" data-customerid="{{ customer._id }}" >
                                 <i class="ki-duotone ki-pencil fs-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Düzenle">
                                     <span class="path1"></span>
                                     <span class="path2"></span>
@@ -206,8 +206,8 @@
                                     <span class="path5"></span>
                                 </i>
                             </a>
-                            <a href="#" class="btn btn-icon btn-light-google btn-sm me-1 musteri_dosya_sil_butonu" data-customer_id="{{ customer._id }}" >
-                                <i class="ki-duotone ki-trash fs-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Sil">
+                            <a href="#" class="btn btn-icon btn-light-google btn-sm musteri_dosya_sil_butonu" data-customer_id="{{ customer._id }}" >
+                                <i class="ki-duotone ki-delete-folder fs-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Sil">
                                     <span class="path1"></span>
                                     <span class="path2"></span>
                                 </i>
