@@ -190,7 +190,7 @@ def hesabim():
 
     # Pagination metadatasını oluştur
     metadata = {
-        'sayfa_baslik': 'İstatistik'
+        'sayfa_baslik': 'Hesap Ayarları'
     }
 
     user_data = user_data_getir()
