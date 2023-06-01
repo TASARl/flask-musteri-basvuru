@@ -314,7 +314,7 @@ def form():
         # eger dokuman id baska bir dokumanda varsa bilgileri gunceller. not kelimesi dikkat
         dosya_id=request.json.get('dosya_id')
         if not (dosya_id=='' or dosya_id == "yeni" or dosya_id == "eski"):
-            # Veritabanından model yılına ait markai çek
+            # Veritabanından guncelenecek dosya bilgisini cek
             kayitli_dosya_bilgisi = customers.find_one({'_id': ObjectId(dosya_id)})
             
             # JSON formatında modelleri döndür
@@ -327,6 +327,7 @@ def form():
                 # edit islemi esnasinda saha personeli silinemez
                 if "saha_personeli" in data and data["saha_personeli"]:
                     del data["saha_personeli"]
+
 
                 dosya_guncelleme_ekle(dosya_id, 'Dosya guncellendi', 'otomatik')
                 # # guncelleme bılgılerı tımelıne ekleme
@@ -359,7 +360,7 @@ def form():
             # eger dosya daha onceden yoksa ve İLK DEFA BİR DOSYA OLUŞTURULUyorsa
             data['created_time'] = datetime.now(turkey_tz)
 
-        # yeni ve eski kelimelerini siler. bunu otomatik atar
+        # yeni ve eski kelimelerini siler. bu kayit esnasinda otomatik atanacak
         if "dosya_id" in data:
             del data["dosya_id"]
         
@@ -388,9 +389,10 @@ def form():
         result = customers.insert_one(data)
 
         dosya_id = result.inserted_id
-        print(f"_id of inserted document {dosya_id}")
+        # print(f"_id of inserted document {dosya_id}")
 
         dosya_guncelleme_ekle(dosya_id, "Dosya oluşturuldu.", "otomatik")
+        update_selected_customer(dosya_id)
 
         # Başarılı bir şekilde kaydedildi sayfasını göster
         return jsonify({'message': 'Form kaydedildi','dosya_id': str(dosya_id)}), 200
@@ -528,17 +530,9 @@ def get_basvurular():
 
     return render_template('basvurular.html', data=customer_list , metadata=metadata, lstest_customer_id=lstest_customer_id, user_data=user_data)
 
-#kullanici secimi ekle
-@app.route('/add_customer_selection', methods=['POST'])
-@login_required
-def add_customer_selection():
-
-    # İstekten gelen JSON verilerini al
-    data = request.get_json()
-    customer_id = data['customer_id']    # secilen musterinin id'si
-    selection_date = datetime.now(turkey_tz)
-
+def update_selected_customer(customer_id):
     current_user_id = current_user.id       # secimi yapan kullanicinin cep telefonu. idsi
+    selection_date = datetime.now(turkey_tz)
 
     # dokumanda mevcut kullanicinin baska bir kaydi varsa al
     query = {'current_user': current_user_id}
@@ -557,6 +551,21 @@ def add_customer_selection():
             'customer_id': customer_id,
             'selection_date': selection_date
         })
+    
+    return result
+
+
+#kullanici secimi ekle
+@app.route('/add_customer_selection', methods=['POST'])
+@login_required
+def add_customer_selection():
+
+    # İstekten gelen JSON verilerini al
+    data = request.get_json()
+    customer_id = data['customer_id']    # Bu kredi dosyası id'si
+    
+
+    result = update_selected_customer( customer_id )
 
     return jsonify(str(result))
 
