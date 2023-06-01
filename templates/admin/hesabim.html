@@ -40,7 +40,7 @@
 														<div class="row">
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row">
-																<input type="text" name="company" class="form-control form-control-lg form-control-solid" placeholder="Company name" value="Keenthemes" />
+																<input type="text" name="isim_soyisim" class="form-control form-control-lg form-control-solid" placeholder="İsim Soyisim" value="{{ user_data.isim_soyisim }}" disabled />
 															</div>
 															<!--end::Col-->
 														</div>
@@ -56,7 +56,7 @@
 													<!--end::Label-->
 													<!--begin::Col-->
 													<div class="col-lg-8 fv-row">
-														<input type="text" name="company" class="form-control form-control-lg form-control-solid" placeholder="Company name" value="Keenthemes" />
+														<input type="text" name="galeri_adi" class="form-control form-control-lg form-control-solid" placeholder="Galeri İsmi" value="{{ user_data.gallery_name }}" disabled/>
 													</div>
 													<!--end::Col-->
 												</div>
@@ -77,7 +77,7 @@
 													<!--end::Label-->
 													<!--begin::Col-->
 													<div class="col-lg-8 fv-row">
-														<input type="tel" name="phone" class="form-control form-control-lg form-control-solid" placeholder="Phone number" value="044 3276 454 935" />
+														<input type="tel" name="cep_telefonu" class="form-control form-control-lg form-control-solid" placeholder="Cep Telefonu" value="{{ user_data.cep_telefonu }}" id="username" disabled/>
 													</div>
 													<!--end::Col-->
 												</div>
@@ -100,13 +100,7 @@
 													<!--end::Label-->
 													<!--begin::Col-->
 													<div class="col-lg-8 fv-row">
-														<select name="country" aria-label="Select a Country" data-control="select2" data-placeholder="Select a country..." class="form-select form-select-solid form-select-lg fw-semibold">
-															<option value="">Select a Country...</option>
-															<option data-kt-flag="flags/afghanistan.svg" value="AF">Afghanistan</option>
-															<option data-kt-flag="flags/aland-islands.svg" value="AX">Aland Islands</option>
-															<option data-kt-flag="flags/albania.svg" value="AL">Albania</option>
-															
-														</select>
+														<input type="text" name="sehir" class="form-control form-control-lg form-control-solid" placeholder="Şehir" value="{{ user_data.sehir }}" disabled/>
 													</div>
 													<!--end::Col-->
 												</div>
@@ -118,18 +112,7 @@
 													<!--end::Label-->
 													<!--begin::Col-->
 													<div class="col-lg-8 fv-row">
-														<!--begin::Input-->
-														<select name="language" aria-label="Select a Language" data-control="select2" data-placeholder="Select a language..." class="form-select form-select-solid form-select-lg">
-															<option value="">Select a Language...</option>
-															<option data-kt-flag="flags/indonesia.svg" value="id">Bahasa Indonesia - Indonesian</option>
-															<option data-kt-flag="flags/malaysia.svg" value="msa">Bahasa Melayu - Malay</option>
-															<option data-kt-flag="flags/canada.svg" value="ca">Català - Catalan</option>
-															
-														</select>
-														<!--end::Input-->
-														<!--begin::Hint-->
-														<div class="form-text">Please select a preferred language, including date, time, and number formatting.</div>
-														<!--end::Hint-->
+														<input type="text" name="ilce" class="form-control form-control-lg form-control-solid" placeholder="İlçe" value="{{ user_data.ilce }}" disabled/>
 													</div>
 													<!--end::Col-->
 												</div>
@@ -142,7 +125,7 @@
 													<!--end::Label-->
 													<!--begin::Col-->
 													<div class="col-lg-8 fv-row">
-														<input type="text" name="website" class="form-control form-control-lg form-control-solid" placeholder="Company website" value="keenthemes.com" />
+														<input type="text" name="adres" class="form-control form-control-lg form-control-solid" placeholder="İlçe" value="{{ user_data.adres }}" disabled/>
 													</div>
 													<!--end::Col-->
 												</div>
@@ -158,30 +141,33 @@
 														<!--begin::Options-->
 														<div class="d-flex align-items-center mt-3">
 															<!--begin::Option-->
-															<label class="form-check form-check-custom form-check-inline form-check-solid me-5">
-																<input class="form-check-input" name="communication[]" type="checkbox" value="Oto Galeri" />
-																<span class="fw-semibold ps-2 fs-6">Oto Galeri</span>
+															<label class="form-check form-check-custom form-check-inline form-check-solid me-5 is-valid">
+															  <input class="form-check-input" name="yetki" type="radio" value="Oto Galeri" {% if current_user.yetki == 'Oto Galeri' %}checked{% endif %} disabled>
+															  <span class="fw-semibold ps-2 fs-6">Oto Galeri</span>
 															</label>
 															<!--end::Option-->
 															<!--begin::Option-->
-															<label class="form-check form-check-custom form-check-inline form-check-solid">
-																<input class="form-check-input" name="communication[]" type="checkbox" value="Saha Personeli" />
-																<span class="fw-semibold ps-2 fs-6">Saha Personeli</span>
+															<label class="form-check form-check-custom form-check-inline form-check-solid is-valid">
+															  <input class="form-check-input" name="yetki" type="radio" value="Saha Personeli" {% if current_user.yetki == 'Saha Personeli' %}checked{% endif %} disabled>
+															  <span class="fw-semibold ps-2 fs-6">Saha Personeli</span>
 															</label>
 															<!--end::Option-->
 															<!--begin::Option-->
-															<label class="form-check form-check-custom form-check-inline form-check-solid">
-																<input class="form-check-input" name="communication[]" type="checkbox" value="Kredi Ofisi" />
-																<span class="fw-semibold ps-2 fs-6">Kredi Ofisi</span>
+															<label class="form-check form-check-custom form-check-inline form-check-solid is-valid">
+															  <input class="form-check-input" name="yetki" type="radio" value="Kredi Ofisi" {% if current_user.yetki == 'Kredi Ofisi' %}checked{% endif %} disabled>
+															  <span class="fw-semibold ps-2 fs-6">Kredi Ofisi</span>
 															</label>
 															<!--end::Option-->
 															<!--begin::Option-->
-															<label class="form-check form-check-custom form-check-inline form-check-solid">
-																<input class="form-check-input" name="communication[]" type="checkbox" value="Yönetici" />
-																<span class="fw-semibold ps-2 fs-6">Yönetici</span>
+															<label class="form-check form-check-custom form-check-inline form-check-solid is-valid">
+															  <input class="form-check-input" name="yetki" type="radio" value="Yönetici" {% if current_user.yetki == 'Yönetici' %}checked{% endif %} disabled>
+															  <span class="fw-semibold ps-2 fs-6">Yönetici</span>
 															</label>
 															<!--end::Option-->
-														</div>
+														  </div>
+														  
+														  
+														
 														<!--end::Options-->
 													</div>
 													<!--end::Col-->
@@ -302,16 +288,12 @@
 												</div>
 												<!--end::Sign-in Method-->
 
-
-
-
-												
 											</div>
 											<!--end::Card body-->
 											<!--begin::Actions-->
 											<div class="card-footer d-flex justify-content-end py-6 px-9">
 												
-												<button type="submit" class="btn btn-primary" id="kt_account_profile_details_submit">Save Changes</button>
+												<button type="submit" class="btn btn-primary" id="kt_account_profile_details_submit">Kaydet</button>
 											</div>
 											<!--end::Actions-->
 										</form>

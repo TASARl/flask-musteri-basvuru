@@ -96,6 +96,8 @@ def user_data_getir():
         "sehir": current_user.city,
         "yetki": current_user.yetki,
         "gallery_name": current_user.gallery_name,
+        "ilce": current_user.district,
+        "adres": current_user.address,
         "kullandirilan_30_gunluk": kullandirilan_30_gunluk
     }
 
@@ -685,6 +687,32 @@ def login():
     # GET isteklerinde login sayfasını göster
     return render_template('sign-in.html')
 
+@app.route('/api/change-password', methods=['POST'])
+def change_password():
+    # Form verilerini alın
+    username = request.form['username']
+    old_password = request.form['old_password']
+    new_password = request.form['new_password']
+
+    # Kullanıcının mevcut olup olmadığını kontrol edin
+    user = users_collection.find_one({'username': username})
+    if not user:
+        error = 'Kullanıcı bulunamadı'
+        return jsonify({'success': False, 'error': error}), 404
+
+    # Mevcut şifreyi doğrulayın
+    if not check_password_hash(user['password'], old_password):
+        error = 'Eski parolayı yanlış girdiniz'
+        return jsonify({'success': False, 'error': error}), 401
+
+    # Yeni şifreyi hashleyin ve güncelleyin
+    new_hashed_password = generate_password_hash(new_password)
+    users_collection.update_one(
+        {'_id': user['_id']},
+        {'$set': {'password': new_hashed_password}}
+    )
+
+    return jsonify({'success': True})
 
 # Çıkış İşlevi
 @app.route('/logout')
