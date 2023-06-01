@@ -29,6 +29,17 @@
 		<link href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.bootstrap5.min.css" rel="stylesheet" type="text/css" />
 		
 		<!--end::Datatable(musteri sayfasi icin)-->
+		<style>
+			.logo_ana {
+				height: 60px;
+			}
+			
+			@media (max-width: 640px) {
+				.logo_ana {
+					height: 40px;
+				}
+			}
+		</style>
 		
 	</head>
 	<!--end::Head-->
@@ -59,9 +70,9 @@
 								</div>
 								<!--end::Sidebar toggle-->
 								<!--begin::Logo-->
-								<a href="../../demo10/dist/index.html">
-									<img alt="Logo" src="{{ url_for('static', filename='assets/media/logos/hizli-logo.png') }}" class="h-70px" />
-								</a>
+								
+									<img alt="Logo" src="{{ url_for('static', filename='assets/media/logos/hizli-logo.png') }}" class="logo_ana" />
+								
 								<!--end::Logo-->
 							</div>
 							<!--end::Brand-->
