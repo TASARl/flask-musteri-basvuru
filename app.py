@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for
+from flask import Flask, render_template, request, jsonify, redirect, url_for, abort
 from bson import json_util
 from bson.objectid import ObjectId
 from datetime import datetime, timedelta
+from functools import wraps
 
 import pymongo
 from pymongo import DESCENDING
@@ -64,7 +65,7 @@ vergi_daire_il_ilceler = hazir_veriler["vergi_daireleri"]
 app = Flask(__name__)
 app.secret_key = secret
 
-# Kullanıcı Bilgileri getir fonksiyonu
+# Kullanıcı Bilgileri getir fonksiyonu. hersayfada kulllanildi
 def user_data_getir():
     
     # 30 gunluk kullandirilan sorgu yap
@@ -98,6 +99,22 @@ def user_data_getir():
         "kullandirilan_30_gunluk": kullandirilan_30_gunluk
     }
 
+# Sadece yonetici yetkisiyle gorulebilecek sayfalari bununla kapsa
+def yonetici_gerekli(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if not current_user.yetki == 'Yönetici':
+            metadata = {
+                'sayfa_baslik': 'Yetkiniz Yok'
+            }
+
+            user_data = user_data_getir()
+            
+            return render_template('admin/hata.html', metadata=metadata, user_data=user_data)
+            
+        return f(*args, **kwargs)
+    return decorated
+
 # Index sayfasi
 @app.route('/')
 @login_required
@@ -119,6 +136,7 @@ def destek():
 
 # Index sayfasi
 @app.route('/harcamalar')
+@yonetici_gerekli
 @login_required
 def harcamalar():
 
@@ -217,6 +235,7 @@ def userlist():
 # İstatistik Veriler sayfasi
 @app.route('/istatistik/')
 @app.route('/istatistik/<parametre>')
+@yonetici_gerekli
 @login_required
 def istatistik(parametre=None):
 
@@ -527,7 +546,7 @@ def add_customer_selection():
 
     if existing_doc:
         # Doküman mevcut, güncelleme yapılabilir
-        existing_doc["customer_id"] = customer_id
+        existing_doc["customer_id"] = customer_id   # Bunu karıştırma. Bu kredi dosyası id'si
         existing_doc["selection_date"] = selection_date
         result = selected_customers.replace_one(query, existing_doc)
     else:

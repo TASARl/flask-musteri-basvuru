@@ -15,6 +15,7 @@
             </a>
         </div>
         <!--end::Menu item-->
+        
         <!--begin::Menu item-->
         <div class="menu-item m-0 p-0">
             <a class="menu-link py-3 px-4 {% if request.path == '/userlist' %}active{% endif %}" href="{{ url_for('userlist') }}">
@@ -22,20 +23,20 @@
             </a>
         </div>
         <!--end::Menu item-->
-        <!--begin::Menu item-->
+        <!--begin::Menu item-->{% if user_data.yetki == 'Yönetici' %}
         <div class="menu-item m-0 p-0">
             <a class="menu-link py-3 px-4 {% if request.path == '/istatistik' %}active{% endif %}" href="{{ url_for('istatistik') }}">
                 <span class="menu-title">İstatistik</span>
             </a>
         </div>
-        <!--end::Menu item-->
-        <!--begin::Menu item-->
+        <!--end::Menu item-->{% endif %}
+        <!--begin::Menu item-->{% if user_data.yetki == 'Yönetici' %}
         <div class="menu-item m-0 p-0">
             <a class="menu-link py-3 px-4 {% if request.path == '/harcamalar' %}active{% endif %}" href="{{ url_for('harcamalar') }}">
                 <span class="menu-title">Harcamalar</span>
             </a>
         </div>
-        <!--end::Menu item-->
+        <!--end::Menu item-->{% endif %}
         <!--begin::Menu item-->
         <div class="menu-item m-0 p-0">
             <a class="menu-link py-3 px-4 {% if request.path == '/destek' %}active{% endif %}" href="{{ url_for('destek') }}">
