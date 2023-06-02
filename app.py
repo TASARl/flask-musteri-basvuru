@@ -155,7 +155,8 @@ def harcamalar():
     end_index = min(start_index + per_page, total_customers)
 
     # harcamaleri veritabanından getir
-    harcamalar_list = list(harcamalar_db.find({}, {'_id':1, 'harcama_tarihi':1, 'harcama_kisi_secimi':1, 'harcama_aciklamasi':1, 'tutar':1 }).sort("_id", -1).skip(start_index).limit(per_page))
+    harcamalar_list = list(harcamalar_db.find({}, {'_id':1, 'harcama_tarihi':1, 'harcama_kisi_secimi':1, 'harcama_aciklamasi':1, 'tutar':1 }).sort([("harcama_tarihi", pymongo.DESCENDING), ("kayit_zamani", pymongo.DESCENDING)]).skip(start_index).limit(per_page))
+
 
     
     # Pagination metadatasını oluştur

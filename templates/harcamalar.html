@@ -89,6 +89,7 @@ $(document).ready(function() {
       data: { harcamaid: harcamaid },
       success: function(response) {
         $('tr[data-harcamaid="' + harcamaid + '"]').remove();
+        toastr.success("Harcama Silindi.", "Silme işlemi başarılı");
       },
       error: function(xhr, status, error) {
         console.log(xhr.responseText);
