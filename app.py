@@ -124,6 +124,12 @@ def index():
     # index.html adlı template'i döndür
     return render_template('index.html')
 
+# Index sayfasi
+@app.route('/kvkk')
+def kvkk():
+    # index.html adlı template'i döndür
+    return render_template('statik_sayfa/kvkk.html')
+
 @app.route('/destek')
 @login_required
 def destek():
