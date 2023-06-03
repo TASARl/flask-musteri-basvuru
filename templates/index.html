@@ -51,6 +51,59 @@
 				display: none;
 			}
 			}
+
+			/* Banka Bolumu baslangıc */
+
+			.banka {
+			width: 200px;
+			padding: 10px;
+			margin: auto;
+			transition: .3s ease;
+			box-shadow: 0 1px 1px rgba(0,0,0,.3);
+			text-align: center;
+			
+			&:hover {
+				box-shadow: 0 5px 20px rgba(0,0,0,.8);
+				transform: translateY(-10px) scale(1.02);
+			}
+			}
+
+			big {
+			display: block;
+			margin-top: 0px;
+			font-family: raleway, arial, sans-serif;
+			font-weight: 700;
+			color: #16a085;
+			}
+
+			.entry-title {
+			background: linear-gradient(to right, rgba(255,255,255,0) 50%, rgba(22, 160, 133,1.0) 50%);
+			background-size: 200%;
+			background-position: 0 0;
+			display: inline;
+			transition: .5s ease-in-out;
+			font-family: raleway, arial, sans-serif;
+			font-size:15px;
+			color: white;
+			text-decoration: none;
+			}
+
+			.banka:hover .entry-title {
+			background-position: -100% 0;
+			}
+
+			small {
+			margin-top: 0px;
+			display: block;
+			font-family: raleway, arial, sans-serif;
+			color: white;
+			text-transform: uppercase;
+			font-size: 30px;
+			}
+
+			
+
+			/* Banka Bolumu son */
 		</style>
 		
 	</head>
@@ -169,7 +222,7 @@
 													<img class="mw-100 h-100px mb-7 mx-auto" src="{{ url_for('static', filename='assets/media/illustrations/sigma-1/5.png') }}" /> 
 													<!--end::Illustrations-->
 													<!--begin::Heading-->
-													<h4 class="text-white fw-bold text-uppercase">TÜM BAŞVURULARI GÖSTER</h4>
+													<h4 class="text-white fw-bold text-uppercase">BAŞVURULARI GÖSTER</h4>
 													<!--end::Heading-->
 												</div>
 												<!--end::Card body-->
@@ -211,15 +264,51 @@
 						</div>
 						<!--end::Menu-->
 
-						<div class="d-flex flex-center flex-lg-start flex-row flex-wrap" style="justify-content: center;">
-							<div class="bg-body d-flex flex-column flex-center rounded-4 w-md-100px p-10" style="margin: 10px;">Akbank</div>
-							<div class="bg-body d-flex flex-column flex-center rounded-4 w-md-100px p-10" style="margin: 10px;">Akbank</div>
-							<div class="bg-body d-flex flex-column flex-center rounded-4 w-md-100px p-10" style="margin: 10px;">Akbank</div>
-							<div class="bg-body d-flex flex-column flex-center rounded-4 w-md-100px p-10" style="margin: 10px;">Akbank</div>
-							<div class="bg-body d-flex flex-column flex-center rounded-4 w-md-100px p-10" style="margin: 10px;">Akbank</div>
-							<div class="bg-body d-flex flex-column flex-center rounded-4 w-md-100px p-10" style="margin: 10px;">Akbank</div>
+						<div class="d-flex  flex-lg-start flex-row flex-wrap" style="justify-content: center;">
+							<div class="d-flex flex-column flex-center rounded-4 p-5 banka" style="margin: 3px; background-color: #F6E5CA;">
+								<div class="card-header flex-nowrap pt-5">
+										<h3 class="card-title align-items-start flex-column">            
+											<span class="d-block card-label fw-bold fs-4 text-gray-800">2016 - 2023</span>
+											<span class="mt-1 fw-semibold fs-7" style="color: ">Model Araçlar</span>
+										</h3>
+								</div>
+								<div class="card-body text-center pt-1"> 
+										<div class="text-center">            
+											<span class="d-block fw-bold text-gray-800" style="font-size: 30px;">2,4 %</span>
+											<span class="mt-1 fw-semibold fs-7" style="color: gray ">'den başlayan faizler</span>
+										</div>
+								</div>
+							</div>
+							<div class="d-flex flex-column flex-center rounded-4 p-5 banka" style="margin: 3px; background-color: #BFDDE3;">
+								<div class="card-header flex-nowrap pt-5">
+										<h3 class="card-title align-items-start flex-column">            
+											<span class="d-block card-label fw-bold fs-4 text-gray-800">2009 - 2016</span>
+											<span class="mt-1 fw-semibold fs-7" style="color: ">Model Araçlar</span>
+										</h3>
+								</div>
+								<div class="card-body text-center pt-1"> 
+										<div class="text-center">            
+											<span class="d-block fw-bold text-gray-800" style="font-size: 30px;">3,4 %</span>
+											<span class="mt-1 fw-semibold fs-7" style="color: gray ">'den başlayan faizler</span>
+										</div>
+								</div>
+							</div>
+							<div class="d-flex flex-column flex-center rounded-4 p-5 banka" style="margin: 3px; background-color: #F3D6EF;">
+								<div class="card-header flex-nowrap pt-5">
+										<h3 class="card-title align-items-start flex-column">            
+											<span class="d-block card-label fw-bold fs-4 text-gray-800">2004 - 2009</span>
+											<span class="mt-1 fw-semibold fs-7" style="color: ">Model Araçlar</span>
+										</h3>
+								</div>
+								<div class="card-body text-center pt-1"> 
+										<div class="text-center">            
+											<span class="d-block fw-bold text-gray-800" style="font-size: 30px;">4,4 %</span>
+											<span class="mt-1 fw-semibold fs-7" style="color: gray ">'den başlayan faizler</span>
+										</div>
+								</div>
+							</div>
 						</div>
-
+						
 
 						<!--begin::Footer-->
 						<div class="d-flex flex-column-auto flex-center">
