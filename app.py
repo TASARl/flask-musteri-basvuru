@@ -521,6 +521,7 @@ def get_basvurular():
         'city': selected_city,
         'durum': dosya_durumu,
         'saha_personeli': saha_personeli,
+        'search_keyword': search_keyword,
         'sayfa_baslik': 'Kredi Başvuru Dosyaları'
     }
 
