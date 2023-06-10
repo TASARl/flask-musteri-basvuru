@@ -144,8 +144,8 @@ def destek():
 
 # Index sayfasi
 @app.route('/harcamalar')
-@yonetici_gerekli
 @login_required
+@yonetici_gerekli
 def harcamalar():
 
     # Sayfa numarasını al
@@ -183,14 +183,14 @@ def harcamalar():
 @login_required
 def iletisim():
 
-    user_data = {
-        "isim_soyisim": current_user.isim_soyisim,
-        "cep_telefonu": current_user.id,
-        "sehir": current_user.city,
+    metadata = {
+        'sayfa_baslik': 'İletişim Sayfası'
     }
+
+    user_data = user_data_getir()
     
     
-    return render_template('iletisim.html', user_data=user_data)
+    return render_template('iletisim.html', metadata=metadata, user_data=user_data)
 
 # Index sayfasi
 @app.route('/hesabim')
@@ -244,8 +244,8 @@ def userlist():
 # İstatistik Veriler sayfasi
 @app.route('/istatistik/')
 @app.route('/istatistik/<parametre>')
-@yonetici_gerekli
 @login_required
+@yonetici_gerekli
 def istatistik(parametre=None):
 
     # Pagination metadatasını oluştur
@@ -275,7 +275,7 @@ def istatistik(parametre=None):
         return render_template('/istatistik/ana.html', metadata=metadata, user_data=user_data)
 
 
-# Yeni Kredi Dosyası Ekle
+# API - Yeni/Eski Kredi Dosyası Ekle , güncelle
 @app.route('/form', methods=['GET', 'POST'])
 @login_required
 def form():
@@ -540,6 +540,7 @@ def get_basvurular():
 
     return render_template('basvurular.html', data=customer_list , metadata=metadata, lstest_customer_id=lstest_customer_id, user_data=user_data)
 
+# Fonksiyon - Secili kullanıcıyı degistir
 def update_selected_customer(customer_id):
     current_user_id = current_user.id       # secimi yapan kullanicinin cep telefonu. idsi
     selection_date = datetime.now(turkey_tz)
@@ -565,7 +566,7 @@ def update_selected_customer(customer_id):
     return result
 
 
-#kullanici secimi ekle
+# API - Secili kullanıcıyı degistir
 @app.route('/add_customer_selection', methods=['POST'])
 @login_required
 def add_customer_selection():
@@ -579,7 +580,7 @@ def add_customer_selection():
 
     return jsonify(str(result))
 
-# secili musteri getir. masa ustu uygulamasi icin cep telefonu gonderilen kullaninicnin secili musteri bilgileri gonderilir
+# API - secili musteri getir. masa ustu uygulamasi icin cep telefonu gonderilen kullaninicnin secili musteri bilgileri gonderilir
 @app.route('/secili_musteri/<string:parametre>', methods=['GET'])
 def last_selected_customer(parametre):
     
@@ -638,9 +639,18 @@ def load_user(user_id):
     return User(user['username'], user['password'], user['gallery_name'], user['city'], user['district'], user['address'], user['isim_soyisim'], user['yetki'])
 
 
-# Kayıt Olma İşlevi
+# Yeni Kullanici ekleme sayfasi
 @app.route('/signup', methods=['GET', 'POST'])
+@login_required
+@yonetici_gerekli
 def signup():
+    # GET isteklerinde kayıt sayfasını göster
+    user_data = user_data_getir()
+    
+    metadata ={
+        'sayfa_baslik': 'Yeni Kullanıcı Ekle'
+    }
+
     if request.method == 'POST':
         # Form verilerini alın
         username = request.form['username']
@@ -655,21 +665,22 @@ def signup():
         # Kullanıcının mevcut olup olmadığını kontrol edin
         existing_user = users_collection.find_one({'username': username})
         if existing_user:
-            error = 'Bu kullanıcı adı zaten kullanılıyor. Lütfen farklı bir kullanıcı adı seçin.'
-            return render_template('signup.html', error=error)
+            error = f'{username} cep telefonu numarası ile kayıtlı başka bir kullanıcı var. Lütfen farklı bir cep telefonu ile üyelik oluşturun yada mevcut kullanıcının şifresini sıfırlayın.'
+            return render_template("signup.html", user_data=user_data, metadata=metadata, error=error)
 
         # Şifreyi hashleyin, kullanıcıyı veritabanına kaydedin ve otomatik olarak giriş yapın
         hashed_password = generate_password_hash(password)
         users_collection.insert_one({'username': username, 'password': hashed_password, 'gallery_name': gallery_name, 'city': city, 'district': district, 'address': address, 'isim_soyisim':isim_soyisim, 'yetki': yetki})
         user = User(username, hashed_password, gallery_name, city, district, address, isim_soyisim, yetki)
-        return render_template('kaydedildi.html', username=username)
+        return render_template("signup.html", user_data=user_data, metadata=metadata, username=username)
 
-    # GET isteklerinde kayıt sayfasını göster
-    return render_template('signup.html')
+    # Template'e JSON verisini gönderin
+    return render_template("signup.html", user_data=user_data, metadata=metadata)
+    
 
 
 
-# Giriş İşlevi
+# Giriş Sayfasi
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -690,12 +701,13 @@ def login():
 
         # Geçersiz kimlik bilgileri durumunda buraya yönlendir
         return jsonify({'message': 'Login failed'}), 401
-        return render_template('sign-in.html', error='Kullanıcı adı veya şifre hatalı.')
-
+        
     # GET isteklerinde login sayfasını göster
     return render_template('sign-in.html')
 
+# API - Parola degistir api
 @app.route('/api/change-password', methods=['POST'])
+@login_required
 def change_password():
     # Form verilerini alın
     username = request.form['username']
@@ -736,7 +748,7 @@ def logout():
 ####### ARAC SECIMI BASLANGIC  ####
 
 
-# Model Yılı Seçenekleri endpoint'i
+# API - Model Yılı Seçenekleri endpoint'i
 @app.route('/model_yili_secenekleri', methods=['GET'])
 def model_yili_secenekleri():
     # Veritabanından tüm model yıllarını çek
@@ -848,9 +860,6 @@ def ilce_secimi():
 
     # Veritabanından model yılına ait markai çek
     ilceler = il_ilce_tb.distinct('ilce', {'il': il})
-    
-    # JSON formatında modelleri döndür
-    
     
     json_response = json.dumps(ilceler, ensure_ascii=False)
 

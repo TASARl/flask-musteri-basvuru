@@ -1,10 +1,60 @@
-{% extends "base.html" %} {% block title %}Kayıt Et{% endblock %} {% block
+{% extends "modul__base_yeni.html" %} {% block title %}Kayıt Et{% endblock %} {% block
 content %}
-<h1>Kaydol</h1>
+<div class="alert alert-dismissible bg-light-info d-flex flex-column flex-sm-row w-100 p-5 mb-10">
+  <!--begin::Icon-->
+  <i class="ki-duotone ki-notification-bing fs-2hx text-info me-4 mb-5 mb-sm-0"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>                    <!--end::Icon-->
 
-<h1>Kayıt Et</h1>
+  <!--begin::Content-->
+  <div class="d-flex flex-column pe-0 pe-sm-10">
+      <h4 class="fw-semibold">Sayfa Yapımı Devam Ediyor</h4>
+      <span>Yeni kullanıcı eklerken Şehir ve ilçe isimleri doğru yazılmaya dikkat edilmelidir.</span>
+  </div>
+  <!--end::Content-->
+
+  <!--begin::Close-->
+  <button type="button" class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto" data-bs-dismiss="alert">
+      <i class="ki-duotone ki-cross fs-1 text-info"><span class="path1"></span><span class="path2"></span></i>                    </button>
+  <!--end::Close-->
+</div>
+
+
 {% if error %}
-  <p style="color: red;">{{ error }}</p>
+<div class="alert alert-dismissible bg-light-danger d-flex flex-column flex-sm-row w-100 p-5 mb-10">
+  <!--begin::Icon-->
+  <i class="ki-duotone ki-information-5 fs-2hx text-danger me-4 mb-5 mb-sm-0"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>                    <!--end::Icon-->
+
+  <!--begin::Content-->
+  <div class="d-flex flex-column pe-0 pe-sm-10">
+      <h4 class="fw-semibold">Hata!</h4>
+      <span>{{ error }}</span>
+  </div>
+  <!--end::Content-->
+
+  <!--begin::Close-->
+  <button type="button" class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto" data-bs-dismiss="alert">
+      <i class="ki-duotone ki-cross fs-1 text-danger"><span class="path1"></span><span class="path2"></span></i>                    </button>
+  <!--end::Close-->
+</div>
+  <p style="color: red;"></p>
+{% endif %}
+
+{% if username %}
+<div class="alert alert-dismissible bg-light-success d-flex flex-column flex-sm-row w-100 p-5 mb-10">
+  <!--begin::Icon-->
+  <i class="ki-duotone ki-shield-tick fs-2hx text-success me-4 mb-5 mb-sm-0"><span class="path1"></span><span class="path2"></span></i>                    <!--end::Icon-->
+
+  <!--begin::Content-->
+  <div class="d-flex flex-column pe-0 pe-sm-10">
+      <h4 class="fw-semibold">Yeni Kullanıcı Eklendi</h4>
+      <span>{{ username }} cep telefonu numarasını kullanana yeni bir kullanıcı yaratıldı.</span>
+  </div>
+  <!--end::Content-->
+
+  <!--begin::Close-->
+  <button type="button" class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto" data-bs-dismiss="alert">
+      <i class="ki-duotone ki-cross fs-1 text-success"><span class="path1"></span><span class="path2"></span></i>                    </button>
+  <!--end::Close-->
+</div>
 {% endif %}
 <form method="POST" action="{{ url_for('signup') }}">
   <label for="username">Cep Telefonu:</label><br>
@@ -28,15 +78,16 @@ content %}
   <label for="address">Adres:</label><br>
   <input type="text" id="address" name="address"><br>
 
+  <label for="yetki">Kullancı Yetkisi:</label><br>
   <select name="yetki"  id="yetki">
     <option value="Kullanıcı">Kullanıcı</option>
     <option value="Kredi Ofisi">Kredi Ofisi</option>
     <option value="Oto Galeri">Oto Galeri</option>
-    <option value="Yönetici">Yönetici</option>
     <option value="Saha Personeli">Saha Personeli</option>
+    <option value="Yönetici">Yönetici</option>
   </select>
 
   <br><br>
-  <input type="submit" value="Kayıt Ol">
+  <input type="submit" value="Kayıt Et">
 </form>
 {% endblock %}
