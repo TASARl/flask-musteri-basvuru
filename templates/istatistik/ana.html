@@ -1,41 +1,7 @@
 {% extends "modul__base_yeni.html" %}
 {% block styles %}
-<style>
-.header-row {
-background-color: #002376;
-color: #fff;
-font-size: 20px;
-border-bottom: 2px solid #1976d2; /* Satırın alt kısmına belirginlik katmak için ekledim */
-font-family: sans-serif;
-}
-
-.table-row {
-  font-size: 16px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
 
 
-.odd-table-row {
-background-color: #f5f5f5;
-font-size: 16px;
-}
-
-.even-table-row {
-background-color: #fafafa;
-font-size: 16px;
-}
-
-.table-cell, .header-cell {
-padding: 12px 24px;
-border: none; /* Hücrelerin kenarlığını kaldırdım */
-}
-
-/* Satırların üzerine gelindiğinde renk değişimi */
-tr:not(:first-child):hover {
-background-color: #5892e2;
-}
-</style>
 {% endblock %}
 
 
@@ -44,27 +10,36 @@ background-color: #5892e2;
 
 
 {% block content %}
-<div class="card-rounded bg-light d-flex flex-stack flex-wrap p-5 mb-5">
-    <!--begin::Nav-->
-    <ul class="nav flex-wrap border-transparent fw-bold">
-        <!--begin::Nav item-->
-        <li class="nav-item my-1">
-            <select class="form-select" data-control="select2" id="city_selector">
-                <option value="Tüm">Tüm Şehirler</option>
-            </select>
-        </li>
-        <!--end::Nav item-->
-    </ul>
-    <!--end::Nav-->
-
-    <!--begin::Action-->
-    <div class="ms-auto">
-        <a href="#" data-bs-toggle="modal" data-bs-target="#kt_modal_new_ticket" class="btn btn-primary fw-bold fs-8 fs-lg-base me-2">Para Durumu</a>
-        <a href="#" data-bs-toggle="modal" data-bs-target="#kt_modal_new_ticket" class="btn btn-primary fw-bold fs-8 fs-lg-base">Kredi Kuruluşları</a>
+<div class="card-rounded bg-light d-flex flex-wrap p-5 mb-5">
+    <div class="row w-100 align-items-center">
+      <div class="col-lg-3 mb-3 mb-lg-0">
+        <input class="form-control form-control" placeholder="Tarih Aralığı Seçin" id="tarih_araligi_secimi"/>
+      </div>
+      <div class="col-lg-3 mb-3 mb-lg-0">
+        <!--begin::Nav-->
+        <ul class="nav flex-wrap border-transparent fw-bold" style="width: 250px !important"><!-- Add inline CSS to set the width -->
+            <!--begin::Nav item-->
+            <li class="nav-item my-1">
+                <select class="form-select" data-control="select2" id="city_selector">
+                    <option value="Tüm">Tüm Şehirler</option>
+                </select>
+            </li>
+            <!--end::Nav item-->
+        </ul>
+        <!--end::Nav-->
+      </div>
+      <div class="col-lg-6">
+        <!--begin::Action-->
+        <div class="ms-auto">
+          <a href="#" data-bs-toggle="modal" data-bs-target="#kt_modal_new_ticket" class="btn btn-primary fw-bold fs-8 fs-lg-base me-2">Para Durumu</a>
+          <a href="#" data-bs-toggle="modal" data-bs-target="#kt_modal_new_ticket" class="btn btn-primary fw-bold fs-8 fs-lg-base">Kredi Kuruluşları</a>
+        </div>
+        <!--end::Action-->
+      </div>
     </div>
-    <!--end::Action-->
-</div>
-
+  </div>
+  
+  
 
 
 <div class="py-5">
@@ -226,5 +201,29 @@ background-color: #5892e2;
         var selectedCity = $(this).val();
         drawCharts(selectedCity);
     });
+</script>
+
+<script>
+    var start = moment().subtract(29, "days");
+    var end = moment();
+
+    function cb(start, end) {
+        $("#tarih_araligi_secimi").html(start.format("MMMM D, YYYY") + " - " + end.format("MMMM D, YYYY"));
+    }
+
+    $("#tarih_araligi_secimi").daterangepicker({
+        startDate: start,
+        endDate: end,
+        ranges: {
+        "Bu Gün": [moment(), moment()],
+        "Dün": [moment().subtract(1, "days"), moment().subtract(1, "days")],
+        "Son 7 Gün": [moment().subtract(6, "days"), moment()],
+        "Son 30 Gün": [moment().subtract(29, "days"), moment()],
+        "Bu Ay": [moment().startOf("month"), moment().endOf("month")],
+        "Geçen Ay": [moment().subtract(1, "month").startOf("month"), moment().subtract(1, "month").endOf("month")]
+        }
+    }, cb);
+
+    cb(start, end);
 </script>
 {% endblock %}
