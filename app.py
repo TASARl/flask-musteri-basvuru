@@ -1325,14 +1325,15 @@ def basvuru_dosyasi_sil():
 def veriler():
     # Verilerinizi bir şekilde elde edin ve JSON formatına dönüştürün.
     data = {
-        "01": {"tarih": "01-2023", "sehir": "İstanbul", "kredi_adedi": 100, "komisyon_geliri": 5000, "harcama": 4000, "artan_para": 1000},
-        "02": {"tarih": "01-2023", "sehir": "Ankara", "kredi_adedi": 200, "komisyon_geliri": 10000, "harcama": 8000, "artan_para": 2000},
-        "03": {"tarih": "01-2023", "sehir": "İzmir", "kredi_adedi": 150, "komisyon_geliri": 7500, "harcama": 6000, "artan_para": 1500},
-        "04": {"tarih": "02-2023", "sehir": "Bursa", "kredi_adedi": 175, "komisyon_geliri": 8750, "harcama": 7000, "artan_para": 1750},
-        "05": {"tarih": "02-2023", "sehir": "İstanbul", "kredi_adedi": 100, "komisyon_geliri": 5000, "harcama": 4000, "artan_para": 1000},
-        "06": {"tarih": "02-2023", "sehir": "Ankara", "kredi_adedi": 200, "komisyon_geliri": 10000, "harcama": 8000, "artan_para": 2000},
-        "07": {"tarih": "03-2023", "sehir": "İzmir", "kredi_adedi": 150, "komisyon_geliri": 7500, "harcama": 6000, "artan_para": 1500},
-        "08": {"tarih": "03-2023", "sehir": "Bursa", "kredi_adedi": 175, "komisyon_geliri": 8750, "harcama": 7000, "artan_para": 1750}
+        "01": {"tarih": "01-2023", "saha_sorumlusu": "Hamdi", "kredi_adedi": 100, "komisyon_geliri": 5000, "harcama": 4000, "net_kar": 1000},
+        "02": {"tarih": "01-2023", "saha_sorumlusu": "Mehmet", "kredi_adedi": 200, "komisyon_geliri": 10000, "harcama": 8000, "net_kar": 11000},
+        "03": {"tarih": "01-2023", "saha_sorumlusu": "Ahmet", "kredi_adedi": 150, "komisyon_geliri": 7500, "harcama": 6000, "net_kar": 1500},
+        "04": {"tarih": "02-2023", "saha_sorumlusu": "Busra", "kredi_adedi": 175, "komisyon_geliri": 8750, "harcama": 7000, "net_kar": 1750},
+        "05": {"tarih": "02-2023", "saha_sorumlusu": "Hamdi", "kredi_adedi": 30, "komisyon_geliri": 5000, "harcama": 4000, "net_kar": 1000},
+        "06": {"tarih": "02-2023", "saha_sorumlusu": "Mehmet", "kredi_adedi": 1200, "komisyon_geliri": 11000, "harcama": 3000, "net_kar": 3000},
+        "07": {"tarih": "03-2023", "saha_sorumlusu": "Ahmet", "kredi_adedi": 150, "komisyon_geliri": 7500, "harcama": 6000, "net_kar": 1500},
+        "08": {"tarih": "03-2023", "saha_sorumlusu": "Busra", "kredi_adedi": 175, "komisyon_geliri": 8750, "harcama": 7000, "net_kar": 1750},
+        "08": {"tarih": "05-2023", "saha_sorumlusu": "Mehmet", "kredi_adedi": 15, "komisyon_geliri": 2750, "harcama": 17000, "net_kar": 22750}
     }
     
     # Verileri JSON formatına dönüştürün ve istemciye gönderin.
