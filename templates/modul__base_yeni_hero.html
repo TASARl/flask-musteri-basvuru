@@ -19,40 +19,40 @@
                 <!--begin::Item-->
                 <div class="d-flex flex-column">
                     <!--begin::Number-->
-                    <span class="text-white fw-bold fs-3 mb-1">{{user_data.kullandirilan_30_gunluk}} TL</span>
+                    <span class="text-white fw-bold fs-3 mb-1" id="tl_donustur">{{user_data.kullandirilan_30_gunluk}}</span>
                     <!--end::Number-->
                     <!--begin::Section-->
-                    <div class="text-white opacity-50 fw-bold">30 Günlük Kullandırılan Kredi</div>
+                    <div class="text-white opacity-50 fw-bold">30 Günlük Kullandırılan Tutar</div>
                     <!--end::Section-->
                 </div>
                 <!--end::Item-->
                 <!--begin::Item-->
                 <div class="d-flex flex-column">
                     <!--begin::Number-->
-                    <span class="text-white fw-bold fs-3 mb-1">...... TL</span>
+                    <span class="text-white fw-bold fs-3 mb-1">{{user_data.toplam_belge_sayisi_30_gunluk}}</span>
                     <!--end::Number-->
                     <!--begin::Section-->
-                    <div class="text-white opacity-50 fw-bold">30 Günlük Kar</div>
+                    <div class="text-white opacity-50 fw-bold" data-bs-toggle="tooltip" data-bs-placement="bottom" title="30 Günlük - Kredi Başvuru Sayısı">Başvuru Sayısı</div>
                     <!--end::Section-->
                 </div>
                 <!--end::Item-->
                 <!--begin::Item-->
                 <div class="d-flex flex-column">
                     <!--begin::Number-->
-                    <span class="text-white fw-bold fs-3 mb-1">...%</span>
+                    <span class="text-white fw-bold fs-3 mb-1">{{user_data.kullandirilan_belge_sayisi_30_gunluk}}</span>
                     <!--end::Number-->
                     <!--begin::Section-->
-                    <div class="text-white opacity-50 fw-bold">Değişim (30 Gün)</div>
+                    <div class="text-white opacity-50 fw-bold" data-bs-toggle="tooltip" data-bs-placement="bottom" title="30 Günlük - Kullandırılan Kredi Sayısı">Kullanılan Krediler</div>
                     <!--end::Section-->
                 </div>
                 <!--end::Item-->
                 <!--begin::Item-->
                 <div class="d-flex flex-column">
                     <!--begin::Number-->
-                    <span class="text-white fw-bold fs-3 mb-1">...%</span>
+                    <span class="text-white fw-bold fs-3 mb-1">{{user_data.toplam_devam_eden_sayisi}}</span>
                     <!--end::Number-->
                     <!--begin::Section-->
-                    <div class="text-white opacity-50 fw-bold">Değişim (7 Gün)</div>
+                    <div class="text-white opacity-50 fw-bold"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Tamamı - Süreci Devam Eden Dosya Adedi">Süreci Devam Eden</div>
                     <!--end::Section-->
                 </div>
                 <!--end::Item-->

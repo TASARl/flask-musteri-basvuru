@@ -67,6 +67,14 @@ app.secret_key = secret
 
 # Kullanıcı Bilgileri getir fonksiyonu. hersayfada kulllanildi
 def user_data_getir():
+
+    belgeler2 = customers.find({
+        "created_time": {
+            "$gte": datetime.now() - timedelta(days=30)
+        }
+    }, )
+
+    toplam_belge_sayisi_30_gunluk = len(list(belgeler2))
     
     # 30 gunluk kullandirilan sorgu yap
     belgeler = customers.find({
@@ -78,18 +86,26 @@ def user_data_getir():
 
     # Net geliri hesapla
     kullandirilan_30_gunluk = 0
+    kullandirilan_belge_sayisi_30_gunluk = 0
     for belge in belgeler:
         try:
             net_gelir_str = belge['kullandirim_bilgileri']['kredi']
             if net_gelir_str: # string boş değilse devam et
-                net_gelir_str = net_gelir_str.replace('.', '')  # Noktaları kaldır
-                net_gelir_str = net_gelir_str.replace(',', '.')  # Virgülü noktaya çevir
+                # net_gelir_str = net_gelir_str.replace('.', '')  # Noktaları kaldır
+                # net_gelir_str = net_gelir_str.replace(',', '.')  # Virgülü noktaya çevir
                 net_gelir_float = float(net_gelir_str)  # sayiyi integer donustur
                 kullandirilan_30_gunluk += net_gelir_float
+                # print(net_gelir_float, belge['dosya_numarasi'])
+                kullandirilan_belge_sayisi_30_gunluk += 1
         except KeyError:
             continue
 
-
+    # 30 gunluk sureci devam eden sorgu yap
+    belgeler3 = customers.find({
+        "status": "Devam",
+    }, )
+    toplam_devam_eden_sayisi = len(list(belgeler3))
+   
     return {
         "isim_soyisim": current_user.isim_soyisim,
         "cep_telefonu": current_user.id,
@@ -98,7 +114,11 @@ def user_data_getir():
         "gallery_name": current_user.gallery_name,
         "ilce": current_user.district,
         "adres": current_user.address,
-        "kullandirilan_30_gunluk": kullandirilan_30_gunluk
+        "kullandirilan_30_gunluk": kullandirilan_30_gunluk,
+        "kullandirilan_belge_sayisi_30_gunluk": kullandirilan_belge_sayisi_30_gunluk,
+        "toplam_belge_sayisi_30_gunluk": toplam_belge_sayisi_30_gunluk,
+        "toplam_devam_eden_sayisi":toplam_devam_eden_sayisi
+
     }
 
 # Sadece yonetici yetkisiyle gorulebilecek sayfalari bununla kapsa
