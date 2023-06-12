@@ -1177,6 +1177,7 @@ def get_radio_data():
 ######## Kullandirim sonrasi verileri ve hesaplamalar baslangic #######
 
 @app.route('/kredi-kullandir', methods=['GET', 'POST'])
+@login_required
 def kredi_kullandir():
     if request.method == 'POST':
         dosya_id = request.json['document_id']
@@ -1269,6 +1270,7 @@ def process_customer_ids():
 
 @app.route('/harcama_islemleri', methods=['POST'])
 @login_required
+@yonetici_gerekli
 def harcama_islemleri():
     
     if request.method == 'POST':
@@ -1297,6 +1299,8 @@ def harcama_islemleri():
 
 ######### Harcamlar bolumu harcama silme ####################
 @app.route('/harcama_sil', methods=['POST'])
+@login_required
+@yonetici_gerekli
 def harcama_sil():
     harcamaid = request.form['harcamaid'] 
     harcamalar_db.delete_one({'_id': ObjectId(harcamaid)})
@@ -1306,6 +1310,7 @@ def harcama_sil():
 
 ######### Basvuru Dosyası silme, veri tabanına silindi diye bir ekleme yapar. ####################
 @app.route('/basvuru_dosyasi_sil', methods=['POST'])
+@login_required
 def basvuru_dosyasi_sil():
     customer_id = request.form['customer_id'] 
     dosya_id = customer_id
@@ -1324,19 +1329,21 @@ def basvuru_dosyasi_sil():
 
 ######## İSTATİSTİK VERİLER İÇİN SERVİSLER BAŞLANGIÇ ############
 @app.route('/veriler', methods=['GET'])
+@login_required
+@yonetici_gerekli
 def veriler():
     # Verilerinizi bir şekilde elde edin ve JSON formatına dönüştürün.
-    data3 = {
-        "01": {"tarih": "01-2023", "saha_sorumlusu": "Hamdi", "kredi_adedi": 100, "komisyon_geliri": 5000, "harcama": 4000, "net_kar": 1000},
-        "02": {"tarih": "01-2023", "saha_sorumlusu": "Mehmet", "kredi_adedi": 200, "komisyon_geliri": 10000, "harcama": 8000, "net_kar": 11000},
-        "03": {"tarih": "01-2023", "saha_sorumlusu": "Ahmet", "kredi_adedi": 150, "komisyon_geliri": 7500, "harcama": 6000, "net_kar": 1500},
-        "04": {"tarih": "02-2023", "saha_sorumlusu": "Busra", "kredi_adedi": 175, "komisyon_geliri": 8750, "harcama": 7000, "net_kar": 1750},
-        "05": {"tarih": "02-2023", "saha_sorumlusu": "Hamdi", "kredi_adedi": 30, "komisyon_geliri": 5000, "harcama": 4000, "net_kar": 1000},
-        "06": {"tarih": "02-2023", "saha_sorumlusu": "Mehmet", "kredi_adedi": 1200, "komisyon_geliri": 11000, "harcama": 3000, "net_kar": 3000},
-        "07": {"tarih": "03-2023", "saha_sorumlusu": "Ahmet", "kredi_adedi": 150, "komisyon_geliri": 7500, "harcama": 6000, "net_kar": 1500},
-        "08": {"tarih": "03-2023", "saha_sorumlusu": "Busra", "kredi_adedi": 175, "komisyon_geliri": 8750, "harcama": 7000, "net_kar": 1750},
-        "08": {"tarih": "05-2023", "saha_sorumlusu": "Mehmet", "kredi_adedi": 15, "komisyon_geliri": 2750, "harcama": 17000, "net_kar": 22750}
-    }
+    # data3 = {
+    #     "01": {"tarih": "01-2023", "saha_sorumlusu": "Hamdi", "kredi_adedi": 100, "komisyon_geliri": 5000, "harcama": 4000, "net_kar": 1000},
+    #     "02": {"tarih": "01-2023", "saha_sorumlusu": "Mehmet", "kredi_adedi": 200, "komisyon_geliri": 10000, "harcama": 8000, "net_kar": 11000},
+    #     "03": {"tarih": "01-2023", "saha_sorumlusu": "Ahmet", "kredi_adedi": 150, "komisyon_geliri": 7500, "harcama": 6000, "net_kar": 1500},
+    #     "04": {"tarih": "02-2023", "saha_sorumlusu": "Busra", "kredi_adedi": 175, "komisyon_geliri": 8750, "harcama": 7000, "net_kar": 1750},
+    #     "05": {"tarih": "02-2023", "saha_sorumlusu": "Hamdi", "kredi_adedi": 30, "komisyon_geliri": 5000, "harcama": 4000, "net_kar": 1000},
+    #     "06": {"tarih": "02-2023", "saha_sorumlusu": "Mehmet", "kredi_adedi": 1200, "komisyon_geliri": 11000, "harcama": 3000, "net_kar": 3000},
+    #     "07": {"tarih": "03-2023", "saha_sorumlusu": "Ahmet", "kredi_adedi": 150, "komisyon_geliri": 7500, "harcama": 6000, "net_kar": 1500},
+    #     "08": {"tarih": "03-2023", "saha_sorumlusu": "Busra", "kredi_adedi": 175, "komisyon_geliri": 8750, "harcama": 7000, "net_kar": 1750},
+    #     "08": {"tarih": "05-2023", "saha_sorumlusu": "Mehmet", "kredi_adedi": 15, "komisyon_geliri": 2750, "harcama": 17000, "net_kar": 22750}
+    # }
 
     query = {"status": "Kullandırıldı", "silindi": {"$ne": 1}}
     projection = {"saha_personeli": 1, "komisyon_geliri": "$kullandirim_bilgileri.net_gelir", "tarih": "$created_time"}
