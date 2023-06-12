@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, abort
 from bson import json_util
 from bson.objectid import ObjectId
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from functools import wraps
 
 import pymongo
@@ -11,6 +11,8 @@ from pymongo.server_api import ServerApi
 
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+
+from collections import OrderedDict
 
 import json
 
@@ -1324,7 +1326,7 @@ def basvuru_dosyasi_sil():
 @app.route('/veriler', methods=['GET'])
 def veriler():
     # Verilerinizi bir şekilde elde edin ve JSON formatına dönüştürün.
-    data = {
+    data3 = {
         "01": {"tarih": "01-2023", "saha_sorumlusu": "Hamdi", "kredi_adedi": 100, "komisyon_geliri": 5000, "harcama": 4000, "net_kar": 1000},
         "02": {"tarih": "01-2023", "saha_sorumlusu": "Mehmet", "kredi_adedi": 200, "komisyon_geliri": 10000, "harcama": 8000, "net_kar": 11000},
         "03": {"tarih": "01-2023", "saha_sorumlusu": "Ahmet", "kredi_adedi": 150, "komisyon_geliri": 7500, "harcama": 6000, "net_kar": 1500},
@@ -1335,9 +1337,55 @@ def veriler():
         "08": {"tarih": "03-2023", "saha_sorumlusu": "Busra", "kredi_adedi": 175, "komisyon_geliri": 8750, "harcama": 7000, "net_kar": 1750},
         "08": {"tarih": "05-2023", "saha_sorumlusu": "Mehmet", "kredi_adedi": 15, "komisyon_geliri": 2750, "harcama": 17000, "net_kar": 22750}
     }
+
+    query = {"status": "Kullandırıldı", "silindi": {"$ne": 1}}
+    projection = {"saha_personeli": 1, "komisyon_geliri": "$kullandirim_bilgileri.net_gelir", "tarih": "$created_time"}
+
+    # Sorguyu çalıştırma ve sonuçları alın
+    data = list(customers.find(query, projection))
+
+    # Başlangıç tarihi ve bitiş tarihi belirleniyor
+    start_date = date(2021, 1, 1)
+    end_date = date.today()
+
+    # Tarihlere ait ay-sayı-yıl formatı için string dönüşümü yapılıyor
+    months_dict = OrderedDict()
+    while start_date < end_date:
+        date_str = start_date.strftime('%m-%Y')
+        months_dict[date_str] = []
+        # Bir sonraki ay için yeni bir tarih hesaplanıyor
+        if start_date.month == 12:
+            start_date = start_date.replace(year=start_date.year+1, month=1)
+        else:
+            start_date = start_date.replace(month=start_date.month+1)
+
     
+
+    for item in data:
+        # print (item["tarih"])
+        created_time = datetime.fromisoformat(str(item["tarih"]))
+        tarih = created_time.strftime("%m-%Y")
+
+        saha_sorumlusu = item['saha_personeli']
+
+        if 'komisyon_geliri' in item and item['komisyon_geliri']:
+            komisyon_geliri = item['komisyon_geliri']
+            komisyon_geliri = komisyon_geliri.replace(".", "")  # Remove any existing dots
+            komisyon_geliri = komisyon_geliri.replace(",", ".")  # Replace comma with dot
+            komisyon_geliri = float(komisyon_geliri)  # Convert to a float
+        else:
+            komisyon_geliri = 0  # Set a default value
+
+        months_dict[tarih].append({
+            'saha_sorumlusu': saha_sorumlusu,
+            'komisyon_geliri': komisyon_geliri,
+            'harcama': 0
+        })
+
+    # print(months_dict)
     # Verileri JSON formatına dönüştürün ve istemciye gönderin.
-    return jsonify(data)
+    json_data = json.dumps(months_dict)
+    return json_data
 
 
 @app.route('/gelir-gider-chart-data')

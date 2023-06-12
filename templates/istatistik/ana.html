@@ -15,14 +15,14 @@
       <div class="col-sm-12 col-md-6 col-lg-3 mb-3 mb-lg-0">
         
         <label for="" class="form-label">Başlangıç</label>
-        <input class="form-control" type="month" id="start" name="start">
+        <input class="form-control guncelleme" type="month" id="start" name="start">
     </div><div class="col-sm-12 col-md-6 col-lg-3 mb-3 mb-lg-0">
 
         <label for="" class="form-label">Bitiş</label>
-        <input  class="form-control"  type="month" id="end" name="end">
+        <input  class="form-control guncelleme"  type="month" id="end" name="end">
     </div><div class="col-sm-12 col-md-6 col-lg-3 mb-3 mb-lg-0">
         <label for="" class="form-label">Hazır Seçenekler</label>
-        <select class="form-select" data-control="select2" id="select">
+        <select class="form-select guncelleme" data-control="select2" id="select">
             <option value="1">Son 1 Ay</option>
             <option value="3">Son 3 Ay</option>
             <option value="6">Son 6 Ay</option>
@@ -35,7 +35,7 @@
         <ul class="nav flex-wrap border-transparent fw-bold" style="width: 250px !important"><!-- Add inline CSS to set the width -->
             <!--begin::Nav item-->
             <li class="nav-item my-1">
-                <select class="form-select" data-control="select2" id="saha_sorumlusu_secimi">
+                <select class="form-select guncelleme" data-control="select2" id="saha_sorumlusu_secimi">
                     <option value="Tüm">Tüm Personel</option>
                 </select>
             </li>
@@ -56,6 +56,7 @@
 
 <div id="table"></div>
 
+
 {% endblock %}
 
 
@@ -66,71 +67,110 @@
 <script>
 $(document).ready(function() {
     isFunctionExecuted = false;
-  drawCharts();
+    drawCharts();
 });
 
 function drawCharts(secili_saha_sorumlusu) {
   $.getJSON("/veriler", function(data) {
-    // İlk tüm şehirler bilgisini al ve selectboxa ekle
+        // İlk tüm şehirler bilgisini al ve selectboxa ekle
     if (!isFunctionExecuted) {
-      for (var key in data) {
-        var city = data[key].saha_sorumlusu;
-        $('#saha_sorumlusu_secimi').append($('<option>').text(city).attr('value', city));
-      }
-      isFunctionExecuted = true;
+            // Boş bir dizi oluşturalım
+            let sahaSorumlulari = [];
+
+            // Veri öğelerini döngüyle kontrol edelim
+            for (let key in data) {
+                for (let i = 0; i < data[key].length; i++) {
+                    let sahaSorumlusu = data[key][i].saha_sorumlusu;
+
+                    // Eğer bu değer daha önce eklenmediyse, diziye ekleyelim
+                    if (!sahaSorumlulari.includes(sahaSorumlusu)) {
+                        sahaSorumlulari.push(sahaSorumlusu);
+                        $('#saha_sorumlusu_secimi').append($('<option>').text(sahaSorumlusu).attr('value', sahaSorumlusu));
+                    }
+                }
+            }
+            isFunctionExecuted = true;
     }
 
-    // Tarihleri gruplandır
-    var groupedData = {};
+    
+    // Yeni bir nesne oluştur
+    const kisiBazindaData = {};
 
-    for (var key in data) {
-      var item = data[key];
+    // Her tarih için döngü oluştur
+    for (const date in data) {
+        // Yeni bir nesne oluştur
+        const obj = {};
+        
+        // Her saha sorumlusu için döngü oluştur
+        for (const item of data[date]) {
+            const { saha_sorumlusu, komisyon_geliri, harcama, kredi_adedi } = item;
+            
+            // Saha sorumlusu zaten var mı kontrol et
+            if (!obj[saha_sorumlusu]) {
+                obj[saha_sorumlusu] = { komisyon_geliri: 0, harcama: 0, kredi_adedi: 0 };
+            }
+            
+            // Komisyon gelirlerini ve harcamaları topla
+            obj[saha_sorumlusu].komisyon_geliri += komisyon_geliri;
+            obj[saha_sorumlusu].harcama += harcama;
+            obj[saha_sorumlusu].kredi_adedi +=1;
+        }
+        
+        // Yeni veri setine ekle
+        kisiBazindaData[date] = obj;
+    }
+    console.log(kisiBazindaData)
 
-      if (!groupedData[item.tarih]) {
-        groupedData[item.tarih] = {
-          tarih: item.tarih,
-          net_kar: 0,
-          harcama: 0,
-          komisyon_geliri: 0,
-          kredi_adedi:0
-        };
-      }
+    // yukaridakinde herkesin ismi bazinda toplandi. bu isimleride yok sayarak topladi
+    const groupedData = {};
 
-      groupedData[item.tarih].kredi_adedi += item.kredi_adedi;
-      groupedData[item.tarih].net_kar += item.net_kar;
-      groupedData[item.tarih].harcama += item.harcama;
-      groupedData[item.tarih].komisyon_geliri += item.komisyon_geliri;
+    for (const key in kisiBazindaData) {
+        const [month, year] = key.split("-");
+        if (!groupedData[`${month}-${year}`]) {
+            groupedData[`${month}-${year}`] = {
+            "komisyon_geliri": 0,
+            "harcama": 0,
+            "kredi_adedi": 0
+            };
+        }
+        
+        for (const person in kisiBazindaData[key]) {
+            const { komisyon_geliri, harcama, kredi_adedi } = kisiBazindaData[key][person];
+            groupedData[`${month}-${year}`]["komisyon_geliri"] += komisyon_geliri;
+            groupedData[`${month}-${year}`]["harcama"] += harcama;
+            groupedData[`${month}-${year}`]["kredi_adedi"] += kredi_adedi;
+        }
     }
 
-    // Şehirlere göre filtreleme yap.
+    // Saha sorumlularina göre filtreleme yap.
     var filteredData = {};
     
     if (secili_saha_sorumlusu === "Tüm" || !secili_saha_sorumlusu) {
-      filteredData = groupedData;
+    filteredData = groupedData;
+    //   console.log(filteredData)
     } else {
-      for (var key in data) {
-        var item = data[key];
-
-        if (item.saha_sorumlusu === secili_saha_sorumlusu) {
-          if (!filteredData[item.tarih]) {
-            filteredData[item.tarih] = {
-              tarih: item.tarih,
-              net_kar: 0,
-              harcama: 0,
-              komisyon_geliri: 0,
-              kredi_adedi: 0
-            };
-          }
-
-          filteredData[item.tarih].kredi_adedi += item.kredi_adedi;
-          filteredData[item.tarih].net_kar += item.net_kar;
-          filteredData[item.tarih].harcama += item.harcama;
-          filteredData[item.tarih].komisyon_geliri += item.komisyon_geliri;
+        const kisiTekilData = {};
+        for (const key in kisiBazindaData) {
+            const [month, year] = key.split("-");
+            if (!kisiTekilData[`${month}-${year}`]) {
+                kisiTekilData[`${month}-${year}`] = {
+                "komisyon_geliri": 0,
+                "harcama": 0,
+                "kredi_adedi": 0
+                };
+            }
+            
+            if(kisiBazindaData[key][secili_saha_sorumlusu]){
+                kisiTekilData[`${month}-${year}`] = kisiBazindaData[key][secili_saha_sorumlusu]
+            }
         }
-      }
+        filteredData = kisiTekilData
     }
+
+   
     
     // Grafiği oluştur.
+    var aylar = getMonthsInRange()
 
     var labels = [];
     var net_kar_data = [];
@@ -138,41 +178,51 @@ function drawCharts(secili_saha_sorumlusu) {
     var komisyon_geliri_data = [];
     var kredi_adedi_data = [];
 
-    for (var key in filteredData) {
+    for (var key of aylar) {
       var item = filteredData[key];
-
-      labels.push(item.tarih);
-      net_kar_data.push(item.net_kar);
-      harcama_data.push(item.harcama);
-      komisyon_geliri_data.push(item.komisyon_geliri);
-      kredi_adedi_data.push(item.kredi_adedi);
+    //   console.log(key)
+    //   console.log(filteredData)
+    //   console.log(item)
+      if (item){
+        net_kar_data.push(item.komisyon_geliri - item.harcama);
+        harcama_data.push(item.harcama);
+        komisyon_geliri_data.push(item.komisyon_geliri);
+        kredi_adedi_data.push(item.kredi_adedi);
+      } else{
+        net_kar_data.push(0);
+        harcama_data.push(0);
+        komisyon_geliri_data.push(0);
+        kredi_adedi_data.push(0);
+      }
     }
 
     var ctx1 = document.getElementById('chart1').getContext('2d');
     var chart1 = new Chart(ctx1, {
       type: 'line',
       data: {
-        labels: labels,
+        labels: getMonthsInRange(),
         datasets: [{
-          label: 'Net Kar',
+          label: 'Komisyon Geliri',
           data: komisyon_geliri_data,
+          borderColor: 'rgb(54, 162, 235)',
+          backgroundColor: 'rgba(54, 162, 235, 0.3)',
+          cubicInterpolationMode: 'monotone',
+          fill: true,
+          
+        }, {
+          label: 'Net Kar',
+          data: net_kar_data,
           borderColor: 'rgb(75, 192, 192)',
           backgroundColor: 'rgba(75, 192, 192, 0.5)',
           cubicInterpolationMode: 'monotone',
         }, {
           label: 'Harcama',
-          data: net_kar_data,
+          data: harcama_data,
           borderColor: 'rgb(255, 99, 132)',
           backgroundColor: 'rgba(255, 99, 132, 0.3)',
           cubicInterpolationMode: 'monotone',
           fill: true
-        }, {
-          label: 'Komisyon Geliri',
-          data: harcama_data,
-          borderColor: 'rgb(54, 162, 235)',
-          backgroundColor: 'rgba(54, 162, 235, 0.3)',
-          cubicInterpolationMode: 'monotone',
-          fill: true,
+          
         }]
       },
       options: {  
@@ -208,7 +258,7 @@ function drawCharts(secili_saha_sorumlusu) {
     var chart2 = new Chart(ctx2, {
         type: 'line', // bar yerine line
         data: {
-            labels: labels,
+            labels: getMonthsInRange(),
             datasets: [{
                 label: 'Kredi Adedi',
                 data: kredi_adedi_data,
@@ -258,8 +308,8 @@ function drawCharts(secili_saha_sorumlusu) {
     }
 
     // Selectbox'dan seçilen şehre göre grafiği yeniden çiz.
-    $('#saha_sorumlusu_secimi').on('change', function() {
-        var secili_saha_sorumlusu = $(this).val();
+    $('.guncelleme').on('change', function() {
+        var secili_saha_sorumlusu = $('#saha_sorumlusu_secimi').val();
 
         if (chart1 && chart2) {
             chart1.destroy();
@@ -271,8 +321,26 @@ function drawCharts(secili_saha_sorumlusu) {
   });
 }
 </script>
-        
 
+<script>
+function getMonthsInRange() {
+    const startInput = $('#start');
+    const endInput = $('#end');
+    const startDate = new Date(startInput.val());
+    const endDate = new Date(endInput.val());
+
+    let months = [];
+    let currentDate = new Date(startDate);
+    while (currentDate <= endDate) {
+        const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+        const year = currentDate.getFullYear();
+        months.push(`${month}-${year}`);
+        currentDate.setMonth(currentDate.getMonth() + 1);
+    }
+    return months;
+}
+
+</script>
 <script>
     $(document).ready(function() {
       const startInput = $('#start');
@@ -301,24 +369,25 @@ function drawCharts(secili_saha_sorumlusu) {
         endInput.val(minMonth);
       });
 
-        startInput.on('change', handleInputChange);
-        endInput.on('change', handleInputChange);
-        select.on('change', handleInputChange);
+        // startInput.on('change', handleInputChange);
+        // endInput.on('change', handleInputChange);
+        // select.on('change', handleInputChange);
 
-        function handleInputChange() {
-            const startDate = new Date(startInput.val());
-            const endDate = new Date(endInput.val());
+        // function handleInputChange() {
+        //     const startDate = new Date(startInput.val());
+        //     const endDate = new Date(endInput.val());
 
-            const startYear = startDate.getFullYear();
-            const startMonth = startDate.getMonth() + 1;
-            const startMonthAsString = startMonth.toString().padStart(2, '0');
+        //     const startYear = startDate.getFullYear();
+        //     const startMonth = startDate.getMonth() + 1;
+        //     const startMonthAsString = startMonth.toString().padStart(2, '0');
 
-            const endYear = endDate.getFullYear();
-            const endMonth = endDate.getMonth() + 1;
-            const endMonthAsString = endMonth.toString().padStart(2, '0');
+        //     const endYear = endDate.getFullYear();
+        //     const endMonth = endDate.getMonth() + 1;
+        //     const endMonthAsString = endMonth.toString().padStart(2, '0');
 
-            console.log(`${startMonthAsString}-${startYear}`, `${endMonthAsString}-${endYear}`);
-        }
+        //     console.log(`${startMonthAsString}-${startYear}`, `${endMonthAsString}-${endYear}`);
+            
+        // }
   
       select.val("6").trigger('change');
     });
