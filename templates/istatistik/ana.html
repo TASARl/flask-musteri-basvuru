@@ -54,7 +54,7 @@
     <canvas id="chart2"></canvas>
   </div>
 
-<div id="table"></div>
+<table id="table" class="table table-striped table-row-bordered  gy-5 gs-7 mt-10"></table>
 
 
 {% endblock %}
@@ -119,7 +119,7 @@ function drawCharts(secili_saha_sorumlusu) {
         // Yeni veri setine ekle
         kisiBazindaData[date] = obj;
     }
-    console.log(kisiBazindaData)
+    // console.log(kisiBazindaData)
 
     // yukaridakinde herkesin ismi bazinda toplandi. bu isimleride yok sayarak topladi
     const groupedData = {};
@@ -290,7 +290,7 @@ function drawCharts(secili_saha_sorumlusu) {
             },
             layout: {
                 padding: {
-                    left: 10,
+                    left: 30,
                     right: 19
                 }
             },
@@ -299,13 +299,19 @@ function drawCharts(secili_saha_sorumlusu) {
 
     // Veri tablosunu oluştur.
     $('#table').empty();
-    $('#table').append('<tr><th>Tarih</th><th>Kredi Adedi</th><th>Net Kar</th><th>Harcama</th><th>Komisyon Geliri</th></tr>');
-
+    $('#table').append('<thead><tr class="fw-semibold fs-6 text-gray-800 table-secondary"><th>Tarih</th><th>Kredi Adedi</th><th>Komisyon Geliri</th><th>Harcama</th><th>Net Kar</th></tr></thead>');
+    console.log(filteredData)
     for (var key in filteredData) {
         var item = filteredData[key];
-
-        $('#table').append('<tr><td>' + item.tarih + '</td><td>' + item.kredi_adedi + '</td><td>' + item.net_kar + '</td><td>' + item.harcama + '</td><td>' + item.komisyon_geliri + '</td></tr>');
+        if(!(item.komisyon_geliri === 0 && item.harcama === 0 && item.kredi_adedi === 0)){
+            $('#table').append('<tr><td>' + key + '</td><td>' + item.kredi_adedi + '</td><td class="tl_donustur_tablo">'  + item.komisyon_geliri + '</td><td class="tl_donustur_tablo">' + item.harcama + '</td><td class="tl_donustur_tablo">' + (item.komisyon_geliri-item.harcama ) +  '</td></tr>');
+        }
     }
+    $('.tl_donustur_tablo').each(function() {
+		var deger = parseFloat($(this).text());
+		var tlDegeri = new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(deger);
+		$(this).text(tlDegeri);
+	});
 
     // Selectbox'dan seçilen şehre göre grafiği yeniden çiz.
     $('.guncelleme').on('change', function() {
@@ -392,5 +398,12 @@ function getMonthsInRange() {
       select.val("6").trigger('change');
     });
   </script>
-  
+  <script>
+    $("#table").DataTable({
+        "scrollY": "500px",
+        "scrollCollapse": true,
+        "paging": false,
+        "dom": "<'table-responsive'tr>"
+    });
+  </script>
 {% endblock %}
