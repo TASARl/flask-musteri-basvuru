@@ -1332,18 +1332,6 @@ def basvuru_dosyasi_sil():
 @login_required
 @yonetici_gerekli
 def veriler():
-    # Verilerinizi bir şekilde elde edin ve JSON formatına dönüştürün.
-    # data3 = {
-    #     "01": {"tarih": "01-2023", "saha_sorumlusu": "Hamdi", "kredi_adedi": 100, "komisyon_geliri": 5000, "harcama": 4000, "net_kar": 1000},
-    #     "02": {"tarih": "01-2023", "saha_sorumlusu": "Mehmet", "kredi_adedi": 200, "komisyon_geliri": 10000, "harcama": 8000, "net_kar": 11000},
-    #     "03": {"tarih": "01-2023", "saha_sorumlusu": "Ahmet", "kredi_adedi": 150, "komisyon_geliri": 7500, "harcama": 6000, "net_kar": 1500},
-    #     "04": {"tarih": "02-2023", "saha_sorumlusu": "Busra", "kredi_adedi": 175, "komisyon_geliri": 8750, "harcama": 7000, "net_kar": 1750},
-    #     "05": {"tarih": "02-2023", "saha_sorumlusu": "Hamdi", "kredi_adedi": 30, "komisyon_geliri": 5000, "harcama": 4000, "net_kar": 1000},
-    #     "06": {"tarih": "02-2023", "saha_sorumlusu": "Mehmet", "kredi_adedi": 1200, "komisyon_geliri": 11000, "harcama": 3000, "net_kar": 3000},
-    #     "07": {"tarih": "03-2023", "saha_sorumlusu": "Ahmet", "kredi_adedi": 150, "komisyon_geliri": 7500, "harcama": 6000, "net_kar": 1500},
-    #     "08": {"tarih": "03-2023", "saha_sorumlusu": "Busra", "kredi_adedi": 175, "komisyon_geliri": 8750, "harcama": 7000, "net_kar": 1750},
-    #     "08": {"tarih": "05-2023", "saha_sorumlusu": "Mehmet", "kredi_adedi": 15, "komisyon_geliri": 2750, "harcama": 17000, "net_kar": 22750}
-    # }
 
     query = {"status": "Kullandırıldı", "silindi": {"$ne": 1}}
     projection = {"saha_personeli": 1, "komisyon_geliri": "$kullandirim_bilgileri.net_gelir", "tarih": "$created_time"}
@@ -1367,7 +1355,7 @@ def veriler():
             start_date = start_date.replace(month=start_date.month+1)
 
     
-
+    # gelirler
     for item in data:
         # print (item["tarih"])
         created_time = datetime.fromisoformat(str(item["tarih"]))
@@ -1387,6 +1375,27 @@ def veriler():
             'saha_sorumlusu': saha_sorumlusu,
             'komisyon_geliri': komisyon_geliri,
             'harcama': 0
+        })
+    
+
+    #giderler
+    query = {}
+    projection = {"saha_personeli": "$harcama_kisi_secimi", "harcama": "$tutar", "tarih": "$harcama_tarihi"}
+
+    # Sorguyu çalıştırma ve sonuçları alın
+    data2 = list(harcamalar_db.find(query, projection))
+    
+    for item in data2:
+        # print (item["tarih"])
+        dt = datetime.strptime(item["tarih"], "%d.%m.%Y")
+        tarih = dt.strftime("%m-%Y")
+
+        saha_sorumlusu = item['saha_personeli']
+        
+        months_dict[tarih].append({
+            'saha_sorumlusu': saha_sorumlusu,
+            'komisyon_geliri': 0,
+            'harcama': int(item['harcama'])
         })
 
     # print(months_dict)

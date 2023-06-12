@@ -184,6 +184,7 @@ function drawCharts(secili_saha_sorumlusu) {
     //   console.log(filteredData)
     //   console.log(item)
       if (item){
+        console.log(item.harcama)
         net_kar_data.push(item.komisyon_geliri - item.harcama);
         harcama_data.push(item.harcama);
         komisyon_geliri_data.push(item.komisyon_geliri);
@@ -300,7 +301,7 @@ function drawCharts(secili_saha_sorumlusu) {
     // Veri tablosunu oluştur.
     $('#table').empty();
     $('#table').append('<thead><tr class="fw-semibold fs-6 text-gray-800 table-secondary"><th>Tarih</th><th>Kredi Adedi</th><th>Komisyon Geliri</th><th>Harcama</th><th>Net Kar</th></tr></thead>');
-    console.log(filteredData)
+    // console.log(filteredData)
     for (var key in filteredData) {
         var item = filteredData[key];
         if(!(item.komisyon_geliri === 0 && item.harcama === 0 && item.kredi_adedi === 0)){

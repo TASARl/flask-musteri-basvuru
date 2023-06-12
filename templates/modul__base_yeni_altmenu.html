@@ -25,7 +25,7 @@
         <!--end::Menu item-->
         <!--begin::Menu item-->{% if user_data.yetki == 'Yönetici' %}
         <div class="menu-item m-0 p-0">
-            <a class="menu-link py-3 px-4 {% if request.path == '/istatistik' %}active{% endif %}" href="{{ url_for('istatistik') }}">
+            <a class="menu-link py-3 px-4 {% if request.path == '/istatistik/' %}active{% endif %}" href="{{ url_for('istatistik') }}">
                 <span class="menu-title">İstatistik</span>
             </a>
         </div>
