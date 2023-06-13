@@ -34,10 +34,11 @@
     </div>
   </div>
 <div class="card card-bordered">
-    <div class="card-body">
+    <div class="card-body" style="height: 400px">
         <canvas id="myChart"></canvas>
     </div>
 </div>
+
 
 {% endblock %}
 
@@ -171,16 +172,22 @@ async function createChart() {
   myChart = new Chart(ctx, {
     type: 'bar',
     data: data,
-    options: {
-      responsive: true,
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true
-          }
-        }]
-      }
-    }
+    options: {  
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right'
+                },
+                
+            },
+            layout: {
+                padding: {
+                    left: 0,
+                    right: 0
+                }
+            },
+        }
   });
 }
 
