@@ -759,7 +759,7 @@ var KTCardsWidget19 = (function () {
     drawCircle(
       KTUtil.getCssVariableValue("--bs-primary"),
       options.lineWidth,
-      100 / 150
+      90 / 150
     );
     drawCircle(
       KTUtil.getCssVariableValue("--bs-success"),

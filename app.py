@@ -102,9 +102,9 @@ def user_data_getir():
         except KeyError:
             continue
 
-    # 30 gunluk sureci devam eden sorgu yap
+    # sureci devam eden sorgu yap
     belgeler3 = customers.find({
-        "status": "Devam",
+        "status": {"$in": ["Devam", "Kullandırılacak"]},
     }, )
     toplam_devam_eden_sayisi = len(list(belgeler3))
    
