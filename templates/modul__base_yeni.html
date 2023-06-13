@@ -3923,15 +3923,18 @@
 		<script src="{{ url_for('static', filename='assets/js/custom/utilities/modals/create-project/files.js') }}"></script>
 		<script src="{{ url_for('static', filename='assets/js/custom/utilities/modals/create-project/complete.js') }}"></script>
 		<script src="{{ url_for('static', filename='assets/js/custom/utilities/modals/create-project/main.js') }}"></script>
-		<script src="{{ url_for('static', filename='assets/js/custom/utilities/modals/create-account.js') }}"></script>
+		
 		<!--end::Custom Javascript-->
         {% block scripts %} {% endblock %}
 		<script>
 			//tl gosterimi duzelt
-			const tlDonusturSpan = document.querySelector('.tl_donustur');
-			const deger = parseFloat(tlDonusturSpan.innerText);
-			const tlDegeri = new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(deger);
-			tlDonusturSpan.innerText = tlDegeri;
+			$(document).ready(function() {
+				$('.tl_donustur').each(function() {
+					var deger = parseFloat($(this).text());
+					var tlDegeri = new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(deger);
+					$(this).text(tlDegeri);
+				});
+			});
 		</script>
 		<!--end::Javascript-->
 	</body>

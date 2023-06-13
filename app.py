@@ -1403,6 +1403,38 @@ def veriler():
     json_data = json.dumps(months_dict)
     return json_data
 
+@app.route('/veriler_banka', methods=['GET'])
+@login_required
+@yonetici_gerekli
+def verilerBanka():
+
+    result = customers.aggregate([
+        { '$group': {
+            '_id': {
+                'durum': '$durum',
+                'year_month': { '$dateToString': { 'format': '%m-%Y', 'date': '$created_time' } }
+            },
+            'count': { '$sum': 1 }
+        }}
+    ])
+
+    output = {}
+    for r in result:
+        year_month = r['_id']['year_month']
+        if 'durum' in r['_id']:
+            durum_dict = r['_id']['durum']
+            for k, v in durum_dict.items():
+                if year_month not in output:
+                    output[year_month] = {}
+                if k not in output[year_month]:
+                    output[year_month][k] = {'onay': 0, 'red': 0}
+                output[year_month][k]['red'] += r['count'] if v == 'red' else 0
+                output[year_month][k]['onay'] += r['count'] if v == 'onay' else 0
+
+    json_output = json.dumps(output, indent=4)
+    # print(json_output)
+    return json_output
+
 
 @app.route('/gelir-gider-chart-data')
 def chart_data():
