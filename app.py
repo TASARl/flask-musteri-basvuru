@@ -394,7 +394,7 @@ def form():
                 
                 result = customers.update_one({"_id": ObjectId(dosya_id)}, new_data)
                 
-                return jsonify({'message': 'Form kaydedildi'}), 200
+                return jsonify({'message': 'Form kaydedildi','dosya_id': str(dosya_id)}), 200
             
         # 3 farkli dosya_id gelme ihtimali var: yeni, eski, varolan baska bir fokumanin id'si. ESKI dosya bilgisi kaydetmek icin id eski gelir
         if (dosya_id == "eski"):
@@ -439,6 +439,7 @@ def form():
         dosya_guncelleme_ekle(dosya_id, "Dosya oluşturuldu.", "otomatik")
         update_selected_customer(dosya_id)
 
+       
         # Başarılı bir şekilde kaydedildi sayfasını göster
         return jsonify({'message': 'Form kaydedildi','dosya_id': str(dosya_id)}), 200
         
@@ -449,14 +450,49 @@ def form():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-   
+
     user_data = user_data_getir()
+    # print( user_data['cep_telefonu'])
+    def get_kredi_dosyalari(status):
+        return list(customers.find({
+            'created_by': user_data['cep_telefonu'],
+            'silindi': {'$ne': 1},
+            'status': status
+        }, {
+            '_id': 1,
+            'adi': 1,
+            'soyadi': 1,
+            'dosya_numarasi': 1,
+            'galeri_ili': 1,
+            'galeri_adi': 1,
+            'kredi_tutari': 1,
+            'kredi_vadesi': 1,
+            'calisma_sekli': 1,
+            'kredi_miktar': 1,
+            'kredi_vadesi': 1,
+            'created_time': 1,
+            'musteri_cep_telefonu': 1,
+            'model_yili': 1,
+            'marka_adi': 1,
+            'tip_adi': 1,
+            'created_by_isim': 1,
+            'status': 1
+        }).sort('_id', -1).limit(5))
+
+    kredi_dosyalari = {}
+    kredi_dosyalari['Devam'] = get_kredi_dosyalari('Devam')
+    kredi_dosyalari['Kullandırıldı'] = get_kredi_dosyalari('Kullandırıldı')
+    kredi_dosyalari['Kullandırılacak'] = get_kredi_dosyalari('Kullandırılacak')
+    kredi_dosyalari['Sonlandı'] = get_kredi_dosyalari('Sonlandı')
+    print(kredi_dosyalari)
+   
+    
     
     metadata ={
         'sayfa_baslik': 'Özet'
     }
     # Template'e JSON verisini gönderin
-    return render_template("dashboard.html", user_data=user_data, metadata=metadata)
+    return render_template("dashboard.html", user_data=user_data, metadata=metadata, kredi_dosyalari= kredi_dosyalari)
 
 
 # GET isteği ile müşterileri pagination ile getirme
@@ -1046,6 +1082,17 @@ def dosya_guncelleme_ekle(dosya_id, inputValue, status):
     delete_result = gecici_guncellemeler.delete_many({'_id': {'$in': [doc['_id'] for doc in docs_to_delete]}})             
 
     return result
+
+####### API - Dosya id den dosya numarasi sorgula ######
+@app.route('/api/dosya_no_getir', methods=['GET'])
+@login_required
+def dosya_no_getir():        
+    dosya_id = request.args.get('dosya_id')
+    document = customers.find_one({'_id': ObjectId(dosya_id)})['dosya_numarasi']
+    return jsonify(document)
+
+#######################################################
+
 
 ########### Kredi dosyasi guncellemelri ekliyoruz ve getiriyoruz BASLANGIC ########
 

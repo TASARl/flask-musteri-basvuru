@@ -186,7 +186,7 @@
                                     <span class="path2"></span>
                                 </i>
                             </a>
-                            <button type="button" class="btn btn-icon btn-light-facebook btn-sm  dosyaButonu" data-bs-toggle="modal" data-bs-target="#kt_modal_create_project" data-customerid="{{ customer._id }}" >
+                            <button type="button" class="btn btn-icon btn-light-facebook btn-sm  dosyaButonu" data-bs-toggle="modal" data-bs-target="#kt_modal_create_project" data-customerid="{{ customer._id }}"  data-dosya_numarasi = "{{ customer.dosya_numarasi }}"  >
                                 <i class="ki-duotone ki-pencil fs-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Düzenle">
                                     <span class="path1"></span>
                                     <span class="path2"></span>
@@ -330,7 +330,8 @@ function addSelectedCustomer(event, customerId) {
 
         document.querySelector('[data-kt-element="files-next"]').querySelector('.indicator-label').textContent= 'Kaydet';
 
-        document.getElementById("modal_dosya_baslik").innerHTML = '<h2 id="modal_dosya_baslik">Kredi Dosyası Düzenle<small class="ms-2 fs-7 fw-normal opacity-50"></small></h2>'
+        dosya_numarasi = button.dataset.dosya_numarasi;
+        document.getElementById("modal_dosya_baslik").innerHTML = '<h2 id="modal_dosya_baslik">' + dosya_numarasi +' Numarali Kredi Dosyası Düzenle<small class="ms-2 fs-7 fw-normal opacity-50"></small></h2>'
 
         $.ajax({
             url: "/id_ile_dosya_bilgisi_getir", // buradaki URL'yi API URL'inizle değiştirin

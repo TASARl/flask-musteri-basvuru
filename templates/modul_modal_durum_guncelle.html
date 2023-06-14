@@ -901,6 +901,7 @@
 
 
 
+
 <script>
     // Guncellemele Modal içine dosya id si gönderme ve eski verileri getir. fonksiyon basvurular.htmlde
     // dosya numarasi sadece ba;likda gorunmesi icin
@@ -908,10 +909,10 @@ const buttons_guncelle = document.querySelectorAll('.dosyaDurumButonu');
 buttons_guncelle.forEach(function(button) {
     button.addEventListener('click', function() {
 
-        dosya_numaraaasi = button.dataset.dosya_numarasi;
+        // dosya_numaraaasi = button.dataset.dosya_numarasi;
         dosya_id = button.dataset.customerid;
-        $('#dosya_id_durum').val(dosya_id);
-        $('#dosyaNumarasi').text(dosya_numaraaasi)
+        // $('#dosya_id_durum').val(dosya_id);
+        // $('#dosyaNumarasi').text(dosya_numaraaasi)
 
         getDosyaGuncellemeleri(dosya_id);
 
@@ -919,5 +920,3 @@ buttons_guncelle.forEach(function(button) {
 });
 
 </script>
-
-

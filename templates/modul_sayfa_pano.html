@@ -268,7 +268,7 @@
             <h3 class="card-title align-items-start flex-column">			
                 <span class="card-label fw-bold text-gray-800">Son Oluşturduğum Dosyalar</span>
                 
-                <span class="text-gray-400 mt-1 fw-semibold fs-6">Yalnızca sizin olusturdugunuz dosyalar oluşturulma tarihine göre listelenir</span>
+                <span class="text-gray-400 mt-1 fw-semibold fs-6">Yalnızca kendi olusturdugunuz dosyalar oluşturulma tarihine göre listelenir</span>
             </h3>
             <!--end::Title-->
     
@@ -384,1029 +384,386 @@
             <div class="tab-content">
                                                 <!--begin::Tap pane-->
                     <div class="tab-pane fade active show" id="kt_stats_widget_6_tab_1" role="tabpanel">
-                        <!--begin::Table container-->
-                        <div class="table-responsive">
-                            <!--begin::Table-->
-                            <table class="table table-row-dashed align-middle gs-0 gy-4 my-0">
-                                <!--begin::Table head-->
-                                <thead>
-                                    <tr class="fs-7 fw-bold text-gray-500 border-bottom-0">                                    
-                                        <th class="p-0 w-200px w-xxl-450px"></th>
-                                        <th class="p-0 min-w-150px"></th>
-                                        <th class="p-0 min-w-150px"></th>
-                                        <th class="p-0 min-w-190px"></th>                                     
-                                        <th class="p-0 w-50px"></th>
-                                    </tr>
-                                </thead>
-                                <!--end::Table head-->
-    
-                                <!--begin::Table body-->
-                                <tbody>
-                                                                        <tr>                            
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="symbol symbol-40px me-3">                                                   
-                                                        <img src="/metronic8/demo31/assets/media/avatars/300-1.jpg" class="" alt="">                                                    
-                                                    </div>
-                                                    
-                                                    <div class="d-flex justify-content-start flex-column">
-                                                        <a href="#" class="text-dark fw-bold text-hover-primary mb-1 fs-6">Brooklyn Simmons</a>
-                                                        <span class="text-muted fw-semibold d-block fs-7">Zuid Area</span>
-                                                    </div>
-                                                </div>                                
-                                            </td>
-    
-                                            <td>
-                                                <span class="text-gray-800 fw-bold d-block mb-1 fs-6">1,240</span>
-                                                <span class="fw-semibold text-gray-400 d-block">Deliveries</span>
-                                            </td>                                   
-    
-                                            <td>
-                                                <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">$5,400</a>
-                                                <span class="text-muted fw-semibold d-block fs-7">Earnings</span>
-                                            </td>
+
+                        <!--begin::Table-->
+                        <table class="table table-row-bordered table-row-gray-100 align-middle gs-0 gy-3">
+                            <!--begin::Table head-->
+                                    <thead>
+                                        <tr class="fw-bold text-muted" style="border-bottom-color: #d8d8d8;">
                                             
-                                            <td>
-                                                <div class="rating">
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                </div>
+                                            <th class="col-1">Dosya Numarası</th>
+                                            <th class="col-1">Galeri</th>
+                                            <th class="col-2">Taşıt</th>
+                                            <th class="col">Müşteri</th>
+                                            <th class="col-3" style="min-width: 400px;">
+                                                <div style="float:left;">Durum</div>
                                                 
-                                                <span class="text-muted fw-semibold d-block fs-7 mt-1">Rating</span>
-                                            </td>                            
-    
-                                            <td class="text-end">
-                                                <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                    <i class="ki-outline ki-black-right fs-2 text-gray-500"></i>                                            </a>
-                                            </td>
-                                        </tr>                        
-                                                                        <tr>                            
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="symbol symbol-40px me-3">                                                   
-                                                        <img src="/metronic8/demo31/assets/media/avatars/300-2.jpg" class="" alt="">                                                    
-                                                    </div>
-                                                    
-                                                    <div class="d-flex justify-content-start flex-column">
-                                                        <a href="#" class="text-dark fw-bold text-hover-primary mb-1 fs-6">Annette Black</a>
-                                                        <span class="text-muted fw-semibold d-block fs-7">Zuid Area</span>
-                                                    </div>
-                                                </div>                                
-                                            </td>
-    
-                                            <td>
-                                                <span class="text-gray-800 fw-bold d-block mb-1 fs-6">6,074</span>
-                                                <span class="fw-semibold text-gray-400 d-block">Deliveries</span>
-                                            </td>                                   
-    
-                                            <td>
-                                                <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">$174,074</a>
-                                                <span class="text-muted fw-semibold d-block fs-7">Earnings</span>
-                                            </td>
+                                            </th>
+                                            <th class="col text-end" style=" width: 180px; min-width: 180px;">İşlemler</th>
+                                        </tr>
+                                    </thead>
+                                    
+                                    <!--end::Table head-->
+                                    <!--begin::Table body-->
+                                    <tbody>
+                                    {% for customer in kredi_dosyalari['Devam'] %} 
+
+                                    {% if lstest_customer_id|string == customer._id|string %}
+                                    <tr style="background-color: #daf3ff; vertical-align: top; border-bottom-color: #d8d8d8;" data-customer-id="{{ customer._id }}">
+                                    {% else %}
+                                    <tr style="vertical-align: top; border-bottom-color: #d8d8d8;" data-customer-id="{{ customer._id }}">
+                                    {% endif %}
+
+                                    
+                                    <td>
+                                        <div class="position-relative ps-6 pe-3 ">
+                                            <div class="position-absolute start-0 top-0 w-4px h-100 rounded-2 solCizgi" data-customer-id="{{ customer._id }}" ></div>
+                                            <span class="text-dark fw-bold text-hover-primary fs-6 createdTime">{{ customer.created_time }}</span>
+                                            <div class="fs-7 text-muted fw-bold">{{ customer.dosya_numarasi }}</div>
                                             
-                                            <td>
-                                                <div class="rating">
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                </div>
-                                                
-                                                <span class="text-muted fw-semibold d-block fs-7 mt-1">Rating</span>
-                                            </td>                            
-    
-                                            <td class="text-end">
-                                                <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                    <i class="ki-outline ki-black-right fs-2 text-gray-500"></i>                                            </a>
-                                            </td>
-                                        </tr>                        
-                                                                        <tr>                            
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="symbol symbol-40px me-3">                                                   
-                                                        <img src="/metronic8/demo31/assets/media/avatars/300-12.jpg" class="" alt="">                                                    
-                                                    </div>
-                                                    
-                                                    <div class="d-flex justify-content-start flex-column">
-                                                        <a href="#" class="text-dark fw-bold text-hover-primary mb-1 fs-6">Esther Howard</a>
-                                                        <span class="text-muted fw-semibold d-block fs-7">Zuid Area</span>
-                                                    </div>
-                                                </div>                                
-                                            </td>
-    
-                                            <td>
-                                                <span class="text-gray-800 fw-bold d-block mb-1 fs-6">357</span>
-                                                <span class="fw-semibold text-gray-400 d-block">Deliveries</span>
-                                            </td>                                   
-    
-                                            <td>
-                                                <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">$2,737</a>
-                                                <span class="text-muted fw-semibold d-block fs-7">Earnings</span>
-                                            </td>
-                                            
-                                            <td>
-                                                <div class="rating">
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                </div>
-                                                
-                                                <span class="text-muted fw-semibold d-block fs-7 mt-1">Rating</span>
-                                            </td>                            
-    
-                                            <td class="text-end">
-                                                <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                    <i class="ki-outline ki-black-right fs-2 text-gray-500"></i>                                            </a>
-                                            </td>
-                                        </tr>                        
-                                                                        <tr>                            
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="symbol symbol-40px me-3">                                                   
-                                                        <img src="/metronic8/demo31/assets/media/avatars/300-11.jpg" class="" alt="">                                                    
-                                                    </div>
-                                                    
-                                                    <div class="d-flex justify-content-start flex-column">
-                                                        <a href="#" class="text-dark fw-bold text-hover-primary mb-1 fs-6">Guy Hawkins</a>
-                                                        <span class="text-muted fw-semibold d-block fs-7">Zuid Area</span>
-                                                    </div>
-                                                </div>                                
-                                            </td>
-    
-                                            <td>
-                                                <span class="text-gray-800 fw-bold d-block mb-1 fs-6">2,954</span>
-                                                <span class="fw-semibold text-gray-400 d-block">Deliveries</span>
-                                            </td>                                   
-    
-                                            <td>
-                                                <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">$59,634</a>
-                                                <span class="text-muted fw-semibold d-block fs-7">Earnings</span>
-                                            </td>
-                                            
-                                            <td>
-                                                <div class="rating">
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label ">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                </div>
-                                                
-                                                <span class="text-muted fw-semibold d-block fs-7 mt-1">Rating</span>
-                                            </td>                            
-    
-                                            <td class="text-end">
-                                                <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                    <i class="ki-outline ki-black-right fs-2 text-gray-500"></i>                                            </a>
-                                            </td>
-                                        </tr>                        
-                                                                        <tr>                            
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="symbol symbol-40px me-3">                                                   
-                                                        <img src="/metronic8/demo31/assets/media/avatars/300-13.jpg" class="" alt="">                                                    
-                                                    </div>
-                                                    
-                                                    <div class="d-flex justify-content-start flex-column">
-                                                        <a href="#" class="text-dark fw-bold text-hover-primary mb-1 fs-6">Marvin McKinney</a>
-                                                        <span class="text-muted fw-semibold d-block fs-7">Zuid Area</span>
-                                                    </div>
-                                                </div>                                
-                                            </td>
-    
-                                            <td>
-                                                <span class="text-gray-800 fw-bold d-block mb-1 fs-6">822</span>
-                                                <span class="fw-semibold text-gray-400 d-block">Deliveries</span>
-                                            </td>                                   
-    
-                                            <td>
-                                                <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">$19,842</a>
-                                                <span class="text-muted fw-semibold d-block fs-7">Earnings</span>
-                                            </td>
-                                            
-                                            <td>
-                                                <div class="rating">
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                </div>
-                                                
-                                                <span class="text-muted fw-semibold d-block fs-7 mt-1">Rating</span>
-                                            </td>                            
-    
-                                            <td class="text-end">
-                                                <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                    <i class="ki-outline ki-black-right fs-2 text-gray-500"></i>                                            </a>
-                                            </td>
-                                        </tr>                        
-                                                                </tbody>
-                                <!--end::Table body-->
-                            </table>
-                        </div>
-                        <!--end::Table-->
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ customer.galeri_ili }}</span>
+                                        <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.galeri_adi }}</span>
+                                    </td>
+                                    <td style=" max-width: 135px;">
+                                        <span class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6 ">{{ customer.model_yili }}</span> 
+                                        <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.marka_adi }}</span>
+                                        <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.tip_adi }}</span>
+                                    </td>
+                                    <td style=" width: 135px;">
+                                        <span class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ customer.adi }} {{ customer.soyadi }} </span>
+                                        <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.musteri_cep_telefonu }}</span>
+                                        <span class="fw-semibold fw-bold  mb-1  fs-7">{{ customer.kredi_tutari }} TL</span>
+                                        <span class="text-muted fw-semibold text-muted fs-7">{{ customer.kredi_vadesi }} Ay</span>
+                                    </td>
+                                    
+                                    <td  data-customer-id="{{ customer._id }}" >    
+                                        
+                                    </td>
+                                    <td class="text-end">
+                                        <a href="#" class="btn btn-icon btn-light-facebook btn-sm " onclick="addSelectedCustomer(event, '{{ customer._id }}'); return false;" >
+                                            <i class="ki-duotone ki-switch fs-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Seç">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </a>
+                                        <button type="button" class="btn btn-icon btn-light-facebook btn-sm  dosyaButonu" data-bs-toggle="modal" data-bs-target="#kt_modal_create_project" data-customerid="{{ customer._id }}" data-dosya_numarasi = "{{ customer.dosya_numarasi }}" >
+                                            <i class="ki-duotone ki-pencil fs-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Düzenle">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </button>
+                                        <a href="#" class="btn btn-icon btn-light-facebook btn-sm dosyaDurumButonu" data-bs-toggle="modal" data-bs-target="#kt_modal_durum_guncelle" data-customerid="{{ customer._id }}" data-dosya_numarasi = "{{ customer.dosya_numarasi }}" >
+                                            <i class="ki-duotone ki-gear fs-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Dosya İşlemleri">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                                <span class="path4"></span>
+                                                <span class="path5"></span>
+                                            </i>
+                                        </a>
+                                        <a href="#" class="btn btn-icon btn-light-google btn-sm musteri_dosya_sil_butonu" data-customer_id="{{ customer._id }}" >
+                                            <i class="ki-duotone ki-delete-folder fs-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Sil">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                            <!--end::Table body-->
+                        </table>
+                        <!--end::Table container-->
                     </div>
                     <!--end::Tap pane-->
                                                 <!--begin::Tap pane-->
                     <div class="tab-pane fade " id="kt_stats_widget_6_tab_2" role="tabpanel">
                         <!--begin::Table container-->
-                        <div class="table-responsive">
-                            <!--begin::Table-->
-                            <table class="table table-row-dashed align-middle gs-0 gy-4 my-0">
-                                <!--begin::Table head-->
-                                <thead>
-                                    <tr class="fs-7 fw-bold text-gray-500 border-bottom-0">                                    
-                                        <th class="p-0 w-200px w-xxl-450px"></th>
-                                        <th class="p-0 min-w-150px"></th>
-                                        <th class="p-0 min-w-150px"></th>
-                                        <th class="p-0 min-w-190px"></th>                                     
-                                        <th class="p-0 w-50px"></th>
-                                    </tr>
-                                </thead>
-                                <!--end::Table head-->
-    
-                                <!--begin::Table body-->
-                                <tbody>
-                                                                        <tr>                            
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="symbol symbol-40px me-3">                                                   
-                                                        <img src="/metronic8/demo31/assets/media/avatars/300-11.jpg" class="" alt="">                                                    
-                                                    </div>
-                                                    
-                                                    <div class="d-flex justify-content-start flex-column">
-                                                        <a href="#" class="text-dark fw-bold text-hover-primary mb-1 fs-6">Guy Hawkins</a>
-                                                        <span class="text-muted fw-semibold d-block fs-7">Zuid Area</span>
-                                                    </div>
-                                                </div>                                
-                                            </td>
-    
-                                            <td>
-                                                <span class="text-gray-800 fw-bold d-block mb-1 fs-6">2,954</span>
-                                                <span class="fw-semibold text-gray-400 d-block">Deliveries</span>
-                                            </td>                                   
-    
-                                            <td>
-                                                <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">$59,634</a>
-                                                <span class="text-muted fw-semibold d-block fs-7">Earnings</span>
-                                            </td>
+                        <table class="table table-row-bordered table-row-gray-100 align-middle gs-0 gy-3">
+                            <!--begin::Table head-->
+                                    <thead>
+                                        <tr class="fw-bold text-muted" style="border-bottom-color: #d8d8d8;">
                                             
-                                            <td>
-                                                <div class="rating">
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label ">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                </div>
+                                            <th class="col-1">Dosya Numarası</th>
+                                            <th class="col-1">Galeri</th>
+                                            <th class="col-2">Taşıt</th>
+                                            <th class="col">Müşteri</th>
+                                            <th class="col-3" style="min-width: 400px;">
+                                                <div style="float:left;">Durum</div>
                                                 
-                                                <span class="text-muted fw-semibold d-block fs-7 mt-1">Rating</span>
-                                            </td>                            
-    
-                                            <td class="text-end">
-                                                <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                    <i class="ki-outline ki-black-right fs-2 text-gray-500"></i>                                            </a>
-                                            </td>
-                                        </tr>                        
-                                                                        <tr>                            
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="symbol symbol-40px me-3">                                                   
-                                                        <img src="/metronic8/demo31/assets/media/avatars/300-13.jpg" class="" alt="">                                                    
-                                                    </div>
-                                                    
-                                                    <div class="d-flex justify-content-start flex-column">
-                                                        <a href="#" class="text-dark fw-bold text-hover-primary mb-1 fs-6">Marvin McKinney</a>
-                                                        <span class="text-muted fw-semibold d-block fs-7">Zuid Area</span>
-                                                    </div>
-                                                </div>                                
-                                            </td>
-    
-                                            <td>
-                                                <span class="text-gray-800 fw-bold d-block mb-1 fs-6">822</span>
-                                                <span class="fw-semibold text-gray-400 d-block">Deliveries</span>
-                                            </td>                                   
-    
-                                            <td>
-                                                <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">$19,842</a>
-                                                <span class="text-muted fw-semibold d-block fs-7">Earnings</span>
-                                            </td>
+                                            </th>
+                                            <th class="col text-end" style=" width: 180px; min-width: 180px;">İşlemler</th>
+                                        </tr>
+                                    </thead>
+                                    
+                                    <!--end::Table head-->
+                                    <!--begin::Table body-->
+                                    <tbody>
+                                    {% for customer in kredi_dosyalari['Kullandırılacak'] %} 
+
+                                    {% if lstest_customer_id|string == customer._id|string %}
+                                    <tr style="background-color: #daf3ff; vertical-align: top; border-bottom-color: #d8d8d8;" data-customer-id="{{ customer._id }}">
+                                    {% else %}
+                                    <tr style="vertical-align: top; border-bottom-color: #d8d8d8;" data-customer-id="{{ customer._id }}">
+                                    {% endif %}
+
+                                    
+                                    <td>
+                                        <div class="position-relative ps-6 pe-3 ">
+                                            <div class="position-absolute start-0 top-0 w-4px h-100 rounded-2 solCizgi" data-customer-id="{{ customer._id }}" ></div>
+                                            <span class="text-dark fw-bold text-hover-primary fs-6 createdTime">{{ customer.created_time }}</span>
+                                            <div class="fs-7 text-muted fw-bold">{{ customer.dosya_numarasi }}</div>
                                             
-                                            <td>
-                                                <div class="rating">
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                </div>
-                                                
-                                                <span class="text-muted fw-semibold d-block fs-7 mt-1">Rating</span>
-                                            </td>                            
-    
-                                            <td class="text-end">
-                                                <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                    <i class="ki-outline ki-black-right fs-2 text-gray-500"></i>                                            </a>
-                                            </td>
-                                        </tr>                        
-                                                                        <tr>                            
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="symbol symbol-40px me-3">                                                   
-                                                        <img src="/metronic8/demo31/assets/media/avatars/300-1.jpg" class="" alt="">                                                    
-                                                    </div>
-                                                    
-                                                    <div class="d-flex justify-content-start flex-column">
-                                                        <a href="#" class="text-dark fw-bold text-hover-primary mb-1 fs-6">Brooklyn Simmons</a>
-                                                        <span class="text-muted fw-semibold d-block fs-7">Zuid Area</span>
-                                                    </div>
-                                                </div>                                
-                                            </td>
-    
-                                            <td>
-                                                <span class="text-gray-800 fw-bold d-block mb-1 fs-6">1,240</span>
-                                                <span class="fw-semibold text-gray-400 d-block">Deliveries</span>
-                                            </td>                                   
-    
-                                            <td>
-                                                <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">$5,400</a>
-                                                <span class="text-muted fw-semibold d-block fs-7">Earnings</span>
-                                            </td>
-                                            
-                                            <td>
-                                                <div class="rating">
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                </div>
-                                                
-                                                <span class="text-muted fw-semibold d-block fs-7 mt-1">Rating</span>
-                                            </td>                            
-    
-                                            <td class="text-end">
-                                                <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                    <i class="ki-outline ki-black-right fs-2 text-gray-500"></i>                                            </a>
-                                            </td>
-                                        </tr>                        
-                                                                        <tr>                            
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="symbol symbol-40px me-3">                                                   
-                                                        <img src="/metronic8/demo31/assets/media/avatars/300-2.jpg" class="" alt="">                                                    
-                                                    </div>
-                                                    
-                                                    <div class="d-flex justify-content-start flex-column">
-                                                        <a href="#" class="text-dark fw-bold text-hover-primary mb-1 fs-6">Annette Black</a>
-                                                        <span class="text-muted fw-semibold d-block fs-7">Zuid Area</span>
-                                                    </div>
-                                                </div>                                
-                                            </td>
-    
-                                            <td>
-                                                <span class="text-gray-800 fw-bold d-block mb-1 fs-6">6,074</span>
-                                                <span class="fw-semibold text-gray-400 d-block">Deliveries</span>
-                                            </td>                                   
-    
-                                            <td>
-                                                <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">$174,074</a>
-                                                <span class="text-muted fw-semibold d-block fs-7">Earnings</span>
-                                            </td>
-                                            
-                                            <td>
-                                                <div class="rating">
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                </div>
-                                                
-                                                <span class="text-muted fw-semibold d-block fs-7 mt-1">Rating</span>
-                                            </td>                            
-    
-                                            <td class="text-end">
-                                                <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                    <i class="ki-outline ki-black-right fs-2 text-gray-500"></i>                                            </a>
-                                            </td>
-                                        </tr>                        
-                                                                        <tr>                            
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="symbol symbol-40px me-3">                                                   
-                                                        <img src="/metronic8/demo31/assets/media/avatars/300-12.jpg" class="" alt="">                                                    
-                                                    </div>
-                                                    
-                                                    <div class="d-flex justify-content-start flex-column">
-                                                        <a href="#" class="text-dark fw-bold text-hover-primary mb-1 fs-6">Esther Howard</a>
-                                                        <span class="text-muted fw-semibold d-block fs-7">Zuid Area</span>
-                                                    </div>
-                                                </div>                                
-                                            </td>
-    
-                                            <td>
-                                                <span class="text-gray-800 fw-bold d-block mb-1 fs-6">357</span>
-                                                <span class="fw-semibold text-gray-400 d-block">Deliveries</span>
-                                            </td>                                   
-    
-                                            <td>
-                                                <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">$2,737</a>
-                                                <span class="text-muted fw-semibold d-block fs-7">Earnings</span>
-                                            </td>
-                                            
-                                            <td>
-                                                <div class="rating">
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                </div>
-                                                
-                                                <span class="text-muted fw-semibold d-block fs-7 mt-1">Rating</span>
-                                            </td>                            
-    
-                                            <td class="text-end">
-                                                <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                    <i class="ki-outline ki-black-right fs-2 text-gray-500"></i>                                            </a>
-                                            </td>
-                                        </tr>                        
-                                                                </tbody>
-                                <!--end::Table body-->
-                            </table>
-                        </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ customer.galeri_ili }}</span>
+                                        <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.galeri_adi }}</span>
+                                    </td>
+                                    <td style=" max-width: 135px;">
+                                        <span class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6 ">{{ customer.model_yili }}</span> 
+                                        <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.marka_adi }}</span>
+                                        <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.tip_adi }}</span>
+                                    </td>
+                                    <td style=" width: 135px;">
+                                        <span class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ customer.adi }} {{ customer.soyadi }} </span>
+                                        <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.musteri_cep_telefonu }}</span>
+                                        <span class="fw-semibold fw-bold  mb-1  fs-7">{{ customer.kredi_tutari }} TL</span>
+                                        <span class="text-muted fw-semibold text-muted fs-7">{{ customer.kredi_vadesi }} Ay</span>
+                                    </td>
+                                    
+                                    <td  data-customer-id="{{ customer._id }}" >    
+                                        
+                                    </td>
+                                    <td class="text-end">
+                                        <a href="#" class="btn btn-icon btn-light-facebook btn-sm " onclick="addSelectedCustomer(event, '{{ customer._id }}'); return false;" >
+                                            <i class="ki-duotone ki-switch fs-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Seç">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </a>
+                                        <button type="button" class="btn btn-icon btn-light-facebook btn-sm  dosyaButonu" data-bs-toggle="modal" data-bs-target="#kt_modal_create_project" data-customerid="{{ customer._id }}" data-dosya_numarasi = "{{ customer.dosya_numarasi }}" >
+                                            <i class="ki-duotone ki-pencil fs-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Düzenle">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </button>
+                                        <a href="#" class="btn btn-icon btn-light-facebook btn-sm dosyaDurumButonu" data-bs-toggle="modal" data-bs-target="#kt_modal_durum_guncelle" data-customerid="{{ customer._id }}" data-dosya_numarasi = "{{ customer.dosya_numarasi }}" >
+                                            <i class="ki-duotone ki-gear fs-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Dosya İşlemleri">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                                <span class="path4"></span>
+                                                <span class="path5"></span>
+                                            </i>
+                                        </a>
+                                        <a href="#" class="btn btn-icon btn-light-google btn-sm musteri_dosya_sil_butonu" data-customer_id="{{ customer._id }}" >
+                                            <i class="ki-duotone ki-delete-folder fs-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Sil">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                            <!--end::Table body-->
+                        </table>
                         <!--end::Table-->
                     </div>
                     <!--end::Tap pane-->
                     <!--begin::Tap pane-->
                     <div class="tab-pane fade " id="kt_stats_widget_6_tab_3" role="tabpanel">
                         <!--begin::Table container-->
-                        <div class="table-responsive">
-                            <!--begin::Table-->
-                            <table class="table table-row-dashed align-middle gs-0 gy-4 my-0">
-                                <!--begin::Table head-->
-                                <thead>
-                                    <tr class="fs-7 fw-bold text-gray-500 border-bottom-0">                                    
-                                        <th class="p-0 w-200px w-xxl-450px"></th>
-                                        <th class="p-0 min-w-150px"></th>
-                                        <th class="p-0 min-w-150px"></th>
-                                        <th class="p-0 min-w-190px"></th>                                     
-                                        <th class="p-0 w-50px"></th>
-                                    </tr>
-                                </thead>
-                                <!--end::Table head-->
-    
-                                <!--begin::Table body-->
-                                <tbody>
-                                                                        <tr>                            
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="symbol symbol-40px me-3">                                                   
-                                                        <img src="/metronic8/demo31/assets/media/avatars/300-1.jpg" class="" alt="">                                                    
-                                                    </div>
-                                                    
-                                                    <div class="d-flex justify-content-start flex-column">
-                                                        <a href="#" class="text-dark fw-bold text-hover-primary mb-1 fs-6">Brooklyn Simmons</a>
-                                                        <span class="text-muted fw-semibold d-block fs-7">Zuid Area</span>
-                                                    </div>
-                                                </div>                                
-                                            </td>
-    
-                                            <td>
-                                                <span class="text-gray-800 fw-bold d-block mb-1 fs-6">1,240</span>
-                                                <span class="fw-semibold text-gray-400 d-block">Deliveries</span>
-                                            </td>                                   
-    
-                                            <td>
-                                                <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">$5,400</a>
-                                                <span class="text-muted fw-semibold d-block fs-7">Earnings</span>
-                                            </td>
+                        <table class="table table-row-bordered table-row-gray-100 align-middle gs-0 gy-3">
+                            <!--begin::Table head-->
+                                    <thead>
+                                        <tr class="fw-bold text-muted" style="border-bottom-color: #d8d8d8;">
                                             
-                                            <td>
-                                                <div class="rating">
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                </div>
+                                            <th class="col-1">Dosya Numarası</th>
+                                            <th class="col-1">Galeri</th>
+                                            <th class="col-2">Taşıt</th>
+                                            <th class="col">Müşteri</th>
+                                            <th class="col-3" style="min-width: 400px;">
+                                                <div style="float:left;">Durum</div>
                                                 
-                                                <span class="text-muted fw-semibold d-block fs-7 mt-1">Rating</span>
-                                            </td>                            
-    
-                                            <td class="text-end">
-                                                <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                    <i class="ki-outline ki-black-right fs-2 text-gray-500"></i>                                            </a>
-                                            </td>
-                                        </tr>                        
-                                                                        <tr>                            
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="symbol symbol-40px me-3">                                                   
-                                                        <img src="/metronic8/demo31/assets/media/avatars/300-11.jpg" class="" alt="">                                                    
-                                                    </div>
-                                                    
-                                                    <div class="d-flex justify-content-start flex-column">
-                                                        <a href="#" class="text-dark fw-bold text-hover-primary mb-1 fs-6">Guy Hawkins</a>
-                                                        <span class="text-muted fw-semibold d-block fs-7">Zuid Area</span>
-                                                    </div>
-                                                </div>                                
-                                            </td>
-    
-                                            <td>
-                                                <span class="text-gray-800 fw-bold d-block mb-1 fs-6">2,954</span>
-                                                <span class="fw-semibold text-gray-400 d-block">Deliveries</span>
-                                            </td>                                   
-    
-                                            <td>
-                                                <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">$59,634</a>
-                                                <span class="text-muted fw-semibold d-block fs-7">Earnings</span>
-                                            </td>
+                                            </th>
+                                            <th class="col text-end" style=" width: 180px; min-width: 180px;">İşlemler</th>
+                                        </tr>
+                                    </thead>
+                                    
+                                    <!--end::Table head-->
+                                    <!--begin::Table body-->
+                                    <tbody>
+                                    {% for customer in kredi_dosyalari['Sonlandı'] %} 
+
+                                    {% if lstest_customer_id|string == customer._id|string %}
+                                    <tr style="background-color: #daf3ff; vertical-align: top; border-bottom-color: #d8d8d8;" data-customer-id="{{ customer._id }}">
+                                    {% else %}
+                                    <tr style="vertical-align: top; border-bottom-color: #d8d8d8;" data-customer-id="{{ customer._id }}">
+                                    {% endif %}
+
+                                    
+                                    <td>
+                                        <div class="position-relative ps-6 pe-3 ">
+                                            <div class="position-absolute start-0 top-0 w-4px h-100 rounded-2 solCizgi" data-customer-id="{{ customer._id }}" ></div>
+                                            <span class="text-dark fw-bold text-hover-primary fs-6 createdTime">{{ customer.created_time }}</span>
+                                            <div class="fs-7 text-muted fw-bold">{{ customer.dosya_numarasi }}</div>
                                             
-                                            <td>
-                                                <div class="rating">
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label ">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                </div>
-                                                
-                                                <span class="text-muted fw-semibold d-block fs-7 mt-1">Rating</span>
-                                            </td>                            
-    
-                                            <td class="text-end">
-                                                <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                    <i class="ki-outline ki-black-right fs-2 text-gray-500"></i>                                            </a>
-                                            </td>
-                                        </tr>                        
-                                                                        <tr>                            
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="symbol symbol-40px me-3">                                                   
-                                                        <img src="/metronic8/demo31/assets/media/avatars/300-13.jpg" class="" alt="">                                                    
-                                                    </div>
-                                                    
-                                                    <div class="d-flex justify-content-start flex-column">
-                                                        <a href="#" class="text-dark fw-bold text-hover-primary mb-1 fs-6">Marvin McKinney</a>
-                                                        <span class="text-muted fw-semibold d-block fs-7">Zuid Area</span>
-                                                    </div>
-                                                </div>                                
-                                            </td>
-    
-                                            <td>
-                                                <span class="text-gray-800 fw-bold d-block mb-1 fs-6">822</span>
-                                                <span class="fw-semibold text-gray-400 d-block">Deliveries</span>
-                                            </td>                                   
-    
-                                            <td>
-                                                <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">$19,842</a>
-                                                <span class="text-muted fw-semibold d-block fs-7">Earnings</span>
-                                            </td>
-                                            
-                                            <td>
-                                                <div class="rating">
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                </div>
-                                                
-                                                <span class="text-muted fw-semibold d-block fs-7 mt-1">Rating</span>
-                                            </td>                            
-    
-                                            <td class="text-end">
-                                                <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                    <i class="ki-outline ki-black-right fs-2 text-gray-500"></i>                                            </a>
-                                            </td>
-                                        </tr>                        
-                                                                        <tr>                            
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="symbol symbol-40px me-3">                                                   
-                                                        <img src="/metronic8/demo31/assets/media/avatars/300-12.jpg" class="" alt="">                                                    
-                                                    </div>
-                                                    
-                                                    <div class="d-flex justify-content-start flex-column">
-                                                        <a href="#" class="text-dark fw-bold text-hover-primary mb-1 fs-6">Esther Howard</a>
-                                                        <span class="text-muted fw-semibold d-block fs-7">Zuid Area</span>
-                                                    </div>
-                                                </div>                                
-                                            </td>
-    
-                                            <td>
-                                                <span class="text-gray-800 fw-bold d-block mb-1 fs-6">357</span>
-                                                <span class="fw-semibold text-gray-400 d-block">Deliveries</span>
-                                            </td>                                   
-    
-                                            <td>
-                                                <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">$2,737</a>
-                                                <span class="text-muted fw-semibold d-block fs-7">Earnings</span>
-                                            </td>
-                                            
-                                            <td>
-                                                <div class="rating">
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                </div>
-                                                
-                                                <span class="text-muted fw-semibold d-block fs-7 mt-1">Rating</span>
-                                            </td>                            
-    
-                                            <td class="text-end">
-                                                <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                    <i class="ki-outline ki-black-right fs-2 text-gray-500"></i>                                            </a>
-                                            </td>
-                                        </tr>                        
-                                                                        <tr>                            
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="symbol symbol-40px me-3">                                                   
-                                                        <img src="/metronic8/demo31/assets/media/avatars/300-2.jpg" class="" alt="">                                                    
-                                                    </div>
-                                                    
-                                                    <div class="d-flex justify-content-start flex-column">
-                                                        <a href="#" class="text-dark fw-bold text-hover-primary mb-1 fs-6">Annette Black</a>
-                                                        <span class="text-muted fw-semibold d-block fs-7">Zuid Area</span>
-                                                    </div>
-                                                </div>                                
-                                            </td>
-    
-                                            <td>
-                                                <span class="text-gray-800 fw-bold d-block mb-1 fs-6">6,074</span>
-                                                <span class="fw-semibold text-gray-400 d-block">Deliveries</span>
-                                            </td>                                   
-    
-                                            <td>
-                                                <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">$174,074</a>
-                                                <span class="text-muted fw-semibold d-block fs-7">Earnings</span>
-                                            </td>
-                                            
-                                            <td>
-                                                <div class="rating">
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                </div>
-                                                
-                                                <span class="text-muted fw-semibold d-block fs-7 mt-1">Rating</span>
-                                            </td>                            
-    
-                                            <td class="text-end">
-                                                <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                    <i class="ki-outline ki-black-right fs-2 text-gray-500"></i>                                            </a>
-                                            </td>
-                                        </tr>                        
-                                                                </tbody>
-                                <!--end::Table body-->
-                            </table>
-                        </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ customer.galeri_ili }}</span>
+                                        <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.galeri_adi }}</span>
+                                    </td>
+                                    <td style=" max-width: 135px;">
+                                        <span class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6 ">{{ customer.model_yili }}</span> 
+                                        <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.marka_adi }}</span>
+                                        <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.tip_adi }}</span>
+                                    </td>
+                                    <td style=" width: 135px;">
+                                        <span class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ customer.adi }} {{ customer.soyadi }} </span>
+                                        <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.musteri_cep_telefonu }}</span>
+                                        <span class="fw-semibold fw-bold  mb-1  fs-7">{{ customer.kredi_tutari }} TL</span>
+                                        <span class="text-muted fw-semibold text-muted fs-7">{{ customer.kredi_vadesi }} Ay</span>
+                                    </td>
+                                    
+                                    <td  data-customer-id="{{ customer._id }}" >    
+                                        
+                                    </td>
+                                    <td class="text-end">
+                                        <a href="#" class="btn btn-icon btn-light-facebook btn-sm " onclick="addSelectedCustomer(event, '{{ customer._id }}'); return false;" >
+                                            <i class="ki-duotone ki-switch fs-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Seç">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </a>
+                                        <button type="button" class="btn btn-icon btn-light-facebook btn-sm  dosyaButonu" data-bs-toggle="modal" data-bs-target="#kt_modal_create_project" data-customerid="{{ customer._id }}" data-dosya_numarasi = "{{ customer.dosya_numarasi }}" >
+                                            <i class="ki-duotone ki-pencil fs-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Düzenle">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </button>
+                                        <a href="#" class="btn btn-icon btn-light-facebook btn-sm dosyaDurumButonu" data-bs-toggle="modal" data-bs-target="#kt_modal_durum_guncelle" data-customerid="{{ customer._id }}" data-dosya_numarasi = "{{ customer.dosya_numarasi }}" >
+                                            <i class="ki-duotone ki-gear fs-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Dosya İşlemleri">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                                <span class="path4"></span>
+                                                <span class="path5"></span>
+                                            </i>
+                                        </a>
+                                        <a href="#" class="btn btn-icon btn-light-google btn-sm musteri_dosya_sil_butonu" data-customer_id="{{ customer._id }}" >
+                                            <i class="ki-duotone ki-delete-folder fs-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Sil">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                            <!--end::Table body-->
+                        </table>
                         <!--end::Table-->
                     </div>
                     <!--end::Tap pane-->
                     <!--begin::Tap pane-->
                     <div class="tab-pane fade " id="kt_stats_widget_6_tab_4" role="tabpanel">
                         <!--begin::Table container-->
-                        <div class="table-responsive">
-                            <!--begin::Table-->
-                            <table class="table table-row-dashed align-middle gs-0 gy-4 my-0">
-                                <!--begin::Table head-->
-                                <thead>
-                                    <tr class="fs-7 fw-bold text-gray-500 border-bottom-0">                                    
-                                        <th class="p-0 w-200px w-xxl-450px"></th>
-                                        <th class="p-0 min-w-150px"></th>
-                                        <th class="p-0 min-w-150px"></th>
-                                        <th class="p-0 min-w-190px"></th>                                     
-                                        <th class="p-0 w-50px"></th>
-                                    </tr>
-                                </thead>
-                                <!--end::Table head-->
-    
-                                <!--begin::Table body-->
-                                <tbody>
-                                                                        <tr>                            
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="symbol symbol-40px me-3">                                                   
-                                                        <img src="/metronic8/demo31/assets/media/avatars/300-1.jpg" class="" alt="">                                                    
-                                                    </div>
-                                                    
-                                                    <div class="d-flex justify-content-start flex-column">
-                                                        <a href="#" class="text-dark fw-bold text-hover-primary mb-1 fs-6">Brooklyn Simmons</a>
-                                                        <span class="text-muted fw-semibold d-block fs-7">Zuid Area</span>
-                                                    </div>
-                                                </div>                                
-                                            </td>
-    
-                                            <td>
-                                                <span class="text-gray-800 fw-bold d-block mb-1 fs-6">1,240</span>
-                                                <span class="fw-semibold text-gray-400 d-block">Deliveries</span>
-                                            </td>                                   
-    
-                                            <td>
-                                                <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">$5,400</a>
-                                                <span class="text-muted fw-semibold d-block fs-7">Earnings</span>
-                                            </td>
+                        <table class="table table-row-bordered table-row-gray-100 align-middle gs-0 gy-3">
+                            <!--begin::Table head-->
+                                    <thead>
+                                        <tr class="fw-bold text-muted" style="border-bottom-color: #d8d8d8;">
                                             
-                                            <td>
-                                                <div class="rating">
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                </div>
+                                            <th class="col-1">Dosya Numarası</th>
+                                            <th class="col-1">Galeri</th>
+                                            <th class="col-2">Taşıt</th>
+                                            <th class="col">Müşteri</th>
+                                            <th class="col-3" style="min-width: 400px;">
+                                                <div style="float:left;">Durum</div>
                                                 
-                                                <span class="text-muted fw-semibold d-block fs-7 mt-1">Rating</span>
-                                            </td>                            
-    
-                                            <td class="text-end">
-                                                <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                    <i class="ki-outline ki-black-right fs-2 text-gray-500"></i>                                            </a>
-                                            </td>
-                                        </tr>                        
-                                                                        <tr>                            
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="symbol symbol-40px me-3">                                                   
-                                                        <img src="/metronic8/demo31/assets/media/avatars/300-11.jpg" class="" alt="">                                                    
-                                                    </div>
-                                                    
-                                                    <div class="d-flex justify-content-start flex-column">
-                                                        <a href="#" class="text-dark fw-bold text-hover-primary mb-1 fs-6">Guy Hawkins</a>
-                                                        <span class="text-muted fw-semibold d-block fs-7">Zuid Area</span>
-                                                    </div>
-                                                </div>                                
-                                            </td>
-    
-                                            <td>
-                                                <span class="text-gray-800 fw-bold d-block mb-1 fs-6">2,954</span>
-                                                <span class="fw-semibold text-gray-400 d-block">Deliveries</span>
-                                            </td>                                   
-    
-                                            <td>
-                                                <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">$59,634</a>
-                                                <span class="text-muted fw-semibold d-block fs-7">Earnings</span>
-                                            </td>
+                                            </th>
+                                            <th class="col text-end" style=" width: 180px; min-width: 180px;">İşlemler</th>
+                                        </tr>
+                                    </thead>
+                                    
+                                    <!--end::Table head-->
+                                    <!--begin::Table body-->
+                                    <tbody>
+                                    {% for customer in kredi_dosyalari['Kullandırıldı'] %} 
+
+                                    {% if lstest_customer_id|string == customer._id|string %}
+                                    <tr style="background-color: #daf3ff; vertical-align: top; border-bottom-color: #d8d8d8;" data-customer-id="{{ customer._id }}">
+                                    {% else %}
+                                    <tr style="vertical-align: top; border-bottom-color: #d8d8d8;" data-customer-id="{{ customer._id }}">
+                                    {% endif %}
+
+                                    
+                                    <td>
+                                        <div class="position-relative ps-6 pe-3 ">
+                                            <div class="position-absolute start-0 top-0 w-4px h-100 rounded-2 solCizgi" data-customer-id="{{ customer._id }}" ></div>
+                                            <span class="text-dark fw-bold text-hover-primary fs-6 createdTime">{{ customer.created_time }}</span>
+                                            <div class="fs-7 text-muted fw-bold">{{ customer.dosya_numarasi }}</div>
                                             
-                                            <td>
-                                                <div class="rating">
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label ">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                </div>
-                                                
-                                                <span class="text-muted fw-semibold d-block fs-7 mt-1">Rating</span>
-                                            </td>                            
-    
-                                            <td class="text-end">
-                                                <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                    <i class="ki-outline ki-black-right fs-2 text-gray-500"></i>                                            </a>
-                                            </td>
-                                        </tr>                        
-                                                                        <tr>                            
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="symbol symbol-40px me-3">                                                   
-                                                        <img src="/metronic8/demo31/assets/media/avatars/300-13.jpg" class="" alt="">                                                    
-                                                    </div>
-                                                    
-                                                    <div class="d-flex justify-content-start flex-column">
-                                                        <a href="#" class="text-dark fw-bold text-hover-primary mb-1 fs-6">Marvin McKinney</a>
-                                                        <span class="text-muted fw-semibold d-block fs-7">Zuid Area</span>
-                                                    </div>
-                                                </div>                                
-                                            </td>
-    
-                                            <td>
-                                                <span class="text-gray-800 fw-bold d-block mb-1 fs-6">822</span>
-                                                <span class="fw-semibold text-gray-400 d-block">Deliveries</span>
-                                            </td>                                   
-    
-                                            <td>
-                                                <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">$19,842</a>
-                                                <span class="text-muted fw-semibold d-block fs-7">Earnings</span>
-                                            </td>
-                                            
-                                            <td>
-                                                <div class="rating">
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                </div>
-                                                
-                                                <span class="text-muted fw-semibold d-block fs-7 mt-1">Rating</span>
-                                            </td>                            
-    
-                                            <td class="text-end">
-                                                <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                    <i class="ki-outline ki-black-right fs-2 text-gray-500"></i>                                            </a>
-                                            </td>
-                                        </tr>                        
-                                                                        <tr>                            
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="symbol symbol-40px me-3">                                                   
-                                                        <img src="/metronic8/demo31/assets/media/avatars/300-12.jpg" class="" alt="">                                                    
-                                                    </div>
-                                                    
-                                                    <div class="d-flex justify-content-start flex-column">
-                                                        <a href="#" class="text-dark fw-bold text-hover-primary mb-1 fs-6">Esther Howard</a>
-                                                        <span class="text-muted fw-semibold d-block fs-7">Zuid Area</span>
-                                                    </div>
-                                                </div>                                
-                                            </td>
-    
-                                            <td>
-                                                <span class="text-gray-800 fw-bold d-block mb-1 fs-6">357</span>
-                                                <span class="fw-semibold text-gray-400 d-block">Deliveries</span>
-                                            </td>                                   
-    
-                                            <td>
-                                                <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">$2,737</a>
-                                                <span class="text-muted fw-semibold d-block fs-7">Earnings</span>
-                                            </td>
-                                            
-                                            <td>
-                                                <div class="rating">
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                </div>
-                                                
-                                                <span class="text-muted fw-semibold d-block fs-7 mt-1">Rating</span>
-                                            </td>                            
-    
-                                            <td class="text-end">
-                                                <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                    <i class="ki-outline ki-black-right fs-2 text-gray-500"></i>                                            </a>
-                                            </td>
-                                        </tr>                        
-                                                                        <tr>                            
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="symbol symbol-40px me-3">                                                   
-                                                        <img src="/metronic8/demo31/assets/media/avatars/300-2.jpg" class="" alt="">                                                    
-                                                    </div>
-                                                    
-                                                    <div class="d-flex justify-content-start flex-column">
-                                                        <a href="#" class="text-dark fw-bold text-hover-primary mb-1 fs-6">Annette Black</a>
-                                                        <span class="text-muted fw-semibold d-block fs-7">Zuid Area</span>
-                                                    </div>
-                                                </div>                                
-                                            </td>
-    
-                                            <td>
-                                                <span class="text-gray-800 fw-bold d-block mb-1 fs-6">6,074</span>
-                                                <span class="fw-semibold text-gray-400 d-block">Deliveries</span>
-                                            </td>                                   
-    
-                                            <td>
-                                                <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">$174,074</a>
-                                                <span class="text-muted fw-semibold d-block fs-7">Earnings</span>
-                                            </td>
-                                            
-                                            <td>
-                                                <div class="rating">
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                        <div class="rating-label checked">
-                                                            <i class="ki-outline ki-star fs-6"></i>                                                    </div>
-                                                                                                </div>
-                                                
-                                                <span class="text-muted fw-semibold d-block fs-7 mt-1">Rating</span>
-                                            </td>                            
-    
-                                            <td class="text-end">
-                                                <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                    <i class="ki-outline ki-black-right fs-2 text-gray-500"></i>                                            </a>
-                                            </td>
-                                        </tr>                        
-                                                                </tbody>
-                                <!--end::Table body-->
-                            </table>
-                        </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ customer.galeri_ili }}</span>
+                                        <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.galeri_adi }}</span>
+                                    </td>
+                                    <td style=" max-width: 135px;">
+                                        <span class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6 ">{{ customer.model_yili }}</span> 
+                                        <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.marka_adi }}</span>
+                                        <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.tip_adi }}</span>
+                                    </td>
+                                    <td style=" width: 135px;">
+                                        <span class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ customer.adi }} {{ customer.soyadi }} </span>
+                                        <span class="text-muted fw-semibold text-muted d-block fs-7">{{ customer.musteri_cep_telefonu }}</span>
+                                        <span class="fw-semibold fw-bold  mb-1  fs-7">{{ customer.kredi_tutari }} TL</span>
+                                        <span class="text-muted fw-semibold text-muted fs-7">{{ customer.kredi_vadesi }} Ay</span>
+                                    </td>
+                                    
+                                    <td  data-customer-id="{{ customer._id }}" >    
+                                        
+                                    </td>
+                                    <td class="text-end">
+                                        <a href="#" class="btn btn-icon btn-light-facebook btn-sm " onclick="addSelectedCustomer(event, '{{ customer._id }}'); return false;" >
+                                            <i class="ki-duotone ki-switch fs-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Seç">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </a>
+                                        <button type="button" class="btn btn-icon btn-light-facebook btn-sm  dosyaButonu" data-bs-toggle="modal" data-bs-target="#kt_modal_create_project" data-customerid="{{ customer._id }}" data-dosya_numarasi = "{{ customer.dosya_numarasi }}" >
+                                            <i class="ki-duotone ki-pencil fs-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Düzenle">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </button>
+                                        <a href="#" class="btn btn-icon btn-light-facebook btn-sm dosyaDurumButonu" data-bs-toggle="modal" data-bs-target="#kt_modal_durum_guncelle" data-customerid="{{ customer._id }}" data-dosya_numarasi = "{{ customer.dosya_numarasi }}" >
+                                            <i class="ki-duotone ki-gear fs-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Dosya İşlemleri">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                                <span class="path4"></span>
+                                                <span class="path5"></span>
+                                            </i>
+                                        </a>
+                                        <a href="#" class="btn btn-icon btn-light-google btn-sm musteri_dosya_sil_butonu" data-customer_id="{{ customer._id }}" >
+                                            <i class="ki-duotone ki-delete-folder fs-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Sil">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                            <!--end::Table body-->
+                        </table>
                         <!--end::Table-->
                     </div>
                     <!--end::Tap pane-->
@@ -1508,7 +865,7 @@
             <h3 class="card-title align-items-start flex-column">			
                 <span class="card-label fw-bold text-gray-800">Son İşlemlerim</span>
                 
-                <span class="text-gray-400 mt-1 fw-semibold fs-6">Yalnızca sizin yaptığınız dosya işlemleri listelenir</span>
+                <span class="text-gray-400 mt-1 fw-semibold fs-6">Yalnızca kendi yaptığınız dosya işlemleri listelenir</span>
             </h3>
             <!--end::Title-->
     
@@ -1797,3 +1154,7 @@
     </div>
     <!--end::Post-->
 </div>
+
+{% include 'modul_modal_durum_guncelle.html' %}
+
+<script src="{{ url_for('static', filename='assets/js/kredi.dosyalari.js') }}"></script>

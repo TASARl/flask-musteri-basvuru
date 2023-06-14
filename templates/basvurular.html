@@ -210,6 +210,7 @@ tl-item.active .tl-dot:before {
 
 
 {% block scripts %} 
+
 <script>
 // ustte cıkan kaydedıldı yada hata mesajlarının ayarları
 toastr.options = {
@@ -230,6 +231,7 @@ toastr.options = {
   "hideMethod": "fadeOut"
 };
 
+// Dosya Guncellemeleri bolumde aciklama ekleme butonuna basinca yapilacaklar
 $(document).ready(function() {
     $('#submitButtonGuncelle').on('click', function(event) {
         event.preventDefault(); // Prevent default form submission behavior
@@ -266,61 +268,25 @@ $(document).ready(function() {
     });
 });
 
+// Dosya Guncellemeleri Bolumundeki verilerin yenilenmesi icin fonksiyon olarak cagirilabilir
 // guncelemeler sayfasindaki timeline yenilemek ve getirmek icin. guncellemelr ıcınde yapılan her ıslemden sonra sayfa ıcerıgını yenılemesı ıcın cagırılır
 function getDosyaGuncellemeleri(dosya_id) {
+
+    $('#dosya_id_durum').val(dosya_id);
+    $.ajax({
+        url: '/api/dosya_no_getir',
+        method: 'GET',
+        data: { dosya_id: dosya_id },
+        success: function(response){
+            $('#dosyaNumarasi').text(response)
+        }
+    }
+    )
+
     $.ajax({
         url: '/dosya_guncellemeleri',
         method: 'GET',
         data: { dosya_id: dosya_id },
-        // success: function(data){
-        //     // Veriyi parse et
-        //     var json_data = JSON.parse(data);
-        //     var oncekiDay=0;
-        //     var oncekiMonth=0;
-
-        //     // HTML kodunu oluştur
-        //     var html = '<div class="timeline">';
-        //     for (var i=0; i<json_data.length; i++) {
-        //          // Tarihten sadece saat kısmını al
-
-        //         var date = new Date(json_data[i].created_time.$date);
-        //         // Saat, dakika ve saniyeyi al
-        //         var hours = date.getUTCHours() + 3; // UTC saat diliminden Türkiye saat dilimine geçiş yap
-        //         hours = ('0' + hours).slice(-2);
-        //         var minutes = ('0' + date.getMinutes()).slice(-2);
-        //         var seconds = date.getSeconds();
-
-        //         var year = date.getFullYear();
-        //         var month = ('0' + (date.getMonth() + 1)).slice(-2);
-        //         var day = ('0' + date.getDate()).slice(-2);
-        //         // eger onceki tarihle ayni degilse ekrana yazdir ve onceki degerlere ata
-        //         if (day !== oncekiDay || month !== oncekiMonth){
-        //             oncekiDay= day;
-        //             oncekiMonth= month;
-        //             html +=  '<div class="timeline-label fw-bold text-gray-800 fs-6">' + day + '/' + month + '/' + year + '</div>';
-        //         }
-
-        //         html += '<div class="timeline-item">';
-        //         html += '<div class="timeline-label fw-bold text-gray-800 fs-6">' + hours + ':' + minutes  + '</div>';
-        //         if (json_data[i].status == 'kullanici') {
-        //             html += '<div class="timeline-badge"><i class="fa fa-genderless text-warning fs-1"></i></div>';
-        //         } else if (json_data[i].status == 'otomatik'){
-        //             html += '<div class="timeline-badge"><i class="fa fa-genderless text-primary fs-1"></i></div>';
-        //         }
-        //         else {
-        //             html += '<div class="timeline-badge"><i class="fa fa-genderless text-success fs-1"></i></div>';
-        //         }
-        //         html += '<div class="fw-mormal timeline-content text-muted ps-3">';
-        //         html += '<span>' + json_data[i].inputValue + '</span>';
-        //         html += '<br><small class="text-muted">Ekleyen: ' + json_data[i].isim_soyisim + '</small>';
-        //         html += '</div>';
-        //         html += '</div>';
-        //     }
-        //     html += '</div>';
-
-        //     // HTML kodunu sayfaya ekle
-        //     $('#eklenecekGuncellemeler').html(html);
-        // },
         success: function(data){
             // Veriyi parse et
             var json_data = JSON.parse(data);
@@ -467,14 +433,8 @@ function getDosyaGuncellemeleri(dosya_id) {
         }
     });
 
-   
-
 }
 
-
-</script>
-
-<script>
 // bankalarin yanindaki radi butonlarinin secip arka plana ajax ıle gondermek ıcın
 // Get all radio buttons with class 'form-check-input'
 const radioButtons = document.querySelectorAll('.form-check-input');
@@ -508,9 +468,6 @@ radioButtons.forEach(button => {
 });
 
 </script>
-
-
-
 
 <script>
     // kullandırım sonrası kar hesaplama
@@ -989,5 +946,7 @@ $(document).ready(function() {
     }
   });
 });
+
 </script>
+
 {% endblock %}

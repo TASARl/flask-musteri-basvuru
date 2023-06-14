@@ -189,6 +189,15 @@ var KTModalCreateProjectFiles = (function () {
                         "Dosyada yapılan değişiklikler kayıt edildi.",
                         "Kayıt edildi"
                       );
+
+                      $("#kt_modal_create_project").modal("hide"); // Modalı gizler
+                      $("#kt_modal_durum_guncelle").modal("show"); // Modalı gizler
+                      // $(".modal-backdrop").show();  // Backdrop'i gizler
+                      getDosyaGuncellemeleri(response.data.dosya_id);
+                      console.log("yazi");
+
+                      console.log(response);
+                      console.log(response.data.dosya_id);
                     } else {
                       // Go to next step
                       // stepper.goNext();
