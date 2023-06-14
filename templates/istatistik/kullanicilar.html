@@ -1,0 +1,166 @@
+{% extends "modul__base_yeni.html" %}
+{% block styles %}
+<style>
+
+</style>
+{% endblock %}
+
+
+{% block title %}HızlıKredi | En Hızlı Taşıt Kredisi{% endblock %}
+
+
+{% block content %}
+<div class="card-rounded bg-light d-flex flex-wrap p-5 mb-5">
+  <div class="row w-100 align-items-center">
+    <div class="col-sm-12 col-md-6 col-lg-3 mb-3 mb-lg-0">
+      
+      <label for="" class="form-label">Başlangıç</label>
+      <input class="form-control guncelleme" type="month" id="start" name="start">
+  </div><div class="col-sm-12 col-md-6 col-lg-3 mb-3 mb-lg-0">
+
+      <label for="" class="form-label">Bitiş</label>
+      <input  class="form-control guncelleme"  type="month" id="end" name="end">
+  </div><div class="col-sm-12 col-md-6 col-lg-3 mb-3 mb-lg-0">
+      <label for="" class="form-label">Hazır Seçenekler</label>
+      <select class="form-select guncelleme" data-control="select2" id="select">
+          <option value="1">Son 1 Ay</option>
+          <option value="3">Son 3 Ay</option>
+          <option value="6">Son 6 Ay</option>
+          <!-- <option value="12">Son 1 Yıl</option> -->
+      </select>
+    </div>    
+  </div>
+</div>
+
+<div class="card card-bordered">
+  <div class="card-body" >
+      <canvas id="myChart"></canvas>
+  </div>
+</div>
+
+{% endblock %}
+
+
+
+{% block scripts %} 
+<script>
+function getKullanicilarIstatistik() {
+  $(document).ready(function() {
+    $.getJSON('/api/kullanicilar-istatistik', function(data) {
+
+      const months = getMonthsInRange()
+      // console.log(months)
+
+      // Create a dictionary with all the required keys and values initialized to zero
+      const result = {};
+      for (let key of months){
+        result[key] = { "Yönetici": 0, "Kredi Ofisi": 0, "Oto Galeri": 0, "Saha Personeli": 0 };
+      }
+      // console.log(result)
+
+      // Update the dictionary with the relevant data from the original dictionary
+      for (const [date, values] of Object.entries(data)) {
+
+        for (const [key, value] of Object.entries(values)) {
+          result[date][key] = value;
+        }
+
+      }
+
+      // Print the updated dictionary in the desired format
+      data= result;
+
+      const chartData = {
+        labels: Object.keys(data),
+        datasets: []
+      };
+
+      Object.keys(data[Object.keys(data)[0]]).forEach(key => {
+        const dataset = {
+          label: key,
+          data: [],
+          borderColor: "#" + ((1<<24)*Math.random() | 0).toString(16)
+        };
+
+        Object.keys(data).forEach(date => {
+          dataset.data.push(data[date][key] || 0);
+        });
+
+        chartData.datasets.push(dataset);
+      });
+
+      const myChart = new Chart(document.getElementById('myChart'), {
+        type: 'line',
+        data: chartData,
+        options: {}
+      });
+
+      $('.guncelleme').on('change', function() {
+          if (myChart) {
+            myChart.destroy();
+          }
+          getKullanicilarIstatistik();
+      });
+
+    });
+  });
+}
+
+$(document).ready(function() {
+  getKullanicilarIstatistik();
+});
+
+
+</script>
+
+<script>
+  function getMonthsInRange() {
+      const startInput = $('#start');
+      const endInput = $('#end');
+      const startDate = new Date(startInput.val());
+      const endDate = new Date(endInput.val());
+  
+      let months = [];
+      let currentDate = new Date(startDate);
+      while (currentDate <= endDate) {
+          const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+          const year = currentDate.getFullYear();
+          months.push(`${month}-${year}`);
+          currentDate.setMonth(currentDate.getMonth() + 1);
+      }
+      return months;
+  }
+  
+</script>
+<script>
+  $(document).ready(function() {
+    const startInput = $('#start');
+    const endInput = $('#end');
+    const select = $('#select');
+
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth() + 1;
+    const minMonth = `${currentYear}-${(currentMonth).toString().padStart(2, '0')}`;
+    startInput.attr('min', '1900-01');
+    endInput.attr('max', minMonth);
+
+    startInput.on('change', function() {
+      const startValue = startInput.val();
+      endInput.attr('min', startValue);
+    });
+
+    select.on('change', function() {
+      const numberOfMonths = select.val();
+      const startDate = new Date(currentYear, currentMonth - numberOfMonths, 1);
+      const startYear = startDate.getFullYear();
+      const startMonth = startDate.getMonth() + 1;
+      const startMonthAsString = startMonth.toString().padStart(2, '0');
+      startInput.val(`${startYear}-${startMonthAsString}`);
+      endInput.val(minMonth);
+    });
+
+    select.val("6").trigger('change');
+  });
+</script>
+{% endblock %}

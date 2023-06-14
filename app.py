@@ -291,6 +291,20 @@ def istatistik(parametre=None):
                 'sayfa_baslik': 'Gelir Gider İstatistikleri'
             }
             return render_template('/istatistik/gelir-gider.html', metadata=metadata,user_data=user_data)
+        
+        elif parametre == 'kullanicilar':
+            
+            metadata = {
+                'sayfa_baslik': 'Kullanıcı İstatistikleri'
+            }
+            return render_template('/istatistik/kullanicilar.html', metadata=metadata,user_data=user_data)
+        
+        elif parametre == 'marka-model':
+            
+            metadata = {
+                'sayfa_baslik': 'Marka/Model Kullandırım İstatistikleri'
+            }
+            return render_template('/istatistik/marka-model.html', metadata=metadata,user_data=user_data)
         else:
             return render_template('/istatistik/ana.html', metadata=metadata, user_data=user_data)
     else:
@@ -1436,24 +1450,41 @@ def verilerBanka():
     return json_output
 
 
-@app.route('/gelir-gider-chart-data')
-def chart_data():
-    # Burada API'dan verileri çekip JSON formatında döndürüyoruz.
-    data = {
-        "revenue": [31, 40, 28, 51, 42, 109, 0],
-        "net_income": [11, 32, 45, 32, 34, 52, 1],
-        "expenses": [1, 20, 128, 1, 0, 9, 0],
-        "categories": [
-            "Tuesday, 22 March",
-            "Wednesday, 23 March",
-            "Thursday, 24 March",
-            "Friday, 25 March",
-            "Saturday, 26 March",
-            "Sunday, 27 March",
-            "Monday, 28 March"
-        ]
-    }
-    return jsonify(data)
+@app.route('/api/kullanicilar-istatistik')
+def chart_data_kullanicilar():
+    # Tüm dokümanları çek
+    docs = users_collection.find()
+
+    # Aylık değişim bilgileri için liste oluştur
+    month_data = {}
+
+    # Dokümanların her biri için işlem yap
+    for doc in docs:
+        # Yetki alanı
+        yetki = doc['yetki']
+            
+        # _id alanının zaman damgası
+        timestamp = int(doc['_id'].generation_time.timestamp())
+            
+        # Zaman damgasını tarih formatına dönüştür
+        date = datetime.fromtimestamp(timestamp)
+            
+        # Tarihi aylık olarak yuvarla
+        month_str = date.strftime('%m-%Y')
+            
+        # Aylık değişim bilgileri listesine ekle
+        if month_str not in month_data:
+            month_data[month_str] = {}
+        if yetki not in month_data[month_str]:
+            month_data[month_str][yetki] = 1
+        else:
+            month_data[month_str][yetki] += 1
+
+    # Aylık değişim bilgilerini JSON formatında yazdır
+
+    return json.dumps(month_data, indent=4)
+
+    
 
 ######## İSTATİSTİK VERİLER İÇİN SERVİSLER SONUC ############
 
