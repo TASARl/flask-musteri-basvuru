@@ -194,9 +194,9 @@ var KTModalCreateProjectFiles = (function () {
                       $("#kt_modal_durum_guncelle").modal("show"); // Modalı gizler
                       // $(".modal-backdrop").show();  // Backdrop'i gizler
                       getDosyaGuncellemeleri(response.data.dosya_id);
-                      console.log("yazi");
+                      // console.log("yazi");
 
-                      console.log(response);
+                      // console.log(response);
                       console.log(response.data.dosya_id);
                     } else {
                       // Go to next step
@@ -235,6 +235,7 @@ var KTModalCreateProjectFiles = (function () {
                   }
                 })
                 .catch(function (error) {
+                  console.log(error);
                   Swal.fire({
                     text: "Kayıt esnasında bir problem oluştu.",
                     icon: "error",

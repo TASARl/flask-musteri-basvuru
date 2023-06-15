@@ -491,8 +491,19 @@ def dashboard():
     metadata ={
         'sayfa_baslik': 'Özet'
     }
+
+    # eger bu kullanici icin secim yapima collectionunda bir dokuman varsa bul getir
+    query = {"current_user": current_user.id }
+    existing_doc = selected_customers.find_one(query)
+
+    if existing_doc:
+        # Doküman mevcut, secili musteri dosya bilgisini getirir
+        lstest_customer_id = existing_doc["customer_id"]
+    else:
+        lstest_customer_id = '0'
+
     # Template'e JSON verisini gönderin
-    return render_template("dashboard.html", user_data=user_data, metadata=metadata, kredi_dosyalari= kredi_dosyalari)
+    return render_template("dashboard.html", user_data=user_data, metadata=metadata, kredi_dosyalari= kredi_dosyalari, lstest_customer_id = lstest_customer_id)
 
 
 # GET isteği ile müşterileri pagination ile getirme
@@ -1051,6 +1062,7 @@ def dosya_guncelleme_ekle(dosya_id, inputValue, status):
     )
 
     galeri_adi = customers.find_one({'_id': ObjectId(dosya_id)})['galeri_adi']
+    galeri_telefonu = customers.find_one({'_id': ObjectId(dosya_id)})['galeri_telefonu']
     gorunen_dosya_no = customers.find_one({'_id': ObjectId(dosya_id)})['dosya_numarasi']
     dosya_tarihi_long = customers.find_one({'_id': ObjectId(dosya_id)})['created_time']
     # String olarak verilen tarihi datetime nesnesine dönüştürme
@@ -1058,15 +1070,17 @@ def dosya_guncelleme_ekle(dosya_id, inputValue, status):
 
     geciciDataGuncelle = {
         'galeri_adi':galeri_adi,
+        'galeri_telefonu':galeri_telefonu,
         'gorunen_dosya_no':gorunen_dosya_no,
         'dosya_tarihi':dosya_tarihi,
         'inputValue': inputValue,
         'isim_soyisim': current_user.isim_soyisim,
+        'created_by': current_user.id,  # kayit eden user telefonu
         'status': status,   
         'created_time': datetime.now(),
     }
 
-    print(geciciDataGuncelle)
+    # print(geciciDataGuncelle)
     
 
     gecici_guncellemeler.insert_one(geciciDataGuncelle)
@@ -1076,7 +1090,7 @@ def dosya_guncelleme_ekle(dosya_id, inputValue, status):
     #     oldest_record = gecici_guncellemeler.find_one_and_delete(sort=[('_id', 1)])  
 
     # En son 100 belgeyi hariç tutarak tüm kayıtları getir
-    docs_to_delete = gecici_guncellemeler.find().sort('_id', -1).skip(100)
+    docs_to_delete = gecici_guncellemeler.find().sort('_id', -1).skip(300)
 
     # Silme işlemini gerçekleştir
     delete_result = gecici_guncellemeler.delete_many({'_id': {'$in': [doc['_id'] for doc in docs_to_delete]}})             
@@ -1140,6 +1154,21 @@ def get_gecici_guncellemeler():
     
     gecici_guncellemeler_data = []
     for record in gecici_guncellemeler.find().sort("_id", -1).limit(40):
+        # json_util.dumps() yöntemini kullanarak ObjectId'yi dizeye dönüştürün:
+        serialized_record = json.loads(json_util.dumps(record))
+
+        # ObjectId'i kaldır
+        del serialized_record['_id']
+        gecici_guncellemeler_data.append(serialized_record)
+
+    return jsonify(gecici_guncellemeler_data)
+
+@app.route('/api/gecici_guncellemeler/kullanici', methods=['GET'])
+@login_required
+def get_gecici_guncellemeler_kullanici():
+    
+    gecici_guncellemeler_data = []
+    for record in gecici_guncellemeler.find({'isim_soyisim':current_user.isim_soyisim}).sort("_id", -1).limit(40):
         # json_util.dumps() yöntemini kullanarak ObjectId'yi dizeye dönüştürün:
         serialized_record = json.loads(json_util.dumps(record))
 
