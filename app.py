@@ -281,7 +281,7 @@ def istatistik(parametre=None):
         if parametre == 'bankalar':
             # Sayfa 1'in render edilmesi
             metadata = {
-                'sayfa_baslik': 'Bankalara Göre Dağılım'
+                'sayfa_baslik': 'Bankalara Göre Dağılım Grafiği'
             }
             return render_template('/istatistik/bankalar.html', metadata=metadata, user_data=user_data)
 
@@ -305,6 +305,20 @@ def istatistik(parametre=None):
                 'sayfa_baslik': 'Marka/Model Kullandırım İstatistikleri'
             }
             return render_template('/istatistik/marka-model.html', metadata=metadata,user_data=user_data)
+        
+        elif parametre == 'sehirler':
+            
+            metadata = {
+                'sayfa_baslik': 'Şehir Bazında Kullandırım İstatistikleri'
+            }
+            return render_template('/istatistik/sehirler.html', metadata=metadata,user_data=user_data)
+        
+        elif parametre == 'bankalar2':
+            
+            metadata = {
+                'sayfa_baslik': 'Bankalara Göre Dağılım Tablosu'
+            }
+            return render_template('/istatistik/bankalar2.html', metadata=metadata,user_data=user_data)
         else:
             return render_template('/istatistik/ana.html', metadata=metadata, user_data=user_data)
     else:
@@ -484,13 +498,24 @@ def dashboard():
     kredi_dosyalari['Kullandırıldı'] = get_kredi_dosyalari('Kullandırıldı')
     kredi_dosyalari['Kullandırılacak'] = get_kredi_dosyalari('Kullandırılacak')
     kredi_dosyalari['Sonlandı'] = get_kredi_dosyalari('Sonlandı')
-    print(kredi_dosyalari)
+    # print(kredi_dosyalari)
    
     
     
     metadata ={
         'sayfa_baslik': 'Özet'
     }
+
+    # dosya durumlarinin sayilarini getir
+    pipeline = [
+        {'$group': {'_id': '$status', 'count': {'$sum': 1}}}
+    ]
+    results = customers.aggregate(pipeline)
+
+    dosya_durum_sayilari = {}
+    for result in results:
+        dosya_durum_sayilari[result['_id']] = result['count']
+    # print (response_dict)
 
     # eger bu kullanici icin secim yapima collectionunda bir dokuman varsa bul getir
     query = {"current_user": current_user.id }
@@ -503,7 +528,7 @@ def dashboard():
         lstest_customer_id = '0'
 
     # Template'e JSON verisini gönderin
-    return render_template("dashboard.html", user_data=user_data, metadata=metadata, kredi_dosyalari= kredi_dosyalari, lstest_customer_id = lstest_customer_id)
+    return render_template("dashboard.html", user_data=user_data, metadata=metadata, kredi_dosyalari= kredi_dosyalari, lstest_customer_id = lstest_customer_id, dosya_durum_sayilari=dosya_durum_sayilari)
 
 
 # GET isteği ile müşterileri pagination ile getirme
