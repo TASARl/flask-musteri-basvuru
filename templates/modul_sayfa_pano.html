@@ -4,6 +4,19 @@
         <!--begin::Container-->
         <div id="kt_toolbar_container" class="container-fluid d-flex flex-stack flex-wrap justify-content-center">
             <!--begin::Page title-->
+            <style>
+                .md-button{
+                    border: 1px dashed var(--bs-border-dashed-color);
+                    border-radius: 0.75rem;
+                    /* box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); */
+                }
+                .md-button:hover{
+                    box-shadow: 0 10px 20px rgb(156 127 220 / 26%), 0 6px 6px rgb(0 0 0 / 19%);
+                }
+                .son_kredi_dosyalari{
+                    min-height: 300px;
+                }
+            </style>
             
             <!--end::Page title-->
             <!--begin::Actions-->
@@ -13,7 +26,7 @@
                     <div class="col-sm-6 col-xl-2 mb-xl-10">
                         
                 <!--begin::Card widget 2-->
-                <div class="card h-lg-100" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" title="<b>Devam: </b> Dosya ile ilgili işlemler yapılamya devam ediliyor.">
+                <div class="card h-lg-100 md-button" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" title="<b>Devam: </b> Dosya ile ilgili işlemler yapılamya devam ediliyor.">
                     <!--begin::Body-->
                     <div class="card-body d-flex justify-content-between align-items-start flex-column">         
                         <!--begin::Icon--> 
@@ -53,7 +66,7 @@
                     <div class="col-sm-6 col-xl-2 mb-xl-10">
                         
                 <!--begin::Card widget 2-->
-                <div class="card h-lg-100" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" title="<b>Kullandırılacak: </b> Müşteriden olumlu cevap alındı. <u>Kullandırım</u> yapılıncaya kadar yada <u>Sonlandı</u> işaretleninceye kadar Süreci Devam Eden olarak değerlendirilir.">
+                <div class="card h-lg-100 md-button" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" title="<b>Kullandırılacak: </b> Müşteriden olumlu cevap alındı. <u>Kullandırım</u> yapılıncaya kadar yada <u>Sonlandı</u> işaretleninceye kadar Süreci Devam Eden olarak değerlendirilir.">
                     <!--begin::Body-->
                     <div class="card-body d-flex justify-content-between align-items-start flex-column">         
                         <!--begin::Icon--> 
@@ -92,7 +105,7 @@
                     <div class="col-sm-6 col-xl-2 mb-xl-10">
                         
                 <!--begin::Card widget 2-->
-                <div class="card h-lg-100" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" title="<b>Sonlandı: </b>Başvuru olumsuz sonuçlandı yada müşteriden olumsuz cevap alındı. Dosya ile ilgili yapılacak başka bir işlem kalmadığını belirtir. ">
+                <div class="card h-lg-100 md-button" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" title="<b>Sonlandı: </b>Başvuru olumsuz sonuçlandı yada müşteriden olumsuz cevap alındı. Dosya ile ilgili yapılacak başka bir işlem kalmadığını belirtir. ">
                     <!--begin::Body-->
                     <div class="card-body d-flex justify-content-between align-items-start flex-column">         
                         <!--begin::Icon--> 
@@ -132,7 +145,7 @@
                     <div class="col-sm-6 col-xl-2 mb-xl-10">
                         
                 <!--begin::Card widget 2-->
-                <div class="card h-lg-100" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" title="<b>Kullandırıldı: </b> 🥳 Kredi kullandırıldığında seçilmelidir. Kullandırım bilgileri istatistik bölümünün veri kaynağıdır.">
+                <div class="card h-lg-100 md-button" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" title="<b>Kullandırıldı: </b> 🥳 Kredi kullandırıldığında seçilmelidir. Kullandırım bilgileri istatistik bölümünün veri kaynağıdır.">
                     <!--begin::Body-->
                     <div class="card-body d-flex justify-content-between align-items-start flex-column">         
                         <!--begin::Icon--> 
@@ -171,7 +184,7 @@
                      <div class="col-sm-6 col-xl-2 mb-5 mb-xl-10">
                         
                 <!--begin::Card widget 2-->
-                <div class="card h-lg-100" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" title="<b>Potansiyel Müşteri: </b>Bu bölümü henüz yazmadım. Bunun için buton konabilir yada başka bir şekilde belirlenebilir. ">
+                <div class="card h-lg-100 md-button" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" title="<b>Potansiyel Müşteri: </b>Bu bölümü henüz yazmadım. Bunun için buton konabilir yada başka bir şekilde belirlenebilir. ">
                     <!--begin::Body-->
                     <div class="card-body d-flex justify-content-between align-items-start flex-column">         
                         <!--begin::Icon--> 
@@ -210,7 +223,7 @@
                     <div class="col-sm-6 col-xl-2 mb-5 mb-xl-10">
                         
                 <!--begin::Card widget 2-->
-                <div class="card h-lg-100" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" title="<b>Diğer İşlemler: </b>Örneğin kargo ile evrağı beklenen kredi dosyalarını bu süreçte değerlendirebiliriz. Bu özelliği henüz eklemedim. Eğere kredi ekibi isterse ekleyeceğim. ">
+                <div class="card h-lg-100 md-button" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" title="<b>Diğer İşlemler: </b>Örneğin kargo ile evrağı beklenen kredi dosyalarını bu süreçte değerlendirebiliriz. Bu özelliği henüz eklemedim. Eğere kredi ekibi isterse ekleyeceğim. ">
                     <!--begin::Body-->
                     <div class="card-body d-flex justify-content-between align-items-start flex-column">         
                         <!--begin::Icon--> 
@@ -258,7 +271,7 @@
         <!--end::Col-->      
     
         <!--begin::Col-->
-        <div >
+        <div class="mt-0 mb-10">
             
     <!--begin::Table widget 6-->
     <div class="card card-flush h-xl-100">
@@ -379,7 +392,7 @@
             <!--begin::Tab Content-->
             <div class="tab-content">
                                                 <!--begin::Tap pane-->
-                    <div class="tab-pane fade active show" id="kt_stats_widget_6_tab_1" role="tabpanel">
+                    <div class="tab-pane fade active show son_kredi_dosyalari" id="kt_stats_widget_6_tab_1" role="tabpanel">
 
                         <!--begin::Table-->
                         <table class="table table-row-bordered table-row-gray-100 align-middle gs-0 gy-3">
@@ -393,7 +406,7 @@
                                             <th class="col">Müşteri</th>
                                             <th class="col-3" style="min-width: 400px;">
                                                 <div style="float:left;">Durum</div>
-                                                <div style="float:right;">
+                                                <div style="float:right; display: none;">
                                                     <div class="progress-elem loading-buton-guncelleme hover-scale" style="max-width: 27px; margin-bottom: -20px; margin-right: 17px; margin-top: -5px;" data-bs-toggle="tooltip" data-bs-placement="top" title="Güncelle">
                                                         <svg style="transform: rotate(90deg)" height="100%" viewBox="0 0 110 110" width="100%">
                                                             <!-- gray dashed -->
@@ -496,7 +509,7 @@
                     </div>
                     <!--end::Tap pane-->
                                                 <!--begin::Tap pane-->
-                    <div class="tab-pane fade " id="kt_stats_widget_6_tab_2" role="tabpanel">
+                    <div class="tab-pane fade son_kredi_dosyalari" id="kt_stats_widget_6_tab_2" role="tabpanel">
                         <!--begin::Table container-->
                         <table class="table table-row-bordered table-row-gray-100 align-middle gs-0 gy-3">
                             <!--begin::Table head-->
@@ -592,7 +605,7 @@
                     </div>
                     <!--end::Tap pane-->
                     <!--begin::Tap pane-->
-                    <div class="tab-pane fade " id="kt_stats_widget_6_tab_3" role="tabpanel">
+                    <div class="tab-pane fade son_kredi_dosyalari" id="kt_stats_widget_6_tab_3" role="tabpanel">
                         <!--begin::Table container-->
                         <table class="table table-row-bordered table-row-gray-100 align-middle gs-0 gy-3">
                             <!--begin::Table head-->
@@ -688,7 +701,7 @@
                     </div>
                     <!--end::Tap pane-->
                     <!--begin::Tap pane-->
-                    <div class="tab-pane fade " id="kt_stats_widget_6_tab_4" role="tabpanel">
+                    <div class="tab-pane fade son_kredi_dosyalari" id="kt_stats_widget_6_tab_4" role="tabpanel">
                         <!--begin::Table container-->
                         <table class="table table-row-bordered table-row-gray-100 align-middle gs-0 gy-3">
                             <!--begin::Table head-->
@@ -1007,7 +1020,7 @@
                 <!--begin::Col-->
                 <div class="col-xl-6">
                     <!--begin::Engage widget 9-->
-                    <div class="card h-lg-100" style="background: linear-gradient(112.14deg, #FF8A00 0%, #E96922 100%)">
+                    <div class="card h-lg-100 md-button" style="background: linear-gradient(112.14deg, #FF8A00 0%, #E96922 100%)">
                         <!--begin::Body-->
                         <div class="card-body">
                             <!--begin::Row-->
