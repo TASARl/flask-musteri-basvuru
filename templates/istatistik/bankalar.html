@@ -32,7 +32,7 @@
       
       
     </div>
-  </div>
+</div>
 <div class="card card-bordered">
     <div class="card-body" style="height: 400px">
         <canvas id="myChart"></canvas>
@@ -45,12 +45,7 @@
 
 
 {% block scripts %} 
-<script>
-    
-</script>
 
- 
-    
     <script>
         // hazir tarih secimi icin
         $(document).ready(function() {
@@ -117,7 +112,7 @@ async function createChart() {
 
   try {
     var response = await $.ajax({
-      url: '/veriler_banka',
+      url: '/api/veriler_banka',
       dataType: 'json',
       timeout: 5000 // add a timeout to avoid indefinite hangs
     });

@@ -747,6 +747,31 @@ def load_user(user_id):
     return User(user['username'], user['password'], user['gallery_name'], user['city'], user['district'], user['address'], user['isim_soyisim'], user['yetki'])
 
 
+# Giriş Sayfasi
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        # Form verilerini alın
+        # username = request.form['username']
+        # password = request.form['password']
+        username = request.json.get('username')
+        password = request.json.get('password')
+
+        # Kullanıcıyı veritabanından alın
+        user = users_collection.find_one({'username': username})
+
+        if user and check_password_hash(user['password'], password):
+            user_obj = User(user['username'], user['password'], user['gallery_name'], user['city'], user['district'], user['address'], user['isim_soyisim'], user['yetki'])
+            login_user(user_obj)
+            return jsonify({'message': 'Login successful'}), 200
+            # return redirect(url_for('index'))
+
+        # Geçersiz kimlik bilgileri durumunda buraya yönlendir
+        return jsonify({'message': 'Login failed'}), 401
+        
+    # GET isteklerinde login sayfasını göster
+    return render_template('sign-in.html')
+
 # Yeni Kullanici ekleme sayfasi
 @app.route('/signup', methods=['GET', 'POST'])
 @login_required
@@ -785,33 +810,6 @@ def signup():
     # Template'e JSON verisini gönderin
     return render_template("signup.html", user_data=user_data, metadata=metadata)
     
-
-
-
-# Giriş Sayfasi
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        # Form verilerini alın
-        # username = request.form['username']
-        # password = request.form['password']
-        username = request.json.get('username')
-        password = request.json.get('password')
-
-        # Kullanıcıyı veritabanından alın
-        user = users_collection.find_one({'username': username})
-
-        if user and check_password_hash(user['password'], password):
-            user_obj = User(user['username'], user['password'], user['gallery_name'], user['city'], user['district'], user['address'], user['isim_soyisim'], user['yetki'])
-            login_user(user_obj)
-            return jsonify({'message': 'Login successful'}), 200
-            # return redirect(url_for('index'))
-
-        # Geçersiz kimlik bilgileri durumunda buraya yönlendir
-        return jsonify({'message': 'Login failed'}), 401
-        
-    # GET isteklerinde login sayfasını göster
-    return render_template('sign-in.html')
 
 # API - Parola degistir api
 @app.route('/api/change-password', methods=['POST'])
@@ -1518,7 +1516,7 @@ def veriler():
     json_data = json.dumps(months_dict)
     return json_data
 
-@app.route('/veriler_banka', methods=['GET'])
+@app.route('/api/veriler_banka', methods=['GET'])
 @login_required
 @yonetici_gerekli
 def verilerBanka():
