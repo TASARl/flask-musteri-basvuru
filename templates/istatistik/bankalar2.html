@@ -10,8 +10,8 @@
 
 
 {% block content %}
-<div class="card-rounded bg-light d-flex flex-wrap p-5 mb-5">
-    <div class="row w-100 align-items-center">
+<div class="card-rounded bg-light d-flex flex-wrap p-5 mb-5" >
+    <div class="row w-100 align-items-center" style="display: flex; justify-content: center;">
       <div class="col-sm-12 col-md-6 col-lg-3 mb-3 mb-lg-0">
         
         <label for="" class="form-label">Başlangıç</label>
@@ -35,97 +35,11 @@
 
 <div class="row">
     <div class="container">
-  
-  <table class="product-comparison-chart textcenter">
-      <thead>
-          <tr>
-              <th class="gray">&nbsp;</th>
-              <th class="green">Nessus Professional</th>
-              <th class="green">Nessus Manager</th>
-              <th class="blue">Tenable.io Vulnerability Management</th>
-              <th class="blue">Tenable.io Container Security</th>
-              <th class="purple">SecurityCenter</th>
-              <th class="purple">SecurityCenter Continuous View</th>
-              <th class="purple">SecurityCenter</th>
-              <th class="purple">SecurityCenter Continuous View</th>
-          </tr>
-      </thead>
-      <tbody>
-        <tr>
-            <th>RED</th>
-            <td>✔</td>
-            <td>✔</td>
-            <td>✔</td>
-            <td>&nbsp;</td>
-            <td>✔</td>
-            <td>✔</td>
-            <td>✔</td>
-            <td>✔</td>
-        </tr>
-          <tr>
-              <th>ONAY</th>
-              <td>✔</td>
-              <td>✔</td>
-              <td>✔</td>
-              <td>&nbsp;</td>
-              <td>✔</td>
-              <td>✔</td>
-              <td>✔</td>
-              <td>✔</td>
-          </tr>
-          <tr>
-              <th>TOPLAM BAŞVURU</th>
-              <td>✔</td>
-              <td>✔</td>
-              <td>✔</td>
-              <td>&nbsp;</td>
-              <td>✔</td>
-              <td>✔</td>
-              <td>✔</td>
-              <td>✔</td>
-          </tr>
-          <tr>
-            <th>ONAY YÜZDESİ</th>
-            <td>✔</td>
-            <td>✔</td>
-            <td>✔</td>
-            <td>&nbsp;</td>
-            <td>✔</td>
-            <td>✔</td>
-            <td>✔</td>
-            <td>✔</td>
-        </tr>
-        <tr>
-            <th>&nbsp;</th>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-        </tr>
-        <tr>
-            <th>KULLANDIRIM</th>
-            <td>✔</td>
-            <td>✔</td>
-            <td>✔</td>
-            <td>&nbsp;</td>
-            <td>✔</td>
-            <td>✔</td>
-            <td>✔</td>
-            <td>✔</td>
-        </tr>
-          
-          
-      </tbody>
-  </table>
-      
+        <div id="tabloAlani">Yükleniyor</div>
     </div>
   </div>
 
-  <div id="tabloAlani"></div>
+ 
 
   <style>
     .product-comparison-chart td {
@@ -136,6 +50,8 @@
   border-bottom-width: 1px;
   text-align: right;
   background: #f5f5f5;
+  padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 .product-comparison-chart td,
@@ -153,14 +69,20 @@
 
 .product-comparison-chart .green {
   background: #3fae29;
+  text-align: center;
+    padding: 10px;
 }
 
 .product-comparison-chart .blue {
   background: #0071ce;
+  text-align: center;
+    padding: 10px;
 }
 
 .product-comparison-chart .purple {
   background: #430098;
+  text-align: center;
+    padding: 10px;
 }
   </style>
 
@@ -216,7 +138,7 @@ const tabloyuOlustur = async function () {
 
     try {
         var veri = await $.ajax({
-        url: '/api/veriler_banka',
+        url: '/api/veriler_banka_v2',
         dataType: 'json',
         timeout: 5000 // add a timeout to avoid indefinite hangs
         });
@@ -245,31 +167,47 @@ const tabloyuOlustur = async function () {
         for (var banka in veri[tarih]) {
         var onay = veri[tarih][banka].onay;
         var red = veri[tarih][banka].red;
+        var kullanim = veri[tarih][banka].kullanim;
 
         if (!toplamlar[banka]) {
-            toplamlar[banka] = { onay: 0, red: 0 };
+            toplamlar[banka] = { onay: 0, red: 0 , kullanim:0};
         }
 
         toplamlar[banka].onay += onay;
         toplamlar[banka].red += red;
+        toplamlar[banka].kullanim += kullanim;
         }
     }
     }
 
+    function sayiYuzdeyeCevir(sayi) {
+        let yuzde = sayi * 100;
+        return yuzde.toFixed(1) + "%";
+    }
+
     // HTML tablosunu oluştur
-    var htmlTablo = "<table>" + "<tr><th>Banka</th><th>Onay</th><th>Red</th></tr>";
+    var htmlTablo = "<table class='product-comparison-chart textcenter' style='margin-left: auto; margin-right: auto;'>" + "<tr><th class='gray'>BANKA</th><th class='green'>ONAY</th><th  class='green'>RED</th><th  class='blue'>TOPLAM</th><th  class='purple'>ONAY YÜZDESİ</th><th  class='blue'>KULLANIM</th><th  class='purple'>KULLANIM YÜZDESİ</th></tr>";
 
     for (var banka in toplamlar) {
     var onayToplam = toplamlar[banka].onay;
     var redToplam = toplamlar[banka].red;
+    var kullanimToplam = toplamlar[banka].kullanim;
 
     htmlTablo +=
-        "<tr><td>" +
-        banka +
-        "</td><td>" +
+        "<tr><th>" +
+        banka.toUpperCase() +
+        "</th><td>" +
         onayToplam +
         "</td><td>" +
         redToplam +
+        "</td><td>" +
+        (redToplam+onayToplam) +
+        "</td><td>" +
+        (sayiYuzdeyeCevir(onayToplam/(redToplam+onayToplam))) +
+        "</td><td>" +
+        kullanimToplam +
+        "</td><td>" +
+        (sayiYuzdeyeCevir(kullanimToplam /onayToplam ))+
         "</td></tr>";
     }
 

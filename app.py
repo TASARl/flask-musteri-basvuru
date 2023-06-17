@@ -1548,6 +1548,175 @@ def verilerBanka():
     # print(json_output)
     return json_output
 
+@app.route('/api/veriler_banka_v2', methods=['GET'])
+@login_required
+@yonetici_gerekli
+def verilerBankaV2():
+
+    
+    result = customers.aggregate([
+        { '$group': {
+            '_id': {
+                'durum': '$durum',
+                'year_month': { '$dateToString': { 'format': '%m-%Y', 'date': '$created_time' } }
+            },
+            'count': { '$sum': 1 }
+        }}
+    ])
+
+    output = {}
+    for r in result:
+        year_month = r['_id']['year_month']
+        if 'durum' in r['_id']:
+            durum_dict = r['_id']['durum']
+            for k, v in durum_dict.items():
+                if year_month not in output:
+                    output[year_month] = {}
+                if k not in output[year_month]:
+                    output[year_month][k] = {'onay': 0, 'red': 0}
+                output[year_month][k]['red'] += r['count'] if v == 'red' else 0
+                output[year_month][k]['onay'] += r['count'] if v == 'onay' else 0
+
+    
+    
+
+    # banka toplamlari hesapla
+    # Sorgu
+    pipeline = [
+        {
+            '$match': {'status': 'Kullandırıldı'}
+        },
+        {
+            '$group': {
+                '_id': {
+                    'month': {'$dateToString': {'format': '%m', 'date': '$created_time'}},
+                    'year': {'$dateToString': {'format': '%Y', 'date': '$created_time'}}
+                },
+                'bankalar': {
+                    '$push': '$kullandirim_bilgileri.banka_kullandirim'
+                }
+            }
+        },
+        {
+            '$unwind': '$bankalar'
+        },
+        {
+            '$group': {
+                '_id': {
+                    'month': '$_id.month',
+                    'year': '$_id.year',
+                    'banka': '$bankalar'
+                },
+                'sayi': {'$sum': 1}
+            }
+        },
+        {
+            '$group': {
+                '_id': {
+                    'month': '$_id.month',
+                    'year': '$_id.year'
+                },
+                'bankalar': {
+                    '$push': {
+                        'banka': '$_id.banka',
+                        'sayi': '$sayi'
+                    }
+                }
+            }
+        },
+        {
+            '$project': {
+                '_id': 0,
+                'month': {'$concat': ['$_id.month', '-', '$_id.year']},
+                'bankalar': 1
+            }
+        }
+    ]
+
+    results = list(customers.aggregate(pipeline))
+
+    # Sonuçları formatlayarak istediğiniz şekilde görüntüleme
+    formatted_result = {}
+    for item in results:
+        key = item['month']
+        bankalar = {}
+        for banka in item['bankalar']:
+            banka_adi = banka['banka']
+            sayi = banka['sayi']
+            bankalar[banka_adi] = {'kullanim': sayi}
+        formatted_result[key] = bankalar
+
+    # print(formatted_result)
+    # print('-------------------------------------')
+    # print(output)
+
+    # iki veriyi birlestir
+    birlesik_veri = {}
+
+    # İlk veri setini birleşik veriye ekleyelim
+    for tarih, veri in output.items():
+        if tarih not in birlesik_veri:
+            birlesik_veri[tarih] = {}
+        for banka, degerler in veri.items():
+            if banka not in birlesik_veri[tarih]:
+                birlesik_veri[tarih][banka] = {}
+            birlesik_veri[tarih][banka].update(degerler)
+
+    # İkinci veri setini birleşik veriye ekleyelim veya güncelleyelim
+    for tarih, veri in formatted_result.items():
+        if tarih not in birlesik_veri:
+            birlesik_veri[tarih] = {}
+        for banka, degerler in veri.items():
+            if banka not in birlesik_veri[tarih]:
+                birlesik_veri[tarih][banka] = {}
+            if banka in birlesik_veri[tarih]:
+                birlesik_veri[tarih][banka].update(degerler)
+            else:
+                birlesik_veri[tarih][banka] = degerler
+
+    # İlgili fonksiyonu tanımlayalım
+    def update_bank_values(veri):
+        for tarih, veri_tarih in veri.items():
+            for banka, degerler in veri_tarih.items():
+                if 'onay' not in degerler:
+                    veri_tarih[banka]['onay'] = 0
+                if 'red' not in degerler:
+                    veri_tarih[banka]['red'] = 0
+                if 'kullanim' not in degerler:
+                    veri_tarih[banka]['kullanim'] = 0
+
+    # İlk veri setinde eksik değerleri güncelleyelim
+    update_bank_values(birlesik_veri)
+
+
+    # print(birlesik_veri)
+    # json_output = json.dumps(output, indent=4)
+    json_output = json.dumps(birlesik_veri, indent=4)
+    
+    # print(json_output)
+    return json_output
+
+@app.route('/api/arac_kullanim', methods=['GET'])
+@login_required
+@yonetici_gerekli
+def aracKullanim():
+    # Belge sorgusu
+    query = {"status": "Kullandırıldı"}
+
+    # Sadece "marka_adi" ve "tip_adi" alanlarını getirin
+    projection = {"model_yili":1,"marka_adi": 1, "tip_adi": 1, "banka": "$kullandirim_bilgileri.banka_kullandirim" ,"dosya_numarasi":1 ,"_id": 0}
+
+    # Belgeyi bulun ve projeksiyonu uygulayın
+    documents = customers.find(query, projection)
+
+    # Belge verilerini bir liste olarak toplayın
+    result = []
+    for document in documents:
+        result.append(document)
+
+    # Sonucu JSON olarak dönün
+    return jsonify(result)
+
 
 @app.route('/api/kullanicilar-istatistik')
 def chart_data_kullanicilar():

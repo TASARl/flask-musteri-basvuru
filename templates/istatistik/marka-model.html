@@ -10,13 +10,113 @@
 
 
 {% block content %}
+<div class="card-rounded bg-light d-flex flex-wrap p-5 mb-5" >
+    <div class="row w-100 align-items-center" style="display: flex; justify-content: center;">
+      <div class="col-sm-12 col-md-6 col-lg-3 mb-3 mb-lg-0">
+        
+        <label for="" class="form-label">Başlangıç</label>
+        <input class="form-control guncelleme" type="month" id="start" name="start">
+    </div><div class="col-sm-12 col-md-6 col-lg-3 mb-3 mb-lg-0">
 
+        <label for="" class="form-label">Bitiş</label>
+        <input  class="form-control guncelleme"  type="month" id="end" name="end">
+    </div><div class="col-sm-12 col-md-6 col-lg-3 mb-3 mb-lg-0">
+        <label for="" class="form-label">Hazır Seçenekler</label>
+        <select class="form-select guncelleme" data-control="select2" id="select">
+            <option value="1">Son 1 Ay</option>
+            <option value="3">Son 3 Ay</option>
+            <option value="6">Son 6 Ay</option>
+            <!-- <option value="12">Son 1 Yıl</option> -->
+        </select>
+      </div>
+      
+    </div>
+</div>
+
+<!--begin::Alert-->
+<div class="alert alert-primary d-flex align-items-center p-5">
+    <!--begin::Icon-->
+    <i class="ki-duotone ki-shield-tick fs-2hx text-success me-4"><span class="path1"></span><span class="path2"></span></i>
+    <!--end::Icon-->
+
+    <!--begin::Wrapper-->
+    <div class="d-flex flex-column">
+        <!--begin::Title-->
+        <h4 class="mb-1 text-dark">Tamamlanmadı</h4>
+        <!--end::Title-->
+
+        <!--begin::Content-->
+        <span>Veriler cogaldiginda gelistirilecek</span>
+        <!--end::Content-->
+    </div>
+    <!--end::Wrapper-->
+</div>
+<!--end::Alert-->
+
+<div class="row">
+    <div class="container">
+        <div id="veriListesi"></div>
+    </div>
+  </div>
 
 {% endblock %}
 
 
 
 {% block scripts %} 
+<script>
+const araclariYaz = async function(){
+    try {
+        var veriler = await $.ajax({
+        url: '/api/arac_kullanim',
+        dataType: 'json',
+        timeout: 5000 // add a timeout to avoid indefinite hangs
+        });
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return;
+    }
+    
 
+    veriler.sort((a, b) => {
+        if (a.model_yili !== b.model_yili) {
+            return a.model_yili.localeCompare(b.model_yili);
+        }
+        if (a.marka_adi !== b.marka_adi) {
+            return a.marka_adi.localeCompare(b.marka_adi);
+        }
+        return a.tip_adi.localeCompare(b.tip_adi);
+    });
+
+    const veriListesi = document.getElementById("veriListesi");
+
+    veriler.forEach(data => {
+      const tr = document.createElement("tr");
+
+      const modelYiliTd = document.createElement("td");
+      modelYiliTd.textContent = data.model_yili;
+      tr.appendChild(modelYiliTd);
+
+      const markaAdiTd = document.createElement("td");
+      markaAdiTd.textContent = data.marka_adi;
+      tr.appendChild(markaAdiTd);
+
+      const tipAdiTd = document.createElement("td");
+      tipAdiTd.textContent = data.tip_adi;
+      tr.appendChild(tipAdiTd);
+
+      const bankaTd = document.createElement("td");
+      bankaTd.textContent = data.banka;
+      tr.appendChild(bankaTd);
+
+      const dosyanoTd = document.createElement("td");
+      dosyanoTd.textContent = data.dosya_numarasi;
+      tr.appendChild(dosyanoTd);
+
+      veriListesi.appendChild(tr);
+    });
+}
+$(document).ready(araclariYaz())
+</script>
 
 {% endblock %}
