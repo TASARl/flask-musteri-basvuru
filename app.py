@@ -1704,7 +1704,7 @@ def aracKullanim():
     query = {"status": "Kullandırıldı"}
 
     # Sadece "marka_adi" ve "tip_adi" alanlarını getirin
-    projection = {"model_yili":1,"marka_adi": 1, "tip_adi": 1, "banka": "$kullandirim_bilgileri.banka_kullandirim" ,"dosya_numarasi":1 ,"_id": 0}
+    projection = {"model_yili":1,"marka_adi": 1, "tip_adi": 1, "banka": "$kullandirim_bilgileri.banka_kullandirim" ,"dosya_numarasi":1 , "kredi_tutar": "$kullandirim_bilgileri.kredi" ,"_id": 0}
 
     # Belgeyi bulun ve projeksiyonu uygulayın
     documents = customers.find(query, projection)

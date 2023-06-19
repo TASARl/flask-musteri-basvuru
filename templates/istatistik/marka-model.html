@@ -109,6 +109,10 @@ const araclariYaz = async function(){
       bankaTd.textContent = data.banka;
       tr.appendChild(bankaTd);
 
+      const krediTd = document.createElement("td");
+      krediTd.textContent = data.kredi_tutar;
+      tr.appendChild(krediTd);
+
       const dosyanoTd = document.createElement("td");
       dosyanoTd.textContent = data.dosya_numarasi;
       tr.appendChild(dosyanoTd);
