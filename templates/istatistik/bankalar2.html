@@ -182,8 +182,10 @@ const tabloyuOlustur = async function () {
 
     function sayiYuzdeyeCevir(sayi) {
         let yuzde = sayi * 100;
+        if (isNaN(sayi) || !Number.isFinite(yuzde)) return '-';
         return yuzde.toFixed(1) + "%";
     }
+    
 
     // HTML tablosunu oluştur
     var htmlTablo = "<table class='product-comparison-chart textcenter' style='margin-left: auto; margin-right: auto;'>" + "<tr><th class='gray'>BANKA</th><th class='green'>ONAY</th><th  class='green'>RED</th><th  class='blue'>TOPLAM</th><th  class='purple'>ONAY YÜZDESİ</th><th  class='blue'>KULLANIM</th><th  class='purple'>KULLANIM YÜZDESİ</th></tr>";
