@@ -52038,7 +52038,8 @@ body {
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-position: center;
-  background-image: url("../media/misc/page-bg.jpg");
+  background-image: url("../media/misc/page-bg-gray.jpg");
+  background-color: #333;
 }
 
 .modal-fullscreen .modal-content {
@@ -52371,7 +52372,8 @@ body {
   top: 50px;
   right: 50px;
   bottom: 50px;
-  background-color: rgba(19, 0, 97, 0.3);
+  background-color: rgb(55 55 55 / 72%);
+  border: 2px solid #fef200;
   border-radius: 1.75rem;
 }
 .launcher .sidebar .timeline .timeline-line {
@@ -52414,7 +52416,8 @@ body {
   }
   .launcher .sidebar {
     display: none;
-    background-color: rgba(19, 0, 97, 0.75);
+    background-color: rgb(47 45 45 / 88%);
+    border: 2px solid #fef200;
     top: 15px;
     right: 15px;
     bottom: 15px;

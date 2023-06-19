@@ -54,6 +54,8 @@
                     // Yeni bir timeline item öğesi oluşturma
                     const timelineItem = $('<div>').addClass('timeline-item');
 
+                    
+
                     // Timeline line öğesi oluşturma
                     const timelineLine = $('<div>').addClass('timeline-line w-40px');
                     timelineItem.append(timelineLine);
@@ -66,17 +68,18 @@
 
                     let basketType;
                     if(item.status === 'standart') {
-                        basketType = 'ki-setting-4 text-white';
+                        basketType = 'ki-setting-4 text-black';
                     } else if(item.status === 'kullanici') {
-                        basketType = 'ki-pencil text-white';
+                        basketType = 'ki-pencil text-black';
                     } else{
-                        basketType = 'ki-abstract-10 text-white';
+                        basketType = 'ki-abstract-10 text-black';
                     }
                     
                     
 
                     // Icon içindeki simgeyi oluşturma
                     const iconSymbol = $('<div>').addClass('symbol-label');
+                    iconSymbol.css('background-color', '#fef200');
                     const icon = $('<i>').addClass(`ki-duotone ${basketType} fs-2`);
                     const paths = ['path1', 'path2', 'path3', 'path4'];
                     $.each(paths, function(index, path) {
