@@ -382,6 +382,8 @@ def form():
                 del data["dosya_id"]
                 del data["dosya_numarasi"]
                 del data["created_time"]
+                del data["created_by"]
+                del data["created_by_isim"]
 
                 # edit islemi esnasinda saha personeli silinemez
                 if "saha_personeli" in data and data["saha_personeli"]:
