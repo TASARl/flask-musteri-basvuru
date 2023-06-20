@@ -141,10 +141,13 @@ def yonetici_gerekli(f):
 
 # Index sayfasi
 @app.route('/')
-@login_required
 def index():
-    # index.html adlı template'i döndür
-    return render_template('index.html')
+    if current_user.is_authenticated:
+        # Oturum açmış kullanıcılara ana sayfayı göster
+        return render_template('index.html')
+    else:
+        # Oturum açmamış kullanıcılara farklı bir sayfa göster
+        return render_template('homepage/index.html')
 
 # Index sayfasi
 @app.route('/kvkk')

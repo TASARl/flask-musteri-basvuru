@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><base href="{{ url_for('static', filename='') }}"/>
+    <title>HızlıKredi | En Hızlı Taşıt Kredisi</title>
+    <meta charset="utf-8" />
+    <meta name="description" content="HızlıKredi, en kolay taşıt kredisi için hizmetinizde. Hemen başvurun ve aracınızı hayalinizdeki gibi alın!" />
+    <meta name="keywords" content="taşıt kredisi, araç kredisi, kredi, hızlı kredi" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta property="og:locale" content="tr_TR" />
+    <meta property="og:type" content="contact" />
+    <meta property="og:title" content="HızlıKredi, en kolay taşıt kredisi için hizmetinizde. Hemen başvurun ve aracınızı hayalinizdeki gibi alın!" />
+    <meta property="og:url" content="https://hizlikredi.net.tr" />
+    <meta property="og:site_name" content="HizliKredi | En Kolay Oto Kredi" />
+    <link rel="canonical" href="https://hizlikredi.net.tr" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='assets/media/logos/favicon.ico') }}" />
+    <!-- Bundle -->
+    <link rel="stylesheet" href="vendor/css/bundle.min.css">
+    <!-- Plugin Css -->
+    <link rel="stylesheet" href="vendor/css/cubeportfolio.min.css">
+    <link rel="stylesheet" href="vendor/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="hizlikredi/css/animate.min.css">
+    <link rel="stylesheet" href="hizlikredi/css/jquery.fancybox.css">
+    <link rel="stylesheet" href="hizlikredi/css/jquery.fancybox.min.css">
+    <link rel="stylesheet" href="hizlikredi/css/line-awesome.min.css">
+    <!-- Style Sheet -->
+    <link rel="stylesheet" href="hizlikredi/css/style.css">
+</head>
+
+<body data-spy="scroll" data-target=".navbar" data-offset="150">
+
+<!--  PRELOADER  -->
+<div class="loader-area">
+    <div class='loader'>
+        <div class='one'></div>
+        <div class='two'></div>
+        <div class='three'></div>
+    </div>
+</div>
+
+<!-- START NAVBAR SECTION -->
+<header>
+
+    <!--    NAVBAR FOR LARGE SCREEN-->
+    <nav id="my-nav1" class="navbar navbar-expand-lg navbar-light rounded-bar transparent-bar">
+
+        <div class="logo small-screen">
+            <a href="#home" class="scroll"><img src="hizlikredi/img/logo.png" alt="Logo Img"></a>
+        </div>
+
+        <div class="container bg-trans-color">
+            <div class="row no-gutters w-100">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent1">
+                    <div class="collapse navbar-collapse">
+                        <div class="col-3 col-md-2 col-lg-3 text-left p-0">
+                            <div class="logo">
+                                <a href="#home" class="scroll"><img src="assets/media/logos/hizli-logo-2.png" alt="Logo Img" width="200px"></a>
+                            </div>
+                        </div>
+                        <div class="col-6 p-0">
+                        <ul id="primary" class="navbar-nav text-center">
+
+                            
+                            <li class="nav-item">
+                                <a class="nav-link" href="#feature">Hakkımızda</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#stats">Referans</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#contact">İletişim</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/login" class="btn btn-slider pink-btn rounded-pill">Giriş</a>
+                            </li>
+                        </ul>
+                        </div>
+
+                        <div class="col-3 text-right p-0">
+                            <div class="banner-icons">
+                            <a href="#"><i class="lab la-facebook-f icons fb"></i></a>
+                            <a href="#"><i class="lab la-twitter icons twt"></i></a>
+                            <a href="#"><i class="lab la-instagram icons inst"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a href="javascript:void(0)" class="sidemenu_btn" id="sidemenu_toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </a>
+    </nav>
+
+    <!--Side Nav-->
+    <div class="side-menu hidden">
+        <div class="inner-wrapper">
+            <span class="btn-close" id="btn_sideNavClose"><i></i><i></i></span>
+            <nav class="side-nav w-100">
+                <ul class="navbar-nav">
+                    
+                    <li class="nav-item">
+                        <a class="nav-link scroll" href="#feature">Hakkımızda</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link scroll" href="#stats">Referans</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link scroll" href="#contact">İletişim</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/login" class="btn btn-slider white-btn rounded-pill">Giriş</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="side-footer w-100">
+                <div class="banner-icons">
+                    <a href="#"><i class="lab la-facebook-f icons"></i></a>
+                    <a href="#"><i class="lab la-twitter icons"></i></a>
+                    <a href="#"><i class="lab la-instagram icons"></i></a>
+                </div>
+                <p>&copy; 2022 Hızlı Kredi: Taşıt Kredisi'nin En Kolay Yolu!</p>
+            </div>
+        </div>
+    </div>
+    <a id="close_side_menu" href="javascript:void(0);"></a>
+    <!-- End side menu -->
+</header>
+
+<section id="home" class="home">
+    <div class="container">
+        <div class="row height">
+            <div class="col-12 col-md-6 height d-flex align-items-center text-left">
+                <div class="text d-flex align-items-center">
+                    <div class="home-text text-black height1">
+                        <h6 class="sub-heading mb-2">Beğendiğniz Araç İçin</h6>
+                        <h1 class="main-heading mb-0">Taşıt Kredisi Kullanmak</h1>
+                        <h4 class="heading mb-3">Artık Çok Kolay</h4>
+                        <a href="#blog" class="btn btn-slider pink-btn rounded-pill">Faiz Oranları</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="large-logo">
+                    <img src="hizlikredi/img/logo-large.png" alt="img">
+                </div>
+
+                <div class="turuncu_araba">
+                    <div class="large-icon" style="
+                            position: absolute;
+                            z-index: 9;
+                            bottom: 23px;
+                            right: -78px;
+                            width: 701px;
+                        ">
+                        <img src="hizlikredi/img/turuncu_araba.png" alt="img">
+                    </div>
+<!--                    <div class="shadow-home">-->
+<!--                        <img src="hizlikredi/img/shadow.png" alt="img">-->
+<!--                    </div>-->
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <svg class="yellow-square" viewBox="0 0 200 655" xmlns="http://www.w3.org/2000/svg">
+        <rect  x = "0" y = "32" width = "1616" height = "1616" rx="28" ry="28" fill="#ffc107" transform = "rotate(-45 200 100)"/>
+    </svg>
+
+    <svg class="left-square small-view" viewBox="0 0 310 655" xmlns="http://www.w3.org/2000/svg">
+        <rect  x = "0" y = "32" width = "1616" height = "1616" rx="48" ry="48" fill="#fa2851" transform = "rotate(135 100 245)"/>
+    </svg>
+
+</section>
+
+<section id="feature" class="feature">
+    <div class="container">
+            <div class="row">
+                <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2 col-sm-12 text-center">
+                    <div class="text">
+                        <div class="home-text text-black">
+                            <h1 class="main-heading mb-4">Zahmetsiz!</h1>
+                            <p class="sub-heading mb-4">Amacımız, size hızlı ve kolay bir şekilde taşıt kredisi imkanı sağlamaktır. Müşteri odaklı yaklaşımımız ve uzman ekibimizle size en uygun finansal çözümleri sunuyoruz.</p>
+                            <a href="#" class="btn btn-slider pink-btn rounded-pill">Daha Fazla Öğren</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-90">
+                <div class="col-12 col-md-4 mb-3 mb-md-0">
+                    <div class="card box text-center">
+                        <div class="feature-icon text-center">
+                            <i class="far fa-lightbulb"></i>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text sub-heading text-black">Tüm karmaşık süreçleri ortadan kaldırıyoruz.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-4 mt-5 mt-md-0 mb-3 mb-md-0">
+                    <div class="card box text-center">
+                        <div class="feature-icon text-center center">
+                            <i class="far fa-copy"></i>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text sub-heading text-black">İşlemlerinizi hızlandırıyor ve kolaylaştırıyoruz.</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-12 col-md-4 mt-5 mt-md-0">
+                    <div class="card box text-center">
+                        <div class="feature-icon text-center">
+                            <i class="far fa-heart"></i>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text sub-heading text-black">İşimizi samimiyetle ve profesyonellikle yapıyoruz.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+</section>
+
+<section id="stats" class="stats">
+        <div class="container">
+            <div class="row m-0">
+                    <div class="col-lg-6 offset-lg-4 col-md-10 offset-md-0 col-sm-12 text-left p-0">
+                        <div class="stats-text">
+                            <div class="home-text text-black">
+                                <h1 class="sub-heading">Size bazı istatistikler sunalım</h1>
+                                <h1 class="main-heading mt-3 mb-4">Son birkaç yıl içinde harika işler başardık.</h1>
+                                <p class="sub-heading mb-3">Bu süre zarfında büyüme ve başarılarla dolu bir yolculuk geçirdik. Müşterilerimizin finansal hedeflerini gerçekleştirmelerine yardımcı olmaktan mutluluk duyuyoruz. </p>
+                            </div>
+                        </div>
+                    </div>
+                     
+                 </div>
+
+            <div class="row mt-40">
+                <div class="col-lg-8 offset-lg-4 col-md-12 offset-md-0 col-sm-12">
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                                <div class="stats-box d-flex">
+                                    <div class="stats-icon">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <div class="stats-box-text ml-4">
+                                        <h1 class="numbering">3500+</h1>
+                                        <p class="sub-heading">Mutlu Müşteri</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <div class="col-12 col-md-4 mt-4 mt-md-0">
+                            <div class="stats-box d-flex">
+                                <div class="stats-icon">
+                                    <i class="fas fa-list"></i>
+                                </div>
+                                <div class="stats-box-text ml-4">
+                                    <h1 class="numbering">10740+</h1>
+                                    <p class="sub-heading">İş Ortağı Oto Galeri</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-4 mt-4 mt-md-0">
+                            <div class="stats-box d-flex">
+                                <div class="stats-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="stats-box-text ml-4">
+                                    <h1 class="numbering">12200+</h1>
+                                    <p class="sub-heading">Başvuru Sayısı</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <svg class="left-square stats" viewBox="0 0 310 655" xmlns="http://www.w3.org/2000/svg">
+        <rect  x = "0" y = "32" width = "1616" height = "1616" rx="48" ry="48" fill="#fa2851" transform = "rotate(135 100 245)"/>
+    </svg>
+
+</section>
+
+<section id="team" class="team">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-8 col-lg-6">
+                <div class="team-text text-black">
+                    <h1 class="main-heading mb-3">Uzman Ekibimiz</h1>
+                    <p class="sub-heading mb-4">Bugün bizimle iletişime geçin ve hızlı araç sahibi olma hayallerinizi gerçekleştirmenize nasıl yardımcı olabileceğimizi keşfedin.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-9 col-lg-8">
+
+            <div id="team-carousal" class="owl-carousel owl-theme team-owl mt-100 text-center">
+                        <div class="item">
+                            <div class="team-img">
+                                <img src="hizlikredi/img/team1.jpg" alt="img">
+                            </div>
+                            <div class="team-tittle text-left mt-3 mb-3">
+                                <div class="name-img">
+                                    <img src="hizlikredi/img/shape-team.png" alt="img">
+                                    <h3 class="name mb-0">Alex Stoke</h3>
+                                </div>
+                                <p class="sub-heading mb-0 mt-1 text-center text-black">Director</p>
+                                <div class="social-icons text-center">
+                                    <a href="#"><i class="fab fa-facebook-f fb"></i></a>
+                                    <a href="#"><i class="fab fa-twitter twt"></i></a>
+                                    <a href="#"><i class="fab fa-dribbble drb"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="team-img mt-20">
+                                <img src="hizlikredi/img/team2.jpg" alt="img">
+                            </div>
+                            <div class="team-tittle text-left mt-3 mb-3">
+                                <div class="name-img">
+                                <img src="hizlikredi/img/shape-team.png" alt="img">
+                                <h3 class="name mb-0">Lisa Waren</h3>
+                                </div>
+                                <p class="sub-heading mb-0 mt-1 text-center text-black">Director</p>
+                                <div class="social-icons text-center">
+                                    <a href="#"><i class="fab fa-facebook-f fb"></i></a>
+                                    <a href="#"><i class="fab fa-twitter twt"></i></a>
+                                    <a href="#"><i class="fab fa-dribbble drb"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <svg class="right-square team" viewBox="0 0 280 655" xmlns="http://www.w3.org/2000/svg">
+        <rect  x = "0" y = "32" width = "1616" height = "1616" rx="48" ry="48" fill="#ffc107" transform = "rotate(-45 310 100)"/>
+    </svg>
+    <svg class="right-square team small-view" viewBox="0 0 280 655" xmlns="http://www.w3.org/2000/svg">
+        <rect  x = "0" y = "32" width = "1616" height = "1616" rx="48" ry="48" fill="#fa2851" transform = "rotate(-45 310 100)"/>
+    </svg>
+</section>
+
+<section id="design" class="design">
+
+    <div class="col-lg-6 offset-lg-4 col-md-6 offset-md-4 col-sm-12 text-left p-0">
+        <div class="stats-text pl-3 pl-md-5">
+            <div class="home-text text-black">
+                <h1 class="sub-heading">Sizde işlerinizi büyütmek istermisiniz</h1>
+                <h1 class="main-heading mt-3 mb-4"><span class="text-yellow">Oto Galeri Sahipleri</span> Sistemden Ücretsiz Faydalanın!</h1>
+                <p class="sub-heading mb-3">Bugün bizimle iletişime geçin ve nasıl iş ortaklarımız arasına katılabileceğinizi, sisteme nasıl erişebileceğinizi ve işinizi nasıl büyütebileceğinizi öğrenin. Uzman Ekibimiz, hızlı araç kredileri arayan bireyler için olağanüstü danışmanlık hizmetleri sunmaya adanmıştır ve sizin başarınız için burada olduğumuzu unutmayın. Hemen harekete geçin ve işinizi büyütmenize yardımcı olmak için bizi seçin!</p>
+                <a href="#" class="btn btn-main pink-btn rounded-pill mt-3">Start Now</a>
+            </div>
+        </div>
+    </div>
+
+    <svg class="left-square design" viewBox="0 0 310 655" xmlns="http://www.w3.org/2000/svg">
+        <rect  x = "0" y = "32" width = "1616" height = "1616" rx="48" ry="48" fill="#000" transform = "rotate(135 100 245)"/>
+    </svg>
+
+    <svg class="right-square small-view" viewBox="0 0 312 600" xmlns="http://www.w3.org/2000/svg">
+        <rect  x = "0" y = "32" width = "1616" height = "1616" rx="48" ry="48" fill="#ffc107" transform = "rotate(-45 310 100)"/>
+    </svg>
+
+</section>
+
+
+
+<section id="testimonial" class="testimonial">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-8 col-lg-6">
+                <h1 class="main-heading text-center text-black">Wonderful Words</h1>
+                <div id="testimonial-carousal" class="owl-carousel owl-theme testimonial-owl pt-5 pb-5 text-center">
+
+                    <div class="item">
+                        <div class="quotes mb-4">
+                            <i class="fas fa-quote-right"></i>
+                        </div>
+
+                        <div class="description pl-0 pr-0 pl-md-4 pr-md-4 mb-4">
+                            <p class="text-black sub-heading">Lorem ipsum dolor sit amet, consectetur adipi elit, sed do smod tempor incididunt ut
+                                labore et dolore magna sed do smod tempor incididunt ut
+                                labore et aten aliqua. Ut enim veniam,  velit esse cillum</p>
+                        </div>
+                        <div class="testimonial-img mt-2">
+                            <img src="hizlikredi/img/testminial1.jpg" alt="student img">
+                        </div>
+                        <div class="testimonial-tittle mt-3 mb-3">
+                            <h3 class="mb-0">Sara Williams</h3>
+                        </div>
+                    </div>
+
+                    <div class="item">
+                        <div class="quotes mb-4">
+                            <i class="fas fa-quote-right"></i>
+                        </div>
+
+                        <div class="description pl-0 pr-0 pl-md-4 pr-md-4 mb-4">
+                            <p class="text-black sub-heading">Lorem ipsum dolor sit amet, consectetur adipi elit, sed do smod tempor incididunt ut
+                                labore et dolore magna sed do smod tempor incididunt ut
+                                labore et aten aliqua. Ut enim veniam,  velit esse cillum</p>
+                        </div>
+                        <div class="testimonial-img mt-2">
+                            <img src="hizlikredi/img/testminial1.jpg" alt="student img">
+                        </div>
+                        <div class="testimonial-tittle mt-3 mb-3">
+                            <h3 class="mb-0">Sara Williams</h3>
+                        </div>
+                    </div>
+
+                    <div class="item">
+                        <div class="quotes mb-4">
+                            <i class="fas fa-quote-right"></i>
+                        </div>
+
+                        <div class="description pl-0 pr-0 pl-md-4 pr-md-4 mb-4">
+                            <p class="text-black sub-heading">Lorem ipsum dolor sit amet, consectetur adipi elit, sed do smod tempor incididunt ut
+                                labore et dolore magna sed do smod tempor incididunt ut
+                                labore et aten aliqua. Ut enim veniam,  velit esse cillum</p>
+                        </div>
+                        <div class="testimonial-img mt-2">
+                            <img src="hizlikredi/img/testminial1.jpg" alt="student img">
+                        </div>
+                        <div class="testimonial-tittle mt-3 mb-3">
+                            <h3 class="mb-0">Sara Williams</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-9">
+                <div class="sponser-tags owl-carousel owl-theme">
+                    <div class="item brand-img d-flex justify-content-center">
+                        <img src="hizlikredi/img/brand.png" alt="brand1">
+                    </div>
+                    <div class="item brand-img d-flex justify-content-center">
+                        <img src="hizlikredi/img/brand.png" alt="brand2">
+                    </div>
+                    <div class="item brand-img d-flex justify-content-center">
+                        <img src="hizlikredi/img/brand.png" alt="brand3">
+                    </div>
+                    <div class="item brand-img d-flex justify-content-center">
+                        <img src="hizlikredi/img/brand.png" alt="brand4">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <svg class="right-square test" viewBox="0 0 312 600" xmlns="http://www.w3.org/2000/svg">
+        <rect  x = "0" y = "32" width = "1616" height = "1616" rx="48" ry="48" fill="#fa2851" transform = "rotate(-45 310 100)"/>
+    </svg>
+
+    <svg class="left-square gallery small-view" viewBox="0 0 310 655" xmlns="http://www.w3.org/2000/svg">
+        <rect  x = "0" y = "32" width = "1616" height = "1616" rx="48" ry="48" fill="#fa2851" transform = "rotate(135 100 245)"/>
+    </svg>
+
+</section>
+
+<section id="blog" class="blog">
+    <div class="container">
+        <div class="row m-0">
+            <div class="col-lg-6 offset-lg-4 col-md-12 offset-md-0 col-sm-12 text-left p-0">
+                <div class="home-text text-black">
+                        <h1 class="main-heading mt-3 mb-4">Latest Web <br>Design Blog and News</h1>
+                        <p class="sub-heading mb-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, eiusmod tempor incididunt ut
+                            aliq. Sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+                    </div>
+            </div>
+        </div>
+            <div class="row mt-40">
+                <div class="col-lg-8 offset-lg-4 col-md-12 offset-md-0 p-0">
+                    <div class="blog-owl owl-carousel owl-theme no-gutters blog-area" id="blog-carousal">
+
+                        <div class="item blog-item">
+                            <div class="blog-img">
+                                <a href="hizlikredi/standalone.html">
+                                    <img src="hizlikredi/img/blog1.jpg" alt="blog img"></a>
+                            </div>
+
+                            <div class="blog-text text-center text-md-left">
+                                <div class="date mb-2">
+                                    <p class="text-red">May27, 2020</p>
+                                </div>
+                                <div class="info-blog">
+                                    <a href="hizlikredi/standalone.html"><h4>Web design is fun</h4></a>
+                                </div>
+                                <div class="blog-description mb-3">
+                                    <p class="sub-heading">Lorem ipsum dolor sit amet, consadipi. Ut enim adipiscing elit, sed do tempor.</p>
+                                </div>
+                                <div class="writer d-flex">
+                                    <div class="writer-img">
+                                        <img src="hizlikredi/img/blog1-writer.jpg" alt="img">
+                                    </div>
+                                    <p class="writer-name font-italic ml-3">David Villas</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="item blog-item">
+                            <div class="blog-img">
+                                <a href="hizlikredi/standalone.html">
+                                    <img src="hizlikredi/img/blog2.jpg" alt="blog img"></a>
+                            </div>
+
+                            <div class="blog-text text-center text-md-left">
+                                <div class="date mb-2">
+                                    <p class="text-red">June14, 2020</p>
+                                </div>
+                                <div class="info-blog">
+                                    <a href="hizlikredi/standalone.html"><h4>Future of websites</h4></a>
+                                </div>
+                                <div class="blog-description mb-3">
+                                    <p class="sub-heading">Lorem ipsum dolor sit amet, consadipi. Ut enim adipiscing elit, sed do tempor.</p>
+                                </div>
+                                <div class="writer d-flex">
+                                    <div class="writer-img">
+                                        <img src="hizlikredi/img/blog2-writer.jpg" alt="img">
+                                    </div>
+                                    <p class="writer-name font-italic ml-3">Lisa Jhonson</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <svg class="left-square blog" viewBox="0 0 310 655" xmlns="http://www.w3.org/2000/svg">
+        <rect  x = "0" y = "32" width = "1616" height = "1616" rx="48" ry="48" fill="#ffc107" transform = "rotate(135 100 245)"/>
+    </svg>
+
+    <svg class="right-square small-blog small-view" viewBox="0 0 312 600" xmlns="http://www.w3.org/2000/svg">
+        <rect  x = "0" y = "32" width = "1616" height = "1616" rx="48" ry="48" fill="#ffc107" transform = "rotate(-45 310 100)"/>
+    </svg>
+
+</section>
+
+<section id="contact" class="contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="main-heading text-black">Interested?<br>Let's Get In Touch</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-7">
+                <form class="contact-form" id="contact-form-data">
+                    <div class="row mt-5">
+                        <div class="col-sm-12" id="result"></div>
+                    </div>
+                        <div class="row">
+                            <div class="col-12 col-md-5">
+                            <div class="form-group">
+                                <input class="form-control" type="text" placeholder="Your Name" required  id="candidate_name" name="userName">
+                            </div>
+
+                            <div class="form-group">
+                                <input class="form-control" type="email" placeholder="Email Address*" required  id="user_email" name="userEmail">
+                            </div>
+
+                            <div class="form-group ">
+                                <input class="form-control" type="text" placeholder="Subject" id="user_subject" name="userSubject">
+                            </div>
+                            </div>
+
+                            <div class="col-12 col-md-7">
+                                <div class="form-group ">
+                                    <textarea class="form-control" placeholder="Your Message" required rows="7" id="user_message" name="userMessage"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                    <button type="button" class="btn btn-slider pink-btn rounded-pill w-100 contact_btn" id="submit_btn"><i class="fa fa-spinner fa-spin mr-2 d-none" aria-hidden="true"></i> <b>Send Message</b></button>
+                </form>
+            </div>
+
+            <div class="col-12 col-md-5 mt-5">
+                <div class="address-part ml-3">
+                <div class="address d-flex mb-4">
+                    <i class="fas fa-map-marker-alt address-icon mr-3"></i>
+                    <p>123 Pak  Avenue, New York,<br> United States</p>
+                </div>
+                <div class="address d-flex mb-4">
+                    <i class="fas fa-phone-volume address-icon mr-3"></i>
+                    <p>+1 631 12345678<span class="ml-3">  +1 631 12345678 </span> </p>
+                </div>
+                <div class="address d-flex mr-3">
+                    <i class="fas fa-paper-plane address-icon mr-3"></i>
+                    <p>email@website.com</p>
+                </div>
+                </div>
+
+                <div class="plant1">
+                    <div class="plant-contact">
+                        <img src="hizlikredi/img/contact-plant.png" alt="img">
+                    </div>
+                    <div class="shadow-contact">
+                        <img src="hizlikredi/img/shadow-contact.png" alt="img">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<!--        FOOTER SECTION ROW-->
+        <div class="row footer">
+            <div class="col-12 col-md-5">
+                <ul class="footer_ul mb-50">
+                    <li class="footer_list"><i class="lab la-facebook-f fb"></i></li>
+                    <li class="footer_list"><i class="lab la-twitter twt"></i></li>
+                    <li class="footer_list"><i class="lab la-google-plus gogle"></i></li>
+                    <li class="footer_list"><i class="lab la-linkedin-in link"></i></li>
+                    <li class="footer_list"><i class="lab la-instagram inst"></i></li>
+                    <li class="footer_list"><i class="las la-envelope gmail"></i></li>
+                </ul>
+                <p class="info footer_text ml-3"><i class="far fa-copyright"></i>2022 Hızlı Kredi: Taşıt Kredisi'nin En Kolay Yolu!</p>
+
+            </div>
+        </div>
+
+    </div>
+    <svg class="right-square contact-square" viewBox="0 0 150 390" xmlns="http://www.w3.org/2000/svg">
+        <rect  x = "0" y = "32" width = "1616" height = "1616" rx="18" ry="18" fill="#000" transform = "rotate(-45 310 100)"/>
+    </svg>
+</section>
+
+
+
+
+<!-- JavaScript -->
+<script src="vendor/js/bundle.min.js"></script>
+
+<!-- Plugin Js -->
+<script src="vendor/js/owl.carousel.min.js"></script>
+<script src="vendor/js/jquery.cubeportfolio.min.js"></script>
+<script src="vendor/js/parallaxie.min.js"></script>
+
+<!-- custom script -->
+<script src="hizlikredi/js/jquery.fancybox.js"></script>
+<script src="hizlikredi/js/jquery.fancybox.min.js"></script>
+<script src="vendor/js/owl.carousel.min.js"></script>
+<script src="hizlikredi/js/mediaelement-and-player.min.js"></script>
+<script src="hizlikredi/js/tilt.jquery.js"></script>
+<script src="vendor/js/contact_us.js"></script>
+<script src="hizlikredi/js/script.js"></script>
+<script>
+    $(document).ready(function() {
+    var pathname = window.location.href.split('#')[0];
+    $('a[href^="#"]').each(function() {
+        var $this = $(this),
+            link = $this.attr('href');
+        $this.attr('href', pathname + link);
+    });
+});
+</script>
+</body>
+</html>
