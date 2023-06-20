@@ -1,0 +1,97 @@
+/***************PRELOADER*************/
+.loader-area {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background-color: #fff;
+  z-index: 999999;
+}
+.loader {
+  width: 111px;
+  height: 111px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+.loader > div {
+  border-radius: 50%;
+  position: absolute;
+  -webkit-animation-name: spin;
+  animation-name: spin;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
+  -webkit-animation-duration: 1.5s;
+  animation-duration: 1.5s;
+}
+.loader .one {
+  width: 100%;
+  height: 100%;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+  border-top: 11.1px solid orange;
+  border-left: 11.1px solid transparent;
+  border-right: 11.1px solid transparent;
+  border-bottom: 11.1px solid transparent;
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
+}
+.loader .two {
+  width: 74px;
+  height: 74px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+  border-top: 11.1px solid #000;
+  border-left: 11.1px solid rgba(255, 255, 255, 0.5);
+  border-right: 11.1px solid rgba(255, 255, 255, 0.5);
+  border-bottom: 11.1px solid rgba(255, 255, 255, 0.5);
+  -webkit-animation-delay: 0.25s;
+  animation-delay: 0.25s;
+}
+.loader .three {
+  width: 37px;
+  height: 37px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+  border-top: 11.1px solid #fa2851;
+  border-left: 11.1px solid rgba(255, 255, 255, 0.5);
+  border-right: 11.1px solid rgba(255, 255, 255, 0.5);
+  border-bottom: 11.1px solid rgba(255, 255, 255, 0.5);
+  -webkit-animation-delay: 0.5s;
+  animation-delay: 0.5s;
+}
+
+@-webkit-keyframes spin {
+  50%,
+  100% {
+    -webkit-transform: rotate(405deg);
+    transform: rotate(405deg);
+  }
+}
+
+@keyframes spin {
+  50%,
+  100% {
+    -webkit-transform: rotate(405deg);
+    transform: rotate(405deg);
+  }
+}

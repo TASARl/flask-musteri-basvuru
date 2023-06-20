@@ -113,11 +113,20 @@
 
 			gtag('config', 'G-6C1VT66KFV');
 		</script>
-		
+		<link href="{{ url_for('static', filename='assets/css/loader.css') }}" rel="stylesheet" type="text/css" />
 	</head>
 	<!--end::Head-->
 	<!--begin::Body-->
 	<body id="kt_body" class="page-bg">
+		<!--  PRELOADER  -->
+		<div class="loader-area">
+			<div class='loader'>
+				<div class='one'></div>
+				<div class='two'></div>
+				<div class='three'></div>
+			</div>
+		</div>
+
 		<!--begin::Theme mode setup on page load-->
 		<script>var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) { if ( document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
 		<!--end::Theme mode setup on page load-->
@@ -482,6 +491,7 @@
 		<script src="{{ url_for('static', filename='assets/js/custom/utilities/modals/create-project/main.js') }}"></script>
 		<script src="{{ url_for('static', filename='assets/js/custom/utilities/modals/create-account.js') }}"></script>
 		<!--end::Custom Javascript-->
+		<script src="{{ url_for('static', filename='assets/js/loader.js') }}"></script>
 		
 		<!--end::Javascript-->
 	</body>

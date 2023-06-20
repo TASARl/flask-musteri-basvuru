@@ -25,6 +25,7 @@
 		<link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
 		<link href="assets/css/style.bundle.css?v=1.3" rel="stylesheet" type="text/css" />
 		<!--end::Global Stylesheets Bundle-->
+		<link href="assets/css/loader.css" rel="stylesheet" type="text/css" />
         {% block styles %}{% endblock %}
 		<style>
 			
@@ -46,6 +47,15 @@
 	<!--end::Head-->
 	<!--begin::Body-->
 	<body id="kt_app_body" data-kt-app-header-fixed-mobile="true" data-kt-app-toolbar-enabled="true" class="app-default">
+		<!--  PRELOADER  -->
+		<div class="loader-area">
+			<div class='loader'>
+				<div class='one'></div>
+				<div class='two'></div>
+				<div class='three'></div>
+			</div>
+		</div>
+
 		<!--begin::Theme mode setup on page load-->
 		<script>var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) { if ( document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
 		<!--end::Theme mode setup on page load-->
@@ -3212,6 +3222,7 @@
 			});
 		</script>
 		<!--end::Javascript-->
+		<script src="assets/js/loader.js"></script>
 	</body>
 	<!--end::Body-->
 </html>
