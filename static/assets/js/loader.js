@@ -9,8 +9,7 @@ jQuery(window).on("load", function () {
 
 $("a").each(function () {
   var href = $(this).attr("href");
-  if (href !== "#") {
-    console.log(this);
+  if (!href.startsWith("#")) {
     $(this).on("click", function () {
       $(".loader-area").css("display", "block");
     });
