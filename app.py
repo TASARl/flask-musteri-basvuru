@@ -148,6 +148,10 @@ def index():
     else:
         # Oturum açmamış kullanıcılara farklı bir sayfa göster
         return render_template('homepage/index.html')
+    
+@app.route('/hakkimizda')
+def hakkimizda():
+    return render_template('homepage/index.html')
 
 # Index sayfasi
 @app.route('/kvkk')
@@ -755,6 +759,10 @@ def load_user(user_id):
 # Giriş Sayfasi
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        # Oturum açmış kullanıcılara ana sayfayı göster
+        return render_template('index.html')
+    
     if request.method == 'POST':
         # Form verilerini alın
         # username = request.form['username']

@@ -72,7 +72,7 @@
                                                 <!--begin:Menu item-->
                                                 <div class="menu-item p-0 m-0">
                                                     <!--begin:Menu link-->
-                                                    <a href="{{ url_for('destek') }}" class="menu-link">
+                                                    <a href="{{ url_for('hakkimizda') }}" class="menu-link">
                                                         <span class="menu-custom-icon d-flex flex-center flex-shrink-0 rounded w-40px h-40px me-3">
                                                             <i class="ki-duotone ki-emoji-happy text-danger fs-1">
                                                                 <span class="path1"></span>
@@ -329,14 +329,59 @@
                             <!--begin:Menu item-->
                             <div class="menu-item">
                                 <!--begin:Menu link-->
-                                <a class="menu-link" href="{{ url_for('istatistik') }}/bankalar" title="Yapılan Başvuru Sonuçlarını Bankalara Göre İstatistiksel Olarak İnceleyin" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                                <a class="menu-link" href="{{ url_for('istatistik') }}/bankalar" title="Bankalara göre Onay ve Red durumlarını grafik halde gösterir" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
                                     <span class="menu-icon">
                                         <i class="ki-duotone ki-abstract-45 fs-2 text-warning">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
                                         </i>
                                     </span>
-                                    <span class="menu-title">Bankalar</span>
+                                    <span class="menu-title">Banka/Durum Grafiği</span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                            <!--end:Menu item-->
+                            <!--begin:Menu item-->
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a class="menu-link" href="{{ url_for('istatistik') }}/bankalar2" title="Bankalara göre Onay, Red ve Kullandırım durumlarını tablo halinde gösterir" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                                    <span class="menu-icon">
+                                        <i class="ki-duotone ki-graph fs-2 text-primary">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>
+                                    </span>
+                                    <span class="menu-title">Banka/Durum Tablosu</span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                            <!--end:Menu item-->
+                            <!--begin:Menu item-->
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a class="menu-link" href="{{ url_for('istatistik') }}/marka-model" title="Yalnızca kullanılan kredilerin araç marka model bilgilerini listeler" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                                    <span class="menu-icon">
+                                        <i class="ki-duotone ki-text-number fs-2 text-info">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>
+                                    </span>
+                                    <span class="menu-title">Marka Model Bilgileri</span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                            <!--end:Menu item-->
+                            <!--begin:Menu item-->
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a class="menu-link" href="{{ url_for('istatistik') }}/kullanicilar" title="Kullanıcı sayısının zamana göre değişimini gösterir" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                                    <span class="menu-icon">
+                                        <i class="ki-duotone ki-profile-user fs-2 text-success">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>
+                                    </span>
+                                    <span class="menu-title">Kullanıcı Sayıları</span>
                                 </a>
                                 <!--end:Menu link-->
                             </div>
@@ -374,7 +419,7 @@
                             <!--begin:Menu item-->
                             <div class="menu-item">
                                 <!--begin:Menu link-->
-                                <a class="menu-link" href="https://preview.keenthemes.com/html/metronic/docs/base/utilities" target="_blank" title="Check out over 200 in-house components, plugins and ready for use solutions" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                                <a class="menu-link" href="{{ url_for('destek')}}" title="Bize kolayca ulaşabilirsiniz." data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
                                     <span class="menu-icon">
                                         <i class="ki-duotone ki-rocket fs-2">
                                             <span class="path1"></span>
@@ -389,7 +434,7 @@
                             <!--begin:Menu item-->
                             <div class="menu-item">
                                 <!--begin:Menu link-->
-                                <a class="menu-link" href="https://preview.keenthemes.com/html/metronic/docs" target="_blank" title="Check out the complete documentation" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                                <a class="menu-link" href="{{ url_for('destek')}}" title="" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
                                     <span class="menu-icon">
                                         <i class="ki-duotone ki-abstract-26 fs-2">
                                             <span class="path1"></span>
@@ -404,7 +449,7 @@
                             <!--begin:Menu item-->
                             <div class="menu-item">
                                 <!--begin:Menu link-->
-                                <a class="menu-link" href="https://preview.keenthemes.com/metronic8/demo45/layout-builder.html" title="Build your layout and export HTML for server side integration" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                                <a class="menu-link" href="{{ url_for('destek')}}" title="" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
                                     <span class="menu-icon">
                                         <i class="ki-duotone ki-switch fs-2">
                                             <span class="path1"></span>

@@ -11,7 +11,7 @@ $("a").each(function () {
   var href = $(this).attr("href");
   if (!href.startsWith("#")) {
     $(this).on("click", function () {
-      $(".loader-area").css("display", "block");
+      $(".loader-area").css("display", "block").delay(4000).fadeOut();
     });
   }
 });
