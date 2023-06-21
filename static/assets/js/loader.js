@@ -6,3 +6,13 @@ jQuery(window).on("load", function () {
      ====================================== */
   $(".loader-area").fadeOut(1000);
 });
+
+$("a").each(function () {
+  var href = $(this).attr("href");
+  if (href !== "#") {
+    console.log(this);
+    $(this).on("click", function () {
+      $(".loader-area").css("display", "block");
+    });
+  }
+});
