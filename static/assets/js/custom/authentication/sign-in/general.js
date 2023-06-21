@@ -141,8 +141,8 @@ var KTSigninGeneral = (function () {
             })
             .then(function (response) {
               if (response) {
-                form.querySelector('[name="cep_tel"]').value = "";
-                form.querySelector('[name="password"]').value = "";
+                // form.querySelector('[name="cep_tel"]').value = "";
+                // form.querySelector('[name="password"]').value = "";
 
                 const redirectUrl = form.getAttribute("data-kt-redirect-url");
 
