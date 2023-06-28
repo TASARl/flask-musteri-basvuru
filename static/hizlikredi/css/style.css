@@ -1790,7 +1790,16 @@ span {
     top: 30%;
   }
 }
+@media screen and (max-width: 991px) {
+  .small-screen {
+    display: block;
+  }
 
+  .small-screen img {
+    height: 40px !important;
+    max-width: inherit;
+  }
+}
 @media screen and (width: 1024px) {
   svg.yellow-square {
     position: absolute;
