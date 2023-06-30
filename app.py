@@ -1485,6 +1485,9 @@ def veriler():
     for item in data:
         # print (item["tarih"])
         created_time = datetime.fromisoformat(str(item["tarih"]))
+        if created_time.year < 2021:
+            continue  # 2021 yılından önceki verileri görmezden gel
+        
         tarih = created_time.strftime("%m-%Y")
 
         saha_sorumlusu = item['saha_personeli']
